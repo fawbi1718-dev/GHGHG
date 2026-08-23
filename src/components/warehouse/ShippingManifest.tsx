@@ -30,6 +30,8 @@ export interface ShippingManifestData {
  dispatchToken?: string;
  /** When the warehouse commits to deliver (ISO). Set at dispatch time. */
  expectedDeliveryAt?: string;
+ /** End of the promised delivery window (ISO). */
+ deliveryWindowEnd?: string;
 }
 
 interface ShippingManifestProps {

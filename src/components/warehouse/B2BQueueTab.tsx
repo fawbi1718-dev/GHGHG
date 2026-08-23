@@ -69,6 +69,8 @@ export interface EnrichedB2BOrder extends B2BOrder {
   buyerLicense?: string;
   totalValue: number;
   timeWaiting: string;
+  /** Set when the pharmacy reported the package as never delivered (audit). */
+  deliveryFailedAt?: string;
 }
 
 export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' }: B2BQueueTabProps) {
@@ -370,8 +372,9 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
         totalQuantity: Number(manifest.totalQuantity) || 0,
         totalValue: Number(manifest.totalValue) || 0,
         dispatchDate: manifest.dispatchDate || new Date().toISOString(),
-        // Delivery commitment set by the warehouse at dispatch time.
-        expectedDeliveryAt: manifest.expectedDeliveryAt || undefined
+        // Delivery commitment window set by the warehouse at dispatch time.
+        expectedDeliveryAt: manifest.expectedDeliveryAt || undefined,
+        deliveryWindowEnd: manifest.deliveryWindowEnd || undefined
       };
 
       const nowIso = new Date().toISOString();
@@ -499,7 +502,9 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
         type: 'ORDER_DISPATCHED',
         orderId: dispatchedOrder.orderId,
         buyerTenantId: existingData.buyerTenantId,
-        sellerTenantId: effectiveTenantId
+        sellerTenantId: effectiveTenantId,
+        expectedDeliveryAt: sanitizedManifest.expectedDeliveryAt,
+        deliveryWindowEnd: sanitizedManifest.deliveryWindowEnd || undefined
       });
 
       setActiveManifest(manifest);
@@ -675,6 +680,12 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                       <span className="text-xs font-black uppercase tracking-wider text-brand-900">
                         {lang === 'ar' ? 'طلب توريد جديد' : 'NEW ORDER'}
                       </span>
+                      {(order as any).deliveryFailedAt && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wide bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md border border-rose-200">
+                          <AlertTriangle className="w-3 h-3" />
+                          {lang === 'ar' ? 'فشل توصيل سابق' : 'Delivery failed'}
+                        </span>
+                      )}
                       <span className="font-mono text-xs font-bold text-brand-800 bg-white px-2.5 py-0.5 rounded-md border border-brand-200 shadow-2xs">
                         #{order.orderId}
                       </span>
@@ -691,6 +702,16 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                       </span>
                     </div>
                   </div>
+
+                  {/* Failed-delivery guidance */}
+                  {(order as any).deliveryFailedAt && (
+                    <div className="px-5 py-2 bg-amber-50 border-b border-amber-100 text-[10px] font-semibold text-amber-800 flex items-center gap-1.5">
+                      <AlertTriangle className="w-3 h-3 shrink-0" />
+                      {lang === 'ar'
+                        ? 'أبلغت الصيدلية بعدم استلام الشحنة. المخزون لا يزال محجوزاً لهذا الطلب — أعد إدخال الكمية المستلمة فعلياً عبر الإدخال قبل إعادة الشحن، أو ارفض الطلب.'
+                        : 'Pharmacy reported non-delivery. Stock remains reserved for this order — intake any returned units via normal intake before re-dispatching, or Reject.'}
+                    </div>
+                  )}
 
                   {/* Pharmacy Identification & Meta Details */}
                   <div className="p-5 sm:p-6 bg-slate-50/40 border-b border-slate-100">

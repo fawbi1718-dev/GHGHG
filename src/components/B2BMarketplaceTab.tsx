@@ -36,6 +36,7 @@ import { db } from '../infrastructure/firebase';
 import { collection, query, where, onSnapshot, setDoc, doc, updateDoc } from 'firebase/firestore';
 import { confirmWarehouseOrderReceipt } from '../infrastructure/b2b/confirmWarehouseOrderReceipt';
 import { StatusBadge } from './ui/StatusBadge';
+import { Badge } from './ui/Badge';
 import { WholesaleOffer, B2BOrder } from '../domain/b2b';
 import WarehouseProfileView from './warehouse/WarehouseProfileView';
 
@@ -279,10 +280,13 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
           if (data.buyerTenantId !== myTenantId) return;
 
           if (data.type === 'ORDER_DISPATCHED') {
+            const etaStr = data.expectedDeliveryAt
+              ? new Date(data.expectedDeliveryAt).toLocaleString(langRef.current === 'ar' ? 'ar-SY' : 'en-GB', { weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+              : '';
             triggerToastRef.current(
               langRef.current === 'ar'
-                ? `تم شحن الطلبية #${data.orderId} من المستودع`
-                : `Order #${data.orderId} has been dispatched by the warehouse`,
+                ? `تم شحن الطلبية #${data.orderId}${etaStr ? ` — التسليم المتوقع: ${etaStr}` : ''}`
+                : `Order #${data.orderId} dispatched${etaStr ? ` — expected: ${etaStr}` : ''}`,
               'info'
             );
           } else if (data.type === 'ORDER_REJECTED') {
@@ -1295,13 +1299,46 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
 
                         {order.status === 'DISPATCHED' && (() => {
                           const eta = order.manifest?.expectedDeliveryAt ? new Date(order.manifest.expectedDeliveryAt) : null;
-                          const isLate = eta ? Date.now() > eta.getTime() + 3600000 : false;
+                          const etaEnd = order.manifest?.deliveryWindowEnd ? new Date(order.manifest.deliveryWindowEnd) : null;
+                          const isLate = eta ? Date.now() > (etaEnd ?? eta).getTime() + 3600000 : false;
+                          const fmt = (d: Date) => d.toLocaleString(lang === 'ar' ? 'ar-SY' : 'en-GB', { weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
                           return (
-                            <p className={`px-4 pt-2 text-[10px] font-bold flex items-center gap-1 ${isLate ? 'text-rose-600' : 'text-slate-400'}`}>
-                              🕒 {lang === 'ar' ? 'موعد التسليم:' : 'Expected delivery:'}{' '}
-                              {eta ? eta.toLocaleString(lang === 'ar' ? 'ar-SY' : 'en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'}
-                              {isLate && (lang === 'ar' ? '(متأخر)' : '(late)')}
-                            </p>
+                            <div className="mx-4 mt-3 rounded-xl border border-brand-200 bg-brand-50/50 overflow-hidden">
+                              {/* Incoming delivery header */}
+                              <div className="px-4 py-2.5 bg-brand-100/60 border-b border-brand-200 flex items-center justify-between gap-2">
+                                <span className="text-[10px] font-black uppercase tracking-wider text-brand-900 flex items-center gap-1.5">
+                                  <Truck className="w-3.5 h-3.5" />
+                                  {lang === 'ar' ? 'شحنة واردة' : 'Incoming Delivery'}
+                                </span>
+                                {isLate && (
+                                  <Badge variant="error">{lang === 'ar' ? 'متأخر' : 'Late'}</Badge>
+                                )}
+                              </div>
+
+                              {/* Arrival window */}
+                              <div className="px-4 pt-2.5 text-xs">
+                                <p className={`font-bold flex items-center gap-1.5 ${isLate ? 'text-rose-700' : 'text-slate-800'}`}>
+                                  <Calendar className="w-3.5 h-3.5 text-brand-600 shrink-0" />
+                                  {lang === 'ar' ? 'موعد التسليم المتوقع:' : 'Expected arrival:'}
+                                </p>
+                                <p className="font-mono text-[11px] text-slate-600 mt-0.5">
+                                  {eta ? fmt(eta) : '—'}{etaEnd ? ` – ${fmt(etaEnd).split(', ').slice(1).join(', ')}` : ''}
+                                </p>
+                                {isLate && (
+                                  <p className="text-[10px] text-rose-600 font-semibold mt-0.5">
+                                    {lang === 'ar' ? 'تجاوزت هذه الشحنة موعدها المتوقع.' : 'This shipment is past its promised window.'}
+                                  </p>
+                                )}
+                              </div>
+
+                              {/* Dispatch token */}
+                              {order.manifest?.dispatchToken && (
+                                <p className="px-4 pt-1.5 text-[10px] font-mono text-slate-400">
+                                  {lang === 'ar' ? 'رمز الشحن:' : 'Dispatch token:'}{' '}
+                                  <span className="font-bold">{order.manifest.dispatchToken}</span>
+                                </p>
+                              )}
+                            </div>
                           );
                         })()}
 
