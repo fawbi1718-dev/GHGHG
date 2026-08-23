@@ -27,7 +27,10 @@ import { Medicine } from '../types';
 import { CATEGORIES } from '../data/constants';
 import { translations } from '../data/translations';
 import { useAuth } from '../application/auth/AuthContext';
+import { db } from '../infrastructure/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import SurplusPublishModal from './SurplusPublishModal';
+import SurplusManageModal, { SurplusListing } from './SurplusManageModal';
 import StockIntakeModal from './warehouse/StockIntakeModal';
 
 interface InventoryTabProps {
@@ -72,6 +75,38 @@ export default function InventoryTab({
 
  // Surplus Exchange: publish private stock as a marketplace offer
  const [surplusMed, setSurplusMed] = useState<Medicine | null>(null);
+ const [manageMed, setManageMed] = useState<Medicine | null>(null);
+ // catalogId -> existing surplus listing (fetched once per session; refetch on change)
+ const [surplusListings, setSurplusListings] = useState<Record<string, SurplusListing>>({});
+
+ const loadMySurplusListings = React.useCallback(async () => {
+  if (!currentSession?.pharmacyId || !db) return;
+  try {
+  const snap = await getDocs(query(
+  collection(db, 'wholesale_offers'),
+  where('sellerTenantId', '==', currentSession.pharmacyId)
+  ));
+  const map: Record<string, SurplusListing> = {};
+  snap.forEach(d => {
+  const o = d.data() as any;
+  if ((o as any).offerKind !== 'surplus') return;
+  const key = String(o.catalogId || d.id).replace(/\//g, '_');
+  map[key] = { offerDocId: d.id, active: o.active !== false, availableQuantity: Number(o.availableQuantity ?? o.stock ?? 0), priceSyp: Number(o.priceSyp ?? o.price ?? 0) };
+  });
+  setSurplusListings(map);
+  } catch (e) {
+  console.warn('Surplus listings load failed:', e);
+  }
+ }, [currentSession?.pharmacyId]);
+
+ React.useEffect(() => {
+  loadMySurplusListings();
+ }, [loadMySurplusListings]);
+
+ const listingFor = (med: Medicine): SurplusListing | undefined => {
+  const key = String(med.catalogId || med.id || '').replace(/\//g, '_');
+  return surplusListings[key];
+ };
 
  // Helper to translate categories visually for Arabic
  const translateCategory = (cat: string) => {
@@ -548,11 +583,20 @@ export default function InventoryTab({
  <button
  onClick={(e) => {
  e.stopPropagation();
- if ((item.stock || 0) > 0) setSurplusMed(item);
- else triggerToast(lang === 'ar' ? 'لا يوجد مخزون لنشره' : 'No stock available to publish', 'info');
+ if ((item.stock || 0) <= 0 && !listingFor(item)) {
+ triggerToast(lang === 'ar' ? 'لا يوجد مخزون لنشره' : 'No stock available to publish', 'info');
+ return;
+ }
+ listingFor(item) ? setManageMed(item) : setSurplusMed(item);
  }}
- title={lang === 'ar' ? 'نشر الفائض في سوق الجملة' : 'Publish surplus to marketplace'}
- className="p-2 bg-brand-50 hover:bg-brand-100 text-brand-600 hover:text-brand-700 border border-brand-200/70 rounded-xl transition-all cursor-pointer"
+ title={listingFor(item)
+ ? (lang === 'ar' ? 'إدارة عرض الفائض المنشور' : 'Manage published surplus listing')
+ : (lang === 'ar' ? 'نشر الفائض في سوق الجملة' : 'Publish surplus to marketplace')}
+ className={`p-2 border rounded-xl transition-all cursor-pointer ${
+ listingFor(item)?.active
+ ? 'bg-brand-50 border-brand-300 text-brand-800 hover:bg-brand-100'
+ : 'bg-emerald-50 border-emerald-200/70 text-emerald-600 hover:bg-emerald-100'
+ }`}
  >
  <Recycle className="w-4 h-4" />
  </button>
@@ -735,7 +779,7 @@ export default function InventoryTab({
  <SurplusPublishModal
  isOpen={!!surplusMed}
  medicine={surplusMed}
- onClose={() => setSurplusMed(null)}
+ onClose={() => { setSurplusMed(null); loadMySurplusListings(); }}
  seller={{
  tenantId: currentSession?.pharmacyId || '',
  name: activePharmacy?.name || currentSession?.fullName || 'Pharmacy',
@@ -744,6 +788,18 @@ export default function InventoryTab({
  }}
  lang={lang}
  triggerToast={triggerToast}
+ />
+
+ {/* Surplus Exchange — manage an existing listing (edit / pause / remove) */}
+ <SurplusManageModal
+ isOpen={!!manageMed}
+ medicine={manageMed}
+ listing={manageMed ? surplusListings[String(manageMed.catalogId || manageMed.id).replace(/\//g, '_')] || null : null}
+ sellerTenantId={currentSession?.pharmacyId || ''}
+ onClose={() => setManageMed(null)}
+ lang={lang}
+ triggerToast={triggerToast}
+ onChanged={loadMySurplusListings}
  />
  </div>
  );
