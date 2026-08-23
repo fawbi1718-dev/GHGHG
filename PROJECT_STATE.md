@@ -1,7 +1,7 @@
 # PROJECT_STATE.md
 
 Compact, factual project memory. Update whenever a phase changes architecture.
-Last updated: Phase X.3 (Redesign Lab).
+Last updated: Phase X.4 (Redesign Lab).
 
 ---
 
@@ -49,6 +49,12 @@ N+1 batch listeners removed (App has exactly 2 listeners: inventory+ledger) · c
 - **Ledger listener stays complete** — SalesAnalytics/AnalyticsTab compute long-term revenue/profit from it; capping would silently corrupt historical analytics. Future path: server-side aggregation or paginated history UI before any windowing.
 - **Offers listener stays unbounded** — marketplace must not hide legitimate offers. Growth is seller-driven/slow; revisit with storefront pagination if active offers exceed ~300.
 - Deployment-ready full ruleset in `firestore.rules` + `FIRESTORE_RULES_DEPLOYMENT.md` checklist (deploy requires Console/CLI publish + app bundle rebuild together).
+
+### Phase X.4 - delivery UX completion
+- Dispatch drawer: delivery WINDOW (start+end datetime inputs, default tomorrow 10:00-12:00) rides inside manifest -> zero rules change.
+- Pharmacy DISPATCHED card: Incoming Delivery panel with window text, Late badge past end+1h, dispatch token, grouped Confirm / Report actions.
+- Warehouse queue: Delivery-failed audit chip on reverted orders + amber guidance strip (stock still reserved; intake returns via normal flow before re-dispatch or Reject).
+- ORDER_DISPATCHED notification carries ETA; pharmacy toast includes it.
 
 ### Phase X.3 - order delivery lifecycle + surplus management
 - Dispatch drawer gains expected-delivery datetime -> manifest.expectedDeliveryAt; pharmacy tracking shows ETA chip + late flag.
