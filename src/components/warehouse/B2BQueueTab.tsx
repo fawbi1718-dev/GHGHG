@@ -369,7 +369,9 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
         dispatchToken: manifest.dispatchToken || `DISPATCH-${Date.now().toString().slice(-6)}`,
         totalQuantity: Number(manifest.totalQuantity) || 0,
         totalValue: Number(manifest.totalValue) || 0,
-        dispatchDate: manifest.dispatchDate || new Date().toISOString()
+        dispatchDate: manifest.dispatchDate || new Date().toISOString(),
+        // Delivery commitment set by the warehouse at dispatch time.
+        expectedDeliveryAt: manifest.expectedDeliveryAt || undefined
       };
 
       const nowIso = new Date().toISOString();

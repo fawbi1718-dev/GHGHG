@@ -92,6 +92,17 @@ service cloud.firestore {
           && request.resource.data.diff(resource.data).affectedKeys()
                .hasOnly(['status', 'updatedAt'])
         )
+        ||
+        // BUYER: package never arrived — order returns to the seller queue
+        // with deliveryFailedAt. Seller re-handles operationally (re-dispatch
+        // after physical return intake, or reject). No server-side restore.
+        (
+          resource.data.status == 'DISPATCHED'
+          && request.resource.data.status == 'PENDING_APPROVAL'
+          && tenantMember(resource.data.buyerTenantId)
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['status', 'updatedAt', 'deliveryFailedAt'])
+        )
       );
 
       allow delete: if false;
@@ -111,7 +122,8 @@ service cloud.firestore {
 
       allow create: if isSignedIn()
         && request.resource.data.type in
-           ['OFFER_DEACTIVATED', 'ORDER_DISPATCHED', 'ORDER_REJECTED', 'ORDER_RECEIVED']
+           ['OFFER_DEACTIVATED', 'ORDER_DISPATCHED', 'ORDER_REJECTED',
+            'ORDER_RECEIVED', 'ORDER_NOT_RECEIVED']
         && (
              (request.resource.data.keys().hasAll(['type', 'createdAt']))
              &&

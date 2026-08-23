@@ -28,6 +28,8 @@ export interface ShippingManifestData {
  totalQuantity: number;
  totalValue: number;
  dispatchToken?: string;
+ /** When the warehouse commits to deliver (ISO). Set at dispatch time. */
+ expectedDeliveryAt?: string;
 }
 
 interface ShippingManifestProps {

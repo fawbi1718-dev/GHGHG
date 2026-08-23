@@ -33,7 +33,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { IndexedDbB2BOrderRepository } from '../infrastructure/storage/IndexedDbB2BOrderRepository';
 import { useAuth } from '../application/auth/AuthContext';
 import { db } from '../infrastructure/firebase';
-import { collection, query, where, onSnapshot, setDoc, doc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, setDoc, doc, updateDoc } from 'firebase/firestore';
 import { confirmWarehouseOrderReceipt } from '../infrastructure/b2b/confirmWarehouseOrderReceipt';
 import { StatusBadge } from './ui/StatusBadge';
 import { WholesaleOffer, B2BOrder } from '../domain/b2b';
@@ -132,6 +132,8 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
   // Active vs History separation: client-side status filter + expandable terminal cards
   const [orderStatusFilter, setOrderStatusFilter] = useState<'ALL' | 'PENDING_APPROVAL' | 'DISPATCHED' | 'RECEIVED' | 'DRAFT'>('ALL');
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+  // Two-step "package never arrived" report on DISPATCHED orders.
+  const [pendingNotDeliveredId, setPendingNotDeliveredId] = useState<string | null>(null);
   const filteredActiveOrders = orderStatusFilter === 'ALL'
     ? activeOrders
     : activeOrders.filter((o: any) => o.status === orderStatusFilter);
@@ -1291,8 +1293,84 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                           </span>
                         </div>
 
+                        {order.status === 'DISPATCHED' && (() => {
+                          const eta = order.manifest?.expectedDeliveryAt ? new Date(order.manifest.expectedDeliveryAt) : null;
+                          const isLate = eta ? Date.now() > eta.getTime() + 3600000 : false;
+                          return (
+                            <p className={`px-4 pt-2 text-[10px] font-bold flex items-center gap-1 ${isLate ? 'text-rose-600' : 'text-slate-400'}`}>
+                              🕒 {lang === 'ar' ? 'موعد التسليم:' : 'Expected delivery:'}{' '}
+                              {eta ? eta.toLocaleString(lang === 'ar' ? 'ar-SY' : 'en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—'}
+                              {isLate && (lang === 'ar' ? '(متأخر)' : '(late)')}
+                            </p>
+                          );
+                        })()}
+
                         {order.status === 'DISPATCHED' && (
-                          <div className="pt-3 border-t border-brand-50">
+                          <div className="pt-1 pb-3 px-4">
+                            {pendingNotDeliveredId === order.orderId ? (
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => setPendingNotDeliveredId(null)}
+                                  className="flex-1 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-bold text-xs cursor-pointer"
+                                >
+                                  {lang === 'ar' ? 'إلغاء' : 'Cancel'}
+                                </button>
+                                <button
+                                  id={`btn-confirm-not-delivered-${order.orderId}`}
+                                  onClick={async () => {
+                                    setPendingNotDeliveredId(null);
+                                    try {
+                                      if (!db) throw new Error('offline');
+                                      await updateDoc(doc(db, 'b2b_orders', order.orderId), {
+                                        status: 'PENDING_APPROVAL',
+                                        updatedAt: new Date().toISOString(),
+                                        deliveryFailedAt: new Date().toISOString()
+                                      });
+                                      try {
+                                        const sellerTenantId = order.sellerTenantId;
+                                        const { addDoc: addN, collection: colN } = await import('firebase/firestore');
+                                        if (db && sellerTenantId) {
+                                          await addN(colN(db, 'b2b_notifications'), {
+                                            type: 'ORDER_NOT_RECEIVED',
+                                            orderId: order.orderId,
+                                            buyerTenantId: currentSession?.pharmacyId,
+                                            sellerTenantId,
+                                            reason: lang === 'ar' ? 'الشحنة لم تصل إلى الصيدلية' : 'Package was not delivered to the pharmacy',
+                                            createdAt: new Date().toISOString()
+                                          });
+                                        }
+                                      } catch (nErr) { console.warn('notification skipped:', nErr); }
+                                      triggerToast(
+                                        lang === 'ar'
+                                          ? `أُعيدت الطلبية #${order.orderId} إلى المستودع للمعالجة`
+                                          : `Order #${order.orderId} returned to the warehouse for re-handling`,
+                                        'info'
+                                      );
+                                    } catch (e: any) {
+                                      triggerToast(
+                                        lang === 'ar' ? 'فشل الإبلاغ: ' + (e?.message || '') : 'Failed to report: ' + (e?.message || ''),
+                                        'error'
+                                      );
+                                    }
+                                  }}
+                                  className="flex-1 py-2.5 bg-rose-600 text-white rounded-xl font-bold text-xs cursor-pointer"
+                                >
+                                  {lang === 'ar' ? 'تأكيد: لم تصل الشحنة' : 'Confirm: never arrived'}
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => setPendingNotDeliveredId(order.orderId)}
+                                className="w-full text-center text-[11px] font-semibold text-slate-400 hover:text-rose-600 py-1 transition-colors cursor-pointer"
+                              >
+                                {lang === 'ar' ? 'لم تصل الشحنة؟ أبلغ المستودع' : 'Package never arrived? Report it'}
+                              </button>
+                            )}
+                          </div>
+                        )}
+
+                        {order.status === 'DISPATCHED' && (
+                          <div className="px-4 pb-4">
                             <button
                               id={`btn-receive-order-${order.orderId}`}
                               onClick={() => handleReceiveOrder(order.orderId)}

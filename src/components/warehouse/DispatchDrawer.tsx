@@ -69,6 +69,11 @@ export default function DispatchDrawer({
   const [scanInput, setScanInput] = useState('');
   const [selectedItemForBatchChange, setSelectedItemForBatchChange] = useState<DispatchItemState | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Delivery commitment: defaults to tomorrow 10:00 (warehouse work hours) — editable.
+  const [deliveryAt, setDeliveryAt] = useState<string>(() => {
+    const d = new Date(Date.now() + 86400000);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T10:00`;
+  });
   const scanInputRef = useRef<HTMLInputElement>(null);
 
   // Initialize picking list with batches and shelf locations when order changes
@@ -278,7 +283,8 @@ export default function DispatchDrawer({
         })),
         totalQuantity,
         totalValue,
-        dispatchToken: `DISPATCH-${Date.now().toString().slice(-6)}`
+        dispatchToken: `DISPATCH-${Date.now().toString().slice(-6)}`,
+        expectedDeliveryAt: deliveryAt ? new Date(deliveryAt).toISOString() : undefined
       };
 
       // 2. Trigger parent dispatch callback and await persistence
@@ -534,6 +540,24 @@ export default function DispatchDrawer({
                   <span className="text-xl font-black text-brand-900 font-mono">
                     {items.reduce((sum, i) => sum + i.costAtOrder * i.requestedQuantity, 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}
                   </span>
+                </div>
+
+                {/* Scheduled delivery commitment (shown to the pharmacy) */}
+                <div className="pt-3 border-t border-slate-100">
+                  <label className="block">
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+                      🕒 {lang === 'ar' ? 'موعد التوصيل المتوقع' : 'Expected delivery time'}
+                    </span>
+                    <input
+                      type="datetime-local"
+                      value={deliveryAt}
+                      onChange={(e) => setDeliveryAt(e.target.value)}
+                      className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-300 rounded-md focus:outline-none focus:border-brand-700 bg-white"
+                    />
+                  </label>
+                  <p className="text-[10px] text-slate-400 mt-1">
+                    {lang === 'ar' ? 'سيراها الصيدلية ويعتمد عليها وقت التسليم.' : 'The pharmacy will see this commitment on the order.'}
+                  </p>
                 </div>
 
                 <button
