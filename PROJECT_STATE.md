@@ -50,6 +50,12 @@ N+1 batch listeners removed (App has exactly 2 listeners: inventory+ledger) · c
 - **Offers listener stays unbounded** — marketplace must not hide legitimate offers. Growth is seller-driven/slow; revisit with storefront pagination if active offers exceed ~300.
 - Deployment-ready full ruleset in `firestore.rules` + `FIRESTORE_RULES_DEPLOYMENT.md` checklist (deploy requires Console/CLI publish + app bundle rebuild together).
 
+### Phase X.2 (lab) - receipt + communication UX
+- Printable order receipt: print-isolated `#printable-order-receipt` (buyer/supplier header, items table, SYP totals, status, ETA, signature line); Printer button on every tracking card header.
+- Rejection communication: DRAFT orders show a rose panel with warehouse name, timestamp and full rejectionReason (or "No reason provided"); COUNTER-OFFER strings parse into a qty chip with Accept(adds counter qty to cart)/Dismiss actions.
+- Surplus panel rows show expiry date.
+- Emoji sweep completed across remaining files.
+
 ### Phase X.6 - Arabic-first localization
 - Default language flipped to Arabic (persisted `app-lang`); pre-paint html lang/dir bootstrap in index.html.
 - Theme + language consolidated: UIContext is the single source of truth (`app-theme`/`app-lang`); removed the parallel `eshmun_theme` mechanism from X.5.
