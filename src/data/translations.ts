@@ -1,3 +1,30 @@
+﻿/**
+ * ============================================================================
+ * ESHMUN LOCALIZATION SYSTEM — Arabic-first, Syrian pharmacy terminology
+ * ============================================================================
+ * CONVENTIONS (binding for all new UI work):
+ *
+ * 1. Arabic is the SOURCE language. `ar` keys are written first in natural
+ *    Syrian business Arabic; `en` is the professional translation.
+ * 2. Access strings via the shared dictionary:
+ *        const t = translations[lang];
+ *        <span>{t.someKey}</span>
+ *    Do NOT add new inline `lang === 'ar' ? ... : ...` ternaries for static
+ *    labels. (Legacy ternaries are migrated opportunistically per screen.)
+ * 3. Key naming: camelCase, grouped by feature prefix where useful
+ *    (pos.*, warehouse.*, b2b.*, surplus.*).
+ * 4. Numbers, prices, barcodes and phone numbers are NEVER translated or
+ *    re-formatted inside translations — format at render site with
+ *    toLocaleString(lang === 'ar' ? 'ar-SY' : 'en-GB') when needed.
+ * 5. Direction: never hardcode left/right — use logical utilities
+ *    (ps-/pe-/ms-/me-, text-start/end) so RTL/LTR both work.
+ * 6. Pharmacy terminology glossary (keep consistent everywhere):
+ *    Ledger=السجل · Batch=تشغيلة · Expiry=انتهاء الصلاحية · Surplus=فائض
+ *    Dispatch=شحن / تجهيز الإرسال · Receipt=استلام · Offer=عرض توريد
+ *    Wholesale price=سعر الجملة · MOQ=الحد الأدنى للطلب
+ * ============================================================================
+ */
+
 export interface AppTranslations {
  // Navigation & Workspace
  rxLedger: string;

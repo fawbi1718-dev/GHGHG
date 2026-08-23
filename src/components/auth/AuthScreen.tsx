@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../application/auth/AuthContext';
+import { useUI } from '../../context/UIContext';
 import LegalModal from './LegalModal';
 import { 
   HeartPulse, 
@@ -47,9 +48,10 @@ export default function AuthScreen({ lang = 'en', setLang }: AuthScreenProps) {
     clearError 
   } = useAuth();
 
+  const { theme: uiTheme, setTheme: setUiTheme } = useUI();
+  const dark = uiTheme === 'dark';
+
   const [mode, setMode] = useState<AuthMode>('signin');
-  // Re-render trigger for the theme toggle (reads the html.dark class).
-  const [refresh, setRefresh] = useState(0);
   const [signUpStep, setSignUpStep] = useState<SignUpStep>(1);
 
   // Form Fields
@@ -197,12 +199,7 @@ export default function AuthScreen({ lang = 'en', setLang }: AuthScreenProps) {
             <button
               type="button"
               aria-label="Toggle dark mode"
-              onClick={() => {
-                const next = !dark;
-                document.documentElement.classList.toggle('dark', next);
-                try { localStorage.setItem('eshmun_theme', next ? 'dark' : 'light'); } catch {}
-                setRefresh((v) => v + 1);
-              }}
+              onClick={() => setUiTheme(dark ? 'light' : 'dark')}
               className="w-9 h-9 rounded-md bg-white/80 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-brand-300 flex items-center justify-center transition-colors cursor-pointer"
             >
               {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}

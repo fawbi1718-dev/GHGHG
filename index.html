@@ -9,12 +9,17 @@
     <meta name="theme-color" content="#F1F5F9">
     <title>Eshmun | Pharmacy Engine</title>
     <script>
-      // Theme bootstrap — runs before first paint to avoid a flash.
+      // Theme + language bootstrap — runs before first paint to avoid a flash.
       (function () {
         try {
-          var stored = localStorage.getItem('eshmun_theme');
-          var dark = stored ? stored === 'dark' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var theme = localStorage.getItem('app-theme') || localStorage.getItem('eshmun_theme');
+          var dark = theme ? theme === 'dark'
+            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
           if (dark) document.documentElement.classList.add('dark');
+
+          var lang = localStorage.getItem('app-lang');
+          document.documentElement.lang = lang === 'en' ? 'en' : 'ar';
+          document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
         } catch (e) {}
       })();
     </script>

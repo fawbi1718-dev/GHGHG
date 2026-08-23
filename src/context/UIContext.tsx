@@ -30,7 +30,8 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }
 
  const [lang, setLangState] = useState<'ar' | 'en'>(() => {
  const saved = localStorage.getItem('app-lang');
- return (saved === 'ar' || saved === 'en') ? saved : 'en';
+ // Arabic-first: Syrian pharmacies are the primary audience.
+ return (saved === 'en') ? saved : 'ar';
  });
 
  const [toast, setToast] = useState<ToastMessage | null>(null);

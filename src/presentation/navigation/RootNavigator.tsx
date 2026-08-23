@@ -69,7 +69,7 @@ export default function RootNavigator({
  setLang: propSetLang
 }: RootNavigatorProps) {
  const ui = useUI();
- const lang = propLang || ui.lang || 'en';
+ const lang = propLang || ui.lang || 'ar';
  const setLang = propSetLang || ui.setLang;
  const triggerToast = propTriggerToast || ui.triggerToast;
 
@@ -104,20 +104,15 @@ export default function RootNavigator({
  }, [profileGateDismissed]);
 
  // Clinical dark/light theme — persisted, system preference as default
- // (index.html head script applies the class before first paint).
- const [isDarkTheme, setIsDarkTheme] = useState<boolean>(
- () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
- );
- useEffect(() => {
- document.documentElement.classList.toggle('dark', isDarkTheme);
- try { localStorage.setItem('eshmun_theme', isDarkTheme ? 'dark' : 'light'); } catch {}
- }, [isDarkTheme]);
+ // Clinical dark/light theme — single source of truth is UIContext
+ // (persisted as app-theme; index.html head script applies it pre-paint).
+ const isDarkTheme = ui.theme === 'dark';
 
  // Shared toggle element for desktop sidebar + mobile header.
  const themeToggle = (
  <button
  type="button"
- onClick={() => setIsDarkTheme(v => !v)}
+ onClick={() => ui.setTheme(isDarkTheme ? 'light' : 'dark')}
  title={isDarkTheme ? 'Light mode' : 'Dark mode'}
  aria-label="Toggle dark mode"
  className="w-9 h-9 shrink-0 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-brand-300 flex items-center justify-center transition-colors cursor-pointer"
