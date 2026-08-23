@@ -1,7 +1,7 @@
 # PROJECT_STATE.md
 
 Compact, factual project memory. Update whenever a phase changes architecture.
-Last updated: Phase X.5 (Redesign Lab).
+Last updated: Phase X.6 (Redesign Lab).
 
 ---
 
@@ -49,6 +49,12 @@ N+1 batch listeners removed (App has exactly 2 listeners: inventory+ledger) · c
 - **Ledger listener stays complete** — SalesAnalytics/AnalyticsTab compute long-term revenue/profit from it; capping would silently corrupt historical analytics. Future path: server-side aggregation or paginated history UI before any windowing.
 - **Offers listener stays unbounded** — marketplace must not hide legitimate offers. Growth is seller-driven/slow; revisit with storefront pagination if active offers exceed ~300.
 - Deployment-ready full ruleset in `firestore.rules` + `FIRESTORE_RULES_DEPLOYMENT.md` checklist (deploy requires Console/CLI publish + app bundle rebuild together).
+
+### Phase X.6 - Arabic-first localization
+- Default language flipped to Arabic (persisted `app-lang`); pre-paint html lang/dir bootstrap in index.html.
+- Theme + language consolidated: UIContext is the single source of truth (`app-theme`/`app-lang`); removed the parallel `eshmun_theme` mechanism from X.5.
+- Mojibake scan across src: ZERO corrupted strings found (earlier console garbles were display artifacts).
+- translations.ts now carries binding i18n conventions + Syrian pharmacy glossary; new UI must use dictionary keys instead of inline ternaries (legacy migrated opportunistically).
 
 ### Phase X.5 - clinical dark theme
 - Pre-paint bootstrap in index.html (localStorage `eshmun_theme`; falls back to prefers-color-scheme).
