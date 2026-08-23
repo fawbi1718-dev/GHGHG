@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../application/auth/AuthContext';
-import { HeartPulse, LogOut, Loader2, Camera, LayoutDashboard, ShoppingCart, Package, ScanLine, BarChart3, Settings as SettingsIcon, Activity, Menu, Search, Building2, Sparkles, Globe, Inbox, Tag, Store, Pill, ShoppingBag, FileText, BookOpen } from "lucide-react";
+import { HeartPulse, LogOut, Loader2, Camera, LayoutDashboard, ShoppingCart, Package, ScanLine, BarChart3, Settings as SettingsIcon, Activity, Menu, Search, Building2, Sparkles, Globe, Inbox, Tag, Store, Pill, ShoppingBag, FileText, BookOpen, Sun, Moon } from "lucide-react";
 import DashboardTab from "./DashboardTab";
 import AnalyticsTab from '../../components/AnalyticsTab';
 import SalesAnalyticsTab from '../../components/SalesAnalyticsTab';
@@ -102,6 +102,30 @@ export default function RootNavigator({
  useEffect(() => {
  if (profileGateDismissed) sessionStorage.setItem('profile_gate_dismissed', '1');
  }, [profileGateDismissed]);
+
+ // Clinical dark/light theme — persisted, system preference as default
+ // (index.html head script applies the class before first paint).
+ const [isDarkTheme, setIsDarkTheme] = useState<boolean>(
+ () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+ );
+ useEffect(() => {
+ document.documentElement.classList.toggle('dark', isDarkTheme);
+ try { localStorage.setItem('eshmun_theme', isDarkTheme ? 'dark' : 'light'); } catch {}
+ }, [isDarkTheme]);
+
+ // Shared toggle element for desktop sidebar + mobile header.
+ const themeToggle = (
+ <button
+ type="button"
+ onClick={() => setIsDarkTheme(v => !v)}
+ title={isDarkTheme ? 'Light mode' : 'Dark mode'}
+ aria-label="Toggle dark mode"
+ className="w-9 h-9 shrink-0 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-brand-300 flex items-center justify-center transition-colors cursor-pointer"
+ >
+ {isDarkTheme ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+ </button>
+ );
+
  const [sortBy, setSortBy] = useState<'name' | 'stock' | 'expiryDate' | 'lastUpdated'>('name');
  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
  
@@ -602,7 +626,8 @@ export default function RootNavigator({
  })}
  </nav>
 
- <div className="p-4 border-t border-slate-100 flex flex-col gap-2 shrink-0">
+ <div className="p-3 border-t border-slate-100 flex items-center gap-2 shrink-0">
+ {themeToggle}
  <SyncStatusWidget />
  <RoleSwitcher lang={lang} triggerToast={triggerToast} />
  <button 
@@ -634,6 +659,7 @@ export default function RootNavigator({
  </h1>
  </div>
  <div className="flex items-center gap-2">
+ {themeToggle}
  <SyncStatusWidget />
  <button 
  onClick={() => setIsAccountModalOpen(true)}
