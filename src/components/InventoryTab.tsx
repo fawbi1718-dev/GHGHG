@@ -30,9 +30,17 @@ import { useAuth } from '../application/auth/AuthContext';
 import { db } from '../infrastructure/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import SurplusPublishModal from './SurplusPublishModal';
+import SurplusManageModal from './SurplusManageModal';
 import { Skeleton } from './ui/Skeleton';
-import SurplusManageModal, { SurplusListing } from './SurplusManageModal';
 import StockIntakeModal from './warehouse/StockIntakeModal';
+
+/** Mirrors the manage-modal listing shape (catalogId-keyed). */
+interface SurplusListing {
+  offerDocId: string;
+  active: boolean;
+  availableQuantity: number;
+  priceSyp: number;
+}
 
 interface InventoryTabProps {
  medicines: Medicine[];
@@ -80,8 +88,11 @@ export default function InventoryTab({
  // Surplus Exchange: publish private stock as a marketplace offer
  const [surplusMed, setSurplusMed] = useState<Medicine | null>(null);
  const [manageMed, setManageMed] = useState<Medicine | null>(null);
+ // Centralized "My Surplus Listings" mini-manager
+ const [showSurplusPanel, setShowSurplusPanel] = useState(false);
  // catalogId -> existing surplus listing (fetched once per session; refetch on change)
  const [surplusListings, setSurplusListings] = useState<Record<string, SurplusListing>>({});
+ const activeSurplusCount = (Object.values(surplusListings) as SurplusListing[]).filter(l => l.active).length;
 
  const loadMySurplusListings = React.useCallback(async () => {
   if (!currentSession?.pharmacyId || !db) return;
@@ -237,10 +248,23 @@ export default function InventoryTab({
  {t.secureLedgerDescription}
  </p>
  </div>
- <div className="flex items-center gap-3">
- <button
- id="btn-ledger-add-medicine"
- onClick={() => setIsStockIntakeOpen(true)}
+              <div className="flex items-center gap-3">
+              <button
+              id="btn-my-surplus-listings"
+              onClick={() => setShowSurplusPanel(true)}
+              title={lang === 'ar' ? 'إدارة عروض الفائض المنشورة' : 'Manage your published surplus listings'}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold text-xs transition-all duration-200 border cursor-pointer ${
+                activeSurplusCount > 0
+                  ? 'bg-brand-50 text-brand-800 border-brand-200 hover:bg-brand-100'
+                  : 'bg-white text-slate-400 border-slate-200 hover:text-slate-600'
+              }`}
+            >
+              <Recycle className="w-4 h-4" />
+              {lang === 'ar' ? `فائضي (${activeSurplusCount})` : `My Surplus (${activeSurplusCount})`}
+            </button>
+              <button
+              id="btn-ledger-add-medicine"
+              onClick={() => setIsStockIntakeOpen(true)}
  className="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl font-semibold text-xs transition-all duration-200 shadow-sm shadow-blue-500/10 active:scale-95 cursor-pointer"
  >
  <PackagePlus className="w-4 h-4" />
@@ -794,6 +818,57 @@ export default function InventoryTab({
  />
 
  {/* Surplus Exchange — publish private stock to the marketplace */}
+ {/* My Surplus Listings — centralized mini-manager */}
+ <Modal
+ isOpen={showSurplusPanel}
+ onClose={() => setShowSurplusPanel(false)}
+ title={lang === 'ar' ? `عروض الفائض المنشورة (${activeSurplusCount})` : `My Surplus Listings (${activeSurplusCount})`}
+ maxWidth="md"
+ >
+ {activeSurplusCount === 0 ? (
+ <div className="py-10 text-center space-y-2">
+ <Recycle className="w-10 h-10 text-slate-300 mx-auto" />
+ <p className="text-sm font-bold text-slate-600">
+ {lang === 'ar' ? 'لا توجد عروض فائض منشورة بعد.' : 'No published surplus listings yet.'}
+ </p>
+ <p className="text-xs text-slate-400">
+ {lang === 'ar' ? 'استخدم زر «نشر الفائض» بجانب أي دواء متوفر في المخزون.' : 'Use the recycle button next to any in-stock medicine to publish one.'}
+ </p>
+ </div>
+ ) : (
+ <div className="space-y-3">
+ {Object.entries(surplusListings as Record<string, SurplusListing>).filter(([, l]) => l.active).map(([key, listing]) => {
+ const med = medicines.find(m => String(m.catalogId || m.id).replace(/\//g, '_') === key);
+ const name = med ? (lang === 'ar' ? med.name : (med as any).nameEn || med.name) : key;
+ return (
+ <div key={key} className="flex items-center justify-between gap-3 p-3 bg-white border border-slate-200 rounded-xl">
+ <div className="min-w-0">
+ <p className="text-xs font-bold text-slate-800 truncate">{name}</p>
+ <p className="text-[10px] font-mono text-slate-400">
+ {listing.availableQuantity} {lang === 'ar' ? 'وحدة' : 'units'} · {listing.priceSyp.toLocaleString()} SYP
+ </p>
+ </div>
+ <Button
+ variant="outline"
+ size="sm"
+ onClick={() => {
+ if (med) { setManageMed(med); setShowSurplusPanel(false); }
+ }}
+ >
+ {lang === 'ar' ? 'إدارة' : 'Manage'}
+ </Button>
+ </div>
+ );
+ })}
+ <p className="text-[10px] text-slate-400 leading-relaxed pt-1">
+ {lang === 'ar'
+ ? 'الإدارة تشمل: تعديل الكمية/السعر، الإخفاء المؤقت، أو الإزالة النهائية مع إشعار الصيدليات المتأثرة.'
+ : 'Manage opens the editor: update qty/price, pause visibility, or remove entirely — affected pharmacies are notified automatically.'}
+ </p>
+ </div>
+ )}
+ </Modal>
+
  <SurplusPublishModal
  isOpen={!!surplusMed}
  medicine={surplusMed}
