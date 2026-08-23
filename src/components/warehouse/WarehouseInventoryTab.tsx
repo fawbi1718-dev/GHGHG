@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Modal } from '../ui/Modal';
+import { Skeleton } from '../ui/Skeleton';
 import { Button } from '../ui/Button';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -35,6 +36,8 @@ interface InventoryTabProps {
   onUpdateMedicine?: (m: Medicine) => Promise<void> | void;
   onSelectMedicine: (id: string) => void;
   onAddMedicine?: (m: Medicine) => Promise<void>;
+ /** True until the first Firestore snapshot for this tenant arrives. */
+ isLoadingInventory?: boolean;
   /** Catalog item requesting intake (catalog → warehouse inventory entry). */
   intakeRequest?: any | null;
   onIntakeConsumed?: () => void;
@@ -56,6 +59,7 @@ export default function InventoryTab({
   onUpdateMedicine,
   onSelectMedicine,
   onAddMedicine,
+  isLoadingInventory = false,
   intakeRequest,
   onIntakeConsumed,
   searchQuery,
@@ -479,7 +483,21 @@ export default function InventoryTab({
  <span className="text-[10px] text-slate-400 font-mono uppercase tracking-widest font-bold">{lang === 'ar' ? 'السعر بالليرة السورية' : 'SYRIAN POUNDS (ل.س)'}</span>
  </div>
 
-  {sortedMedicines.length === 0 ? (
+  {isLoadingInventory && medicines.length === 0 ? (
+ /* First snapshot hasn't arrived — skeleton rows, never a fake "empty". */
+ <div className="space-y-2.5">
+ {Array.from({ length: 5 }).map((_, i) => (
+ <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-4">
+ <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
+ <div className="flex-1 space-y-2">
+ <Skeleton className="h-3.5 w-1/3" />
+ <Skeleton className="h-3 w-1/2" />
+ </div>
+ <Skeleton className="h-9 w-28 rounded-lg shrink-0" />
+ </div>
+ ))}
+ </div>
+ ) : sortedMedicines.length === 0 ? (
    medicines.length === 0 ? (
     <div className="p-12 rounded-lg bg-white border border-brand-100 text-center shadow-xs">
      <div className="w-14 h-14 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600 mx-auto mb-4">

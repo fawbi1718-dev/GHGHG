@@ -30,6 +30,7 @@ import { useAuth } from '../application/auth/AuthContext';
 import { db } from '../infrastructure/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import SurplusPublishModal from './SurplusPublishModal';
+import { Skeleton } from './ui/Skeleton';
 import SurplusManageModal, { SurplusListing } from './SurplusManageModal';
 import StockIntakeModal from './warehouse/StockIntakeModal';
 
@@ -37,7 +38,9 @@ interface InventoryTabProps {
  medicines: Medicine[];
  onUpdateStock: (id: string, delta: number, note?: string) => void;
  onSelectMedicine: (id: string) => void;
- onAddMedicine?: (m: Medicine) => Promise<void>;
+  onAddMedicine?: (m: Medicine) => Promise<void>;
+  /** True until the first Firestore snapshot for this tenant arrives. */
+  isLoadingInventory?: boolean;
  searchQuery: string;
  setSearchQuery: (val: string) => void;
  categoryFilter: string;
@@ -55,6 +58,7 @@ export default function InventoryTab({
  onUpdateStock,
  onSelectMedicine,
  onAddMedicine,
+ isLoadingInventory = false,
  searchQuery,
  setSearchQuery,
  categoryFilter,
@@ -425,7 +429,21 @@ export default function InventoryTab({
  <span className="text-[10px] text-slate-400 font-mono uppercase tracking-widest font-bold">{lang === 'ar' ? 'السعر بالليرة السورية' : 'SYRIAN POUNDS (ل.س)'}</span>
  </div>
 
- {sortedMedicines.length === 0 ? (
+ {isLoadingInventory && medicines.length === 0 ? (
+ /* First snapshot hasn't arrived yet — skeleton rows, never a fake "empty". */
+ <div className="space-y-2.5">
+ {Array.from({ length: 5 }).map((_, i) => (
+ <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-4">
+ <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
+ <div className="flex-1 space-y-2">
+ <Skeleton className="h-3.5 w-1/3" />
+ <Skeleton className="h-3 w-1/2" />
+ </div>
+ <Skeleton className="h-9 w-28 rounded-lg shrink-0" />
+ </div>
+ ))}
+ </div>
+ ) : sortedMedicines.length === 0 ? (
  <div className="p-12 rounded-xl bg-white border border-brand-100/80 text-center shadow-sm">
  <TrendingDown className="w-10 h-10 text-slate-300 mx-auto mb-2" />
  {medicines.length === 0 ? (

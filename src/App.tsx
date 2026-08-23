@@ -25,6 +25,9 @@ function AppContent() {
   const { lang, setLang, triggerToast } = useUI();
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [salesLogs, setSalesLogs] = useState<SaleRecord[]>([]);
+  // False until the FIRST inventory snapshot for this tenant lands — lets the
+  // Ledger show skeletons instead of flashing a fake "empty" state.
+  const [inventoryLoaded, setInventoryLoaded] = useState(false);
 
   // Sync Engine State
   const [isSyncing, setIsSyncing] = useState(false);
@@ -116,6 +119,7 @@ function AppContent() {
     // Immediate tenant isolation
     setMedicines([]);
     setSalesLogs([]);
+    setInventoryLoaded(false);
 
     if (!currentSession?.pharmacyId || !db) return;
     
@@ -138,6 +142,7 @@ function AppContent() {
       });
 
       setMedicines(loadedMeds);
+      setInventoryLoaded(true);
       persistMirror(`syrian_inventory_${currentSession.pharmacyId}`, loadedMeds);
     }, (error) => {
       console.warn("Firestore meds subscription error (Operating in offline mode):", error);
@@ -168,6 +173,7 @@ function AppContent() {
         setMedicines={setMedicines}
         salesLogs={salesLogs}
         setSalesLogs={setSalesLogs}
+        isLoadingInventory={!inventoryLoaded}
         developerMode={false}
         triggerToast={triggerToast}
         lang={lang}

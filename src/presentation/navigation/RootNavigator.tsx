@@ -49,6 +49,8 @@ interface RootNavigatorProps {
  setMedicines: any;
  salesLogs: SaleRecord[];
  setSalesLogs?: any;
+ /** True until the first inventory snapshot arrives (drives Ledger skeletons). */
+ isLoadingInventory?: boolean;
  developerMode: boolean;
  triggerToast?: (msg: string, type: 'success' | 'info' | 'error') => void;
  lang?: 'en' | 'ar';
@@ -60,6 +62,7 @@ export default function RootNavigator({
  setMedicines,
  salesLogs,
  setSalesLogs,
+ isLoadingInventory = false,
  developerMode,
  triggerToast: propTriggerToast,
  lang: propLang,
@@ -686,6 +689,7 @@ export default function RootNavigator({
  <WarehouseInventoryTab 
  triggerToast={triggerToast}
  medicines={medicines}
+ isLoadingInventory={isLoadingInventory}
  onUpdateStock={onUpdateStock}
  onUpdateMedicine={firestoreUpdateMedicine}
  onSelectMedicine={onSelectMedicine}
@@ -706,6 +710,7 @@ export default function RootNavigator({
  <InventoryTab 
  triggerToast={triggerToast}
  medicines={medicines}
+ isLoadingInventory={isLoadingInventory}
  onUpdateStock={onUpdateStock}
  onSelectMedicine={onSelectMedicine}
  onAddMedicine={firestoreAddMedicine}
