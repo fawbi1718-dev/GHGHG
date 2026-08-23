@@ -1,7 +1,7 @@
 # PROJECT_STATE.md
 
 Compact, factual project memory. Update whenever a phase changes architecture.
-Last updated: Phase X.4 (Redesign Lab).
+Last updated: Phase X.5 (Redesign Lab).
 
 ---
 
@@ -49,6 +49,12 @@ N+1 batch listeners removed (App has exactly 2 listeners: inventory+ledger) · c
 - **Ledger listener stays complete** — SalesAnalytics/AnalyticsTab compute long-term revenue/profit from it; capping would silently corrupt historical analytics. Future path: server-side aggregation or paginated history UI before any windowing.
 - **Offers listener stays unbounded** — marketplace must not hide legitimate offers. Growth is seller-driven/slow; revisit with storefront pagination if active offers exceed ~300.
 - Deployment-ready full ruleset in `firestore.rules` + `FIRESTORE_RULES_DEPLOYMENT.md` checklist (deploy requires Console/CLI publish + app bundle rebuild together).
+
+### Phase X.5 - clinical dark theme
+- Pre-paint bootstrap in index.html (localStorage `eshmun_theme`; falls back to prefers-color-scheme).
+- `.dark` utility override layer in index.css: charcoal surfaces (#111827/#0b1220), hairline #334155, full text ramp, brand/status tint remaps, primary buttons flip light-on-dark.
+- Toggles: sidebar footer + mobile header + login screen; preference persisted.
+- RTL untouched; charts with inline colors are v1-acceptable (documented).
 
 ### Phase X.4 - delivery UX completion
 - Dispatch drawer: delivery WINDOW (start+end datetime inputs, default tomorrow 10:00-12:00) rides inside manifest -> zero rules change.
