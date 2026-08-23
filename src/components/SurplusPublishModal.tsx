@@ -113,8 +113,8 @@ export default function SurplusPublishModal({
       setPublished(true);
       triggerToast(
         lang === 'ar'
-          ? `تم نشر فائض ${medicine.name} في السوق ✓`
-          : `Surplus offer for ${medicine.name} published ✓`,
+          ? `تم نشر فائض ${medicine.name} في السوق`
+          : `Surplus offer for ${medicine.name} published`,
         'success'
       );
       setTimeout(onClose, 900);
@@ -152,7 +152,7 @@ export default function SurplusPublishModal({
             disabled={published}
           >
             {published
-              ? (lang === 'ar' ? 'تم النشر ✓' : 'Published ✓')
+              ? (lang === 'ar' ? 'تم النشر' : 'Published')
               : (lang === 'ar' ? 'نشر في السوق' : 'Publish to Marketplace')}
           </Button>
         </div>

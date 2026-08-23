@@ -18,6 +18,7 @@ import {
   Calendar,
   Sparkles,
   RefreshCw,
+  Printer,
   AlertCircle,
   ChevronRight,
   ArrowLeft,
@@ -135,9 +136,34 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   // Two-step "package never arrived" report on DISPATCHED orders.
   const [pendingNotDeliveredId, setPendingNotDeliveredId] = useState<string | null>(null);
+  // Printable order receipt (pharmacy copy) — renders a print-only document.
+  const [orderReceiptId, setOrderReceiptOrderId] = useState<string | null>(null);
+  // Counter-offers the pharmacy declined (persisted so they stay dismissed).
+  const [declinedCounters, setDeclinedCounters] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem('eshmun_declined_counters') || '[]'); } catch { return []; }
+  });
   const filteredActiveOrders = orderStatusFilter === 'ALL'
     ? activeOrders
     : activeOrders.filter((o: any) => o.status === orderStatusFilter);
+
+  // ---- Printable order receipt (pharmacy copy) ----
+  const printTarget = activeOrders.find((o: any) => o.orderId === orderReceiptId) || null;
+  const handlePrintOrderReceipt = (orderId: string) => {
+    setOrderReceiptOrderId(orderId);
+    setTimeout(() => window.print(), 80);
+  };
+  useEffect(() => {
+    if (!orderReceiptId) return;
+    const done = () => setOrderReceiptOrderId(null);
+    window.addEventListener('afterprint', done);
+    return () => window.removeEventListener('afterprint', done);
+  }, [orderReceiptId]);
+
+  const statusLabel = (s: string) => s === 'PENDING_APPROVAL'
+    ? (lang === 'ar' ? 'قيد المعالجة' : 'Pending')
+    : s === 'DISPATCHED' ? (lang === 'ar' ? 'تم الشحن' : 'Dispatched')
+    : s === 'RECEIVED' ? (lang === 'ar' ? 'مستلمة' : 'Received')
+    : (lang === 'ar' ? 'مرفوضة' : 'Rejected');
 
   // 1. Subscribe in REAL-TIME to Active Wholesale Offers from Firestore
   useEffect(() => {
@@ -1263,7 +1289,73 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                             <StatusBadge status="RECEIVED" lang={lang} />
                           )}
                         </div>
+                        <button
+                          id={`btn-print-order-${order.orderId}`}
+                          onClick={(e) => { e.stopPropagation(); handlePrintOrderReceipt(order.orderId); }}
+                          title={lang === 'ar' ? 'طباعة إيصال الطلبية' : 'Print order receipt'}
+                          className="p-1.5 rounded-md bg-white border border-slate-200 text-slate-500 hover:text-brand-700 hover:border-brand-300 transition-colors cursor-pointer shrink-0 print:hidden"
+                        >
+                          <Printer className="w-3.5 h-3.5" />
+                        </button>
                       </div>
+
+                      {/* Rejection / counter-offer communication */}
+                      {order.status === 'DRAFT' && !declinedCounters.includes(order.orderId) && (() => {
+                        const raw = String(order.rejectionReason || '');
+                        const m = raw.match(/^COUNTER-OFFER:\s*(\d+)\s*units?\s+available/i);
+                        const counterQty = m ? parseInt(m[1], 10) : null;
+                        const note = m ? raw.replace(/^COUNTER-OFFER:.*?(?=(Note|—|-|$))/i, '').trim() : raw;
+                        const firstItem = (order.items || [])[0];
+                        return (
+                          <div className="mx-4 mt-3 rounded-xl border border-rose-200 bg-rose-50/60 overflow-hidden">
+                            <div className="px-3 py-2 flex items-center justify-between gap-2 border-b border-rose-100">
+                              <span className="text-[10px] font-black uppercase tracking-wide text-rose-800">
+                                {counterQty !== null
+                                  ? (lang === 'ar' ? `عرض بديل: ${counterQty} وحدة متوفرة فقط` : `Counter offer: only ${counterQty} units available`)
+                                  : (lang === 'ar' ? 'سبب الرفض' : 'Rejection reason')}
+                              </span>
+                              <span className="text-[10px] font-mono text-slate-400">
+                                {order.updatedAt ? new Date(order.updatedAt).toLocaleString(lang === 'ar' ? 'ar-SY' : 'en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : ''}
+                              </span>
+                            </div>
+                            <div className="px-3 py-2 text-xs text-slate-700 space-y-1">
+                              <p><span className="font-bold">{lang === 'ar' ? 'المستودع:' : 'Warehouse:'}</span> {order.sellerName || order.sellerTenantId}</p>
+                              <p>{note || (lang === 'ar' ? 'لا يوجد سبب مذكور.' : 'No reason provided.')}</p>
+                              {firstItem && (
+                                <p className="text-[11px]"><span className="font-semibold">{lang === 'ar' ? 'الصنف:' : 'Item:'}</span> {firstItem.name} · {lang === 'ar' ? 'المطلوب' : 'requested'} {firstItem.requestedQuantity}</p>
+                              )}
+                            </div>
+                            <div className="px-3 pb-2 flex items-center gap-2">
+                              {counterQty !== null && firstItem && (
+                                <button
+                                  id={`btn-accept-counter-${order.orderId}`}
+                                  onClick={() => {
+                                    const off = offers.find(o =>
+                                      (o.catalogId || o.id) === firstItem.originalCatalogId &&
+                                      o.sellerTenantId === order.sellerTenantId);
+                                    if (!off) {
+                                      triggerToast(lang === 'ar' ? 'لم يتم العثور على العرض في السوق.' : 'Original listing not found in marketplace.', 'error');
+                                      return;
+                                    }
+                                    updateCart(off.id || off.offerId, counterQty || firstItem.requestedQuantity);
+                                    setIsCartOpen(true);
+                                    setDeclinedCounters(prev => [...prev, order.orderId]);
+                                  }}
+                                  className="flex-1 py-2 bg-brand-700 hover:bg-brand-800 text-white rounded-lg font-bold text-[11px] transition-colors cursor-pointer"
+                                >
+                                  {lang === 'ar' ? `قبول ${counterQty} وحدة وإضافة للسلة` : `Accept ${counterQty} units → cart`}
+                                </button>
+                              )}
+                              <button
+                                onClick={() => setDeclinedCounters(prev => [...prev, order.orderId])}
+                                className="flex-1 py-2 bg-white border border-slate-300 text-slate-600 rounded-lg font-bold text-[11px] cursor-pointer"
+                              >
+                                {lang === 'ar' ? 'حفظ وإغلاق' : 'Dismiss'}
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })()}
 
                       <div className="p-4 space-y-3">
                         {isExpanded ? (
@@ -1440,6 +1532,65 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
           )}
 
         </div>
+      {/* Printable order receipt (pharmacy copy) — print-only document */}
+      {printTarget && (
+        <div id="printable-order-receipt" className="hidden print:block fixed left-0 top-0 w-full bg-white text-black p-6 font-sans" dir="ltr">
+          <div style={{ maxWidth: '640px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', borderBottom: '2px solid #0f172a', paddingBottom: '8px', marginBottom: '12px' }}>
+              <h1 style={{ fontSize: '20px', fontWeight: 800, letterSpacing: '-0.02em' }}>Eshmun Pharmacy</h1>
+              <p style={{ fontSize: '11px', color: '#475569' }}>
+                {printTarget.buyerName || currentSession?.fullName || 'Pharmacy'}
+                {currentSession?.pharmacyId ? ` · ${currentSession.pharmacyId}` : ''}
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '10px' }}>
+              <div>
+                <p><strong>Order ref:</strong> #{printTarget.orderId}</p>
+                <p><strong>Supplier:</strong> {printTarget.sellerName || printTarget.sellerTenantId}</p>
+                <p><strong>Date:</strong> {new Date(printTarget.createdAt).toLocaleString('en-GB')}</p>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <p><strong>Status:</strong> {statusLabel(printTarget.status)}</p>
+                {printTarget.manifest?.expectedDeliveryAt && (
+                  <p><strong>Expected delivery:</strong> {new Date(printTarget.manifest.expectedDeliveryAt).toLocaleString('en-GB')}</p>
+                )}
+              </div>
+            </div>
+
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+              <thead>
+                <tr style={{ borderBottom: '1.5px solid #0f172a', textAlign: 'left' }}>
+                  <th style={{ padding: '6px 4px' }}>Item</th>
+                  <th style={{ padding: '6px 4px', textAlign: 'center' }}>Qty</th>
+                  <th style={{ padding: '6px 4px', textAlign: 'center' }}>Unit</th>
+                  <th style={{ padding: '6px 4px', textAlign: 'right' }}>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(printTarget.items || []).map((it: any, i: number) => (
+                  <tr key={i} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                    <td style={{ padding: '6px 4px' }}>{it.name}</td>
+                    <td style={{ padding: '6px 4px', textAlign: 'center' }}>{it.requestedQuantity}</td>
+                    <td style={{ padding: '6px 4px', textAlign: 'center' }}>{(Number(it.costAtOrder) || 0).toLocaleString()} SYP</td>
+                    <td style={{ padding: '6px 4px', textAlign: 'right' }}>{((Number(it.requestedQuantity) || 0) * (Number(it.costAtOrder) || 0)).toLocaleString()} SYP</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '12px', fontSize: '13px', fontWeight: 800, borderTop: '1.5px solid #0f172a', paddingTop: '8px' }}>
+              <span>Total ({statusLabel(printTarget.status)})</span>
+              <span>{(Number(printTarget.totalValue) || (printTarget.items || []).reduce((s: number, it: any) => s + (Number(it.requestedQuantity) || 0) * (Number(it.costAtOrder) || 0), 0)).toLocaleString()} SYP</span>
+            </div>
+
+            <div style={{ marginTop: '18px', display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#475569' }}>
+              <span>Received by: ______________________</span>
+              <span>Printed: {new Date().toLocaleString('en-GB')}</span>
+            </div>
+          </div>
+        </div>
+      )}
       </main>
 
       {/* ========================================================================= */}

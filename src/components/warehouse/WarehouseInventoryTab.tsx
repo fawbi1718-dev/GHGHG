@@ -152,7 +152,7 @@ export default function InventoryTab({
 
       setSaveState('saved');
       triggerToast(
-        lang === 'ar' ? `تم حفظ تعديلات ${newName} ✓` : `Saved changes to ${newName} ✓`,
+        lang === 'ar' ? `تم حفظ تعديلات ${newName}` : `Saved changes to ${newName}`,
         'success'
       );
       setTimeout(() => {
@@ -749,7 +749,7 @@ export default function InventoryTab({
  onClick={() => setIsOrderModalOpen(false)}
  className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
  >
- ✕
+ ×
  </button>
  </div>
 
@@ -861,7 +861,7 @@ export default function InventoryTab({
  leftIcon={saveState === 'saved' ? <Check className="w-4 h-4" /> : undefined}
  >
  {saveState === 'saved'
- ? (lang === 'ar' ? 'تم الحفظ ✓' : 'Saved ✓')
+ ? (lang === 'ar' ? 'تم الحفظ' : 'Saved')
  : (lang === 'ar' ? 'حفظ التعديلات' : 'Save Changes')}
  </Button>
  </div>

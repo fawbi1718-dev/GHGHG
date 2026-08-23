@@ -413,7 +413,7 @@ export default function InlineCameraScanner({
           </div>
 
           <span className="px-2 py-0.5 rounded bg-brand-500/20 text-brand-300 text-[10px] font-bold shrink-0">
-            {lang === 'ar' ? '✓ تم الإرسال للمبيعات' : '✓ Added to POS'}
+            {lang === 'ar' ? ' تم الإرسال للمبيعات' : ' Added to POS'}
           </span>
         </div>
       )}

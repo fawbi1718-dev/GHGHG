@@ -217,7 +217,7 @@ export default function CentralScannerModal({
             itemFound(matchedItem);
           }
           setToast({
-            message: currentLang === 'ar' ? `✓ تمت إضافة: ${itemName}` : `✓ Added: ${itemName}`,
+            message: currentLang === 'ar' ? ` تمت إضافة: ${itemName}` : ` Added: ${itemName}`,
             type: 'success'
           });
         } else if (activeMode === 'ADD_STOCK') {
@@ -225,7 +225,7 @@ export default function CentralScannerModal({
             addStock(cleanedCode, matchedItem);
           }
           setToast({
-            message: currentLang === 'ar' ? `✓ جلب بيانات الإدخال: ${itemName}` : `✓ Loaded intake: ${itemName}`,
+            message: currentLang === 'ar' ? ` جلب بيانات الإدخال: ${itemName}` : ` Loaded intake: ${itemName}`,
             type: 'info'
           });
           setTimeout(() => {
@@ -552,8 +552,8 @@ export default function CentralScannerModal({
       }
       setToast({
         message: propsRef.current.lang === 'ar' 
-          ? `✓ تم تأكيد إضافة ${scannedQuantity} علبة` 
-          : `✓ Added ${scannedQuantity} units`,
+          ? ` تم تأكيد إضافة ${scannedQuantity} علبة` 
+          : ` Added ${scannedQuantity} units`,
         type: 'success'
       });
       isProcessingRef.current = false;

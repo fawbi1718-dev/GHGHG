@@ -88,7 +88,7 @@ export default function SurplusManageModal({
         availableQuantity: nQty, stock: nQty, priceSyp: nPrice, price: nPrice,
         updatedAt: new Date().toISOString()
       }, { merge: true });
-      triggerToast(lang === 'ar' ? 'تم تحديث العرض ✓' : 'Listing updated ✓', 'success');
+      triggerToast(lang === 'ar' ? 'تم تحديث العرض' : 'Listing updated', 'success');
       onChanged?.();
       onClose();
     } catch (e: any) {

@@ -551,7 +551,7 @@ export default function DispatchDrawer({
                 <div className="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
                   <label className="block">
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                      🕒 {lang === 'ar' ? 'من' : 'Window start'}
+                      {lang === 'ar' ? 'من' : 'Window start'}
                     </span>
                     <input
                       type="datetime-local"

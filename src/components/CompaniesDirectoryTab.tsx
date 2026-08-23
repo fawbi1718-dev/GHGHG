@@ -423,8 +423,8 @@ export default function CompaniesDirectoryTab({
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={
                     lang === 'ar'
-                      ? '🔍 ابحث بالاسم التجاري، المادة الفعالة، اسم الشركة، أو امسح الباركود...'
-                      : '🔍 Search by medicine name, active ingredient, manufacturer, or barcode...'
+                      ? 'ابحث بالاسم التجاري، المادة الفعالة، اسم الشركة، أو امسح الباركود...'
+                      : 'Search by medicine name, active ingredient, manufacturer, or barcode...'
                   }
                   className={`w-full ${lang === 'ar' ? 'pr-12 pl-10' : 'pl-12 pr-10'} py-3.5 rounded-xl bg-slate-50 text-slate-900 text-sm font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all shadow-inner`}
                 />

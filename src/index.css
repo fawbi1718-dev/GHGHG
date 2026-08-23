@@ -140,7 +140,8 @@ a:focus-visible,
 
   /* Except our print container and its descendants */
   #printable-receipt, #printable-receipt *,
-  #printable-manifest, #printable-manifest * {
+  #printable-manifest, #printable-manifest *,
+  #printable-order-receipt, #printable-order-receipt * {
     visibility: visible;
   }
 
@@ -180,7 +181,7 @@ a:focus-visible,
     display: none !important;
   }
   
-  #printable-receipt, #printable-manifest {
+  #printable-receipt, #printable-manifest, #printable-order-receipt {
     display: block !important;
     position: static !important; /* It's the only thing on the body now */
   }

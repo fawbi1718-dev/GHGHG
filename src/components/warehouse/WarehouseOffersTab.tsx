@@ -398,8 +398,8 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
       if (triggerToast) {
         triggerToast(
           lang === 'ar' 
-            ? `تم نشر ${selectedMedIds.length} عروض بنجاح في سوق الجملة ✓` 
-            : `Successfully published ${selectedMedIds.length} wholesale offer(s) to marketplace ✓`, 
+            ? `تم نشر ${selectedMedIds.length} عروض بنجاح في سوق الجملة` 
+            : `Successfully published ${selectedMedIds.length} wholesale offer(s) to marketplace`, 
           'success'
         );
       }
@@ -450,8 +450,8 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
     if (triggerToast) {
       triggerToast(
         lang === 'ar' 
-          ? (updatedStatus ? 'تم تفعيل العرض في السوق ✓' : 'تم إخفاء العرض عن السوق') 
-          : (updatedStatus ? 'Offer activated on marketplace ✓' : 'Offer hidden from marketplace'),
+          ? (updatedStatus ? 'تم تفعيل العرض في السوق' : 'تم إخفاء العرض عن السوق') 
+          : (updatedStatus ? 'Offer activated on marketplace' : 'Offer hidden from marketplace'),
         'info'
       );
     }
@@ -691,7 +691,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
             onClick={() => setActiveFilter('active')}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'active' ? 'bg-brand-800 text-white border-brand-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-200'}`}
           >
-            ✓ {lang === 'ar' ? 'النشطة' : 'Active'} ({offers.filter(o => o.active).length})
+            {lang === 'ar' ? 'النشطة' : 'Active'} ({offers.filter(o => o.active).length})
           </button>
           <button 
             onClick={() => setActiveFilter('hidden')}
@@ -1090,7 +1090,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                   <>
                     <Check className="w-4 h-4 text-brand-200 relative z-10" />
                     <span className="relative z-10">
-                      {lang === 'ar' ? 'تم النشر بنجاح ✓' : 'Published ✓'}
+                      {lang === 'ar' ? 'تم النشر بنجاح' : 'Published'}
                     </span>
                   </>
                 ) : (

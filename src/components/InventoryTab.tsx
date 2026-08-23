@@ -721,7 +721,7 @@ export default function InventoryTab({
  onClick={() => setIsOrderModalOpen(false)}
  className="p-1.5 hover:bg-slate-100 :bg-slate-700 rounded-lg text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
  >
- ✕
+ ×
  </button>
  </div>
 
@@ -846,6 +846,9 @@ export default function InventoryTab({
  <p className="text-xs font-bold text-slate-800 truncate">{name}</p>
  <p className="text-[10px] font-mono text-slate-400">
  {listing.availableQuantity} {lang === 'ar' ? 'وحدة' : 'units'} · {listing.priceSyp.toLocaleString()} SYP
+ {med?.expiryDate && (
+ <span className="ms-2 text-amber-600">{lang === 'ar' ? 'ينتهي' : 'exp.'} {String(med.expiryDate).slice(0, 10)}</span>
+ )}
  </p>
  </div>
  <Button

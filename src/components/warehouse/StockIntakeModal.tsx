@@ -241,8 +241,8 @@ export default function StockIntakeModal({
       HardwareIntegrationService.getInstance().playScanSuccess();
       triggerToast(
         lang === 'ar' 
-          ? `✓ تم التعرف على الدواء: ${preMatchedItem.name || preMatchedItem.nameEn || preMatchedItem.name_en}` 
-          : `✓ Resolved: ${preMatchedItem.name || preMatchedItem.nameEn || preMatchedItem.name_en}`,
+          ? `تم التعرف على الدواء: ${preMatchedItem.name || preMatchedItem.nameEn || preMatchedItem.name_en}` 
+          : `Resolved: ${preMatchedItem.name || preMatchedItem.nameEn || preMatchedItem.name_en}`,
         'success'
       );
       return;
@@ -256,8 +256,8 @@ export default function StockIntakeModal({
         HardwareIntegrationService.getInstance().playScanSuccess();
         triggerToast(
           lang === 'ar' 
-            ? `✓ تم التعرف على الدواء: ${localMatch.name || localMatch.nameEn || localMatch.name_en}` 
-            : `✓ Resolved: ${localMatch.name || localMatch.nameEn || localMatch.name_en}`,
+            ? `تم التعرف على الدواء: ${localMatch.name || localMatch.nameEn || localMatch.name_en}` 
+            : `Resolved: ${localMatch.name || localMatch.nameEn || localMatch.name_en}`,
           'success'
         );
         return;
@@ -273,8 +273,8 @@ export default function StockIntakeModal({
       HardwareIntegrationService.getInstance().playScanSuccess();
       triggerToast(
         lang === 'ar' 
-          ? `✓ تم التعرف على الدواء: ${ramFound.name || (ramFound as any).nameEn || (ramFound as any).name_en}` 
-          : `✓ Resolved: ${ramFound.name || (ramFound as any).nameEn || (ramFound as any).name_en}`,
+          ? `تم التعرف على الدواء: ${ramFound.name || (ramFound as any).nameEn || (ramFound as any).name_en}` 
+          : `Resolved: ${ramFound.name || (ramFound as any).nameEn || (ramFound as any).name_en}`,
         'success'
       );
       return;
@@ -288,8 +288,8 @@ export default function StockIntakeModal({
         HardwareIntegrationService.getInstance().playScanSuccess();
         triggerToast(
           lang === 'ar' 
-            ? `✓ تم التعرف على الدواء: ${remoteFound.name || remoteFound.name_en}` 
-            : `✓ Resolved: ${remoteFound.name || remoteFound.name_en}`,
+            ? `تم التعرف على الدواء: ${remoteFound.name || remoteFound.name_en}` 
+            : `Resolved: ${remoteFound.name || remoteFound.name_en}`,
           'success'
         );
         return;
@@ -388,7 +388,7 @@ export default function StockIntakeModal({
       });
 
       triggerToast(
-        lang === 'ar' ? `✓ تمت إضافة ${quantity} علبة من ${finalName} إلى السجل` : `✓ Added ${quantity} units of ${finalName} to Ledger`,
+        lang === 'ar' ? `تمت إضافة ${quantity} علبة من ${finalName} إلى السجل` : `Added ${quantity} units of ${finalName} to Ledger`,
         'success'
       );
 
