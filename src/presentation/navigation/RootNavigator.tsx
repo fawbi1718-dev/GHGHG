@@ -243,15 +243,10 @@ export default function RootNavigator({
  const batchId = `batch-${Date.now()}`;
  const drugBatch = new DrugBatch(batchId, canonicalCatalogId, m.batchNumber || m.barcode || 'N/A', new Date(m.expiryDate), m.price, m.stock, false);
  await repo.saveDrugBatch(drugBatch);
- const syncPayloadId = `sync-add-${Date.now()}`;
- await repo.enqueuePayload({
- id: syncPayloadId,
- timestamp: new Date(),
- vectorClock: { [`pharmacy-${currentSession.pharmacyId}`]: Date.now() },
- data: { action: "ADD_MEDICINE", medicine: finalizedMedicine }
- });
- const syncEngine = BackgroundSyncEngine.getInstance(repo);
- syncEngine.triggerSyncLoop().catch(console.error);
+ // NOTE: no sync-queue payload is enqueued here. The medicine is written
+ // directly to Firestore below (Firestore offline persistence covers the
+ // offline case natively). The old ADD_MEDICINE queue payload targeted a
+ // REST endpoint that never existed and only produced phantom "failed" items.
 
  // Optimistic state update
  setMedicines((prev: Medicine[]) => {

@@ -2,7 +2,7 @@ import { NetworkSentinel } from "../network/NetworkSentinel";
 import { IInventoryRepository } from "../../domain/inventory/IInventoryRepository";
 import { IndexedDbInventoryRepository } from "../storage/IndexedDbInventoryRepository";
 import { IndexedDbB2BOrderRepository } from "../storage/IndexedDbB2BOrderRepository";
-import { setDoc, doc, getDoc } from 'firebase/firestore';
+import { setDoc, doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { IndexedDBStore } from '../storage/IndexedDBStore';
 
@@ -176,8 +176,13 @@ export class BackgroundSyncEngine {
  const b2bOrders = await this.b2bRepo.getPendingOrders();
 
  const attempts = this.getPayloadAttempts();
- // Parked payloads (max attempts reached) are skipped but never deleted.
- const actionablePayloads = queue.filter(p => (attempts[p.id] || 0) < MAX_PAYLOAD_ATTEMPTS);
+ // Parked payloads (max attempts reached) are skipped but never deleted —
+ // EXCEPT legacy ADD_MEDICINE payloads, which are always actionable because
+ // they can be fulfilled directly against Firestore (see below).
+ const actionablePayloads = queue.filter(p =>
+ (attempts[p.id] || 0) < MAX_PAYLOAD_ATTEMPTS ||
+ (p.data && p.data.action === 'ADD_MEDICINE')
+ );
  const parkedCount = queue.length - actionablePayloads.length;
 
  if (actionablePayloads.length === 0 && b2bOrders.length === 0) {
@@ -196,6 +201,50 @@ export class BackgroundSyncEngine {
  // Sync general payload queue — each payload is isolated so one broken item
  // can no longer block the rest of the queue.
  for (const payload of actionablePayloads) {
+ // ---- Legacy ADD_MEDICINE payloads: fulfilled natively against Firestore.
+ // Idempotent: if a batch with this intake's batch number already exists,
+ // the operation was already applied — just dequeue.
+ const pAction = payload.data && payload.data.action;
+ const pMed = pAction === 'ADD_MEDICINE' ? payload.data.medicine : null;
+ if (pMed) {
+ try {
+ const tenantId = IndexedDBStore.getActiveTenantId();
+ const safeId = String(pMed.id || '').replace(/\//g, '_');
+ const batchNumber = String(pMed.batchNumber || 'N/A');
+ const batchesRef = collection(db, 'tenants', tenantId, 'storage_inventory', safeId, 'batches');
+ const existingBatches = await getDocs(batchesRef);
+ const alreadyApplied = existingBatches.docs.some(d => (d.data().batchNumber || '') === batchNumber);
+
+ if (!alreadyApplied) {
+ const nowIso = new Date().toISOString();
+ const medRef = doc(db, 'tenants', tenantId, 'storage_inventory', safeId);
+ const medSnap = await getDoc(medRef);
+ const invData = { ...pMed, pharmacyId: tenantId };
+ if (medSnap.exists()) {
+ const existingStock = medSnap.data().stock || 0;
+ await setDoc(medRef, { ...invData, stock: existingStock + Number(pMed.stock || 0), lastUpdated: nowIso }, { merge: true });
+ } else {
+ await setDoc(medRef, { ...invData });
+ }
+ const legacyBatchId = `legacy-${payload.id}`;
+ await setDoc(doc(db, 'tenants', tenantId, 'storage_inventory', safeId, 'batches', legacyBatchId), {
+ batchId: legacyBatchId, medId: safeId, batchNumber,
+ expiryDate: new Date(pMed.expiryDate || Date.now() + 31536000000).toISOString(),
+ cost: Number(pMed.price) || 0, stock: Number(pMed.stock) || 0, isSpoiled: false, lastUpdated: nowIso
+ }, { merge: true });
+ }
+
+ await this.localRepo.dequeuePayload(payload.id);
+ this.clearPayloadFailures(payload.id);
+ console.log(`BackgroundSyncEngine: legacy ADD_MEDICINE ${safeId} applied and dequeued.`);
+ } catch (medErr: any) {
+ transientFailure = true;
+ this.recordPayloadFailure(payload.id);
+ console.warn('Legacy ADD_MEDICINE fulfillment failed:', medErr?.message);
+ }
+ continue;
+ }
+
  const controller = new AbortController();
  const timeoutId = setTimeout(() => controller.abort(), 5000);
 
