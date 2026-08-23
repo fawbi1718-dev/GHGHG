@@ -64,9 +64,9 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  return (
  <div className="flex-1 bg-[#F4F7F5] min-h-screen p-4 lg:p-8 space-y-6 font-sans">
  {/* Header */}
- <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-emerald-100 shadow-sm rounded-xl p-6">
+ <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-brand-100 shadow-sm rounded-xl p-6">
  <div>
- <h1 className="text-2xl font-black text-emerald-950 tracking-tight flex items-center gap-2">
+ <h1 className="text-2xl font-black text-brand-950 tracking-tight flex items-center gap-2">
  <Receipt className="w-6 h-6 text-[#047857]" />
  {lang === 'ar' ? 'السجل المالي والحركات' : 'Financial Ledger & Transactions'}
  </h1>
@@ -79,12 +79,12 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  {/* Summary Cards */}
  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
  {/* Daily Sales */}
- <div className="bg-white border border-emerald-100 shadow-sm rounded-xl p-5 space-y-3">
+ <div className="bg-white border border-brand-100 shadow-sm rounded-xl p-5 space-y-3">
  <div className="flex items-center justify-between">
  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
  {lang === 'ar' ? 'مبيعات اليوم' : 'Daily Sales'}
  </span>
- <div className="p-2 rounded-lg bg-emerald-50 text-[#047857]">
+ <div className="p-2 rounded-lg bg-brand-50 text-[#047857]">
  <TrendingUp className="w-5 h-5" />
  </div>
  </div>
@@ -98,7 +98,7 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  </div>
 
  {/* Outstanding Debt */}
- <div className="bg-white border border-emerald-100 shadow-sm rounded-xl p-5 space-y-3">
+ <div className="bg-white border border-brand-100 shadow-sm rounded-xl p-5 space-y-3">
  <div className="flex items-center justify-between">
  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
  {lang === 'ar' ? 'الديون والذمم المستحقة' : 'Outstanding Debt'}
@@ -117,7 +117,7 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  </div>
 
  {/* Outstanding Payments / Refunds */}
- <div className="bg-white border border-emerald-100 shadow-sm rounded-xl p-5 space-y-3">
+ <div className="bg-white border border-brand-100 shadow-sm rounded-xl p-5 space-y-3">
  <div className="flex items-center justify-between">
  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
  {lang === 'ar' ? 'المرتجعات والتسويات' : 'Refunds & Adjustments'}
@@ -137,9 +137,9 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  </div>
 
  {/* Transaction Table Section */}
- <div className="bg-white border border-emerald-100 shadow-sm rounded-xl p-6 space-y-4">
+ <div className="bg-white border border-brand-100 shadow-sm rounded-xl p-6 space-y-4">
  {/* Table Filters & Search */}
- <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 border-b border-emerald-50">
+ <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 border-b border-brand-50">
  <div className="relative w-full sm:w-72">
  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
  <input
@@ -147,7 +147,7 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  value={searchQuery}
  onChange={(e) => setSearchQuery(e.target.value)}
  placeholder={lang === 'ar' ? 'البحث بالعميل أو رقم الحركة...' : 'Search client or invoice #...'}
- className="w-full pl-9 pr-4 py-2 bg-[#F4F7F5] border border-emerald-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#047857]"
+ className="w-full pl-9 pr-4 py-2 bg-[#F4F7F5] border border-brand-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#047857]"
  dir={lang === 'ar' ? 'rtl' : 'ltr'}
  />
  </div>
@@ -160,8 +160,8 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  onClick={() => setFilter(status)}
  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap cursor-pointer ${
  filter === status
- ? 'bg-emerald-700 text-white shadow-xs'
- : 'bg-emerald-50 text-slate-700 hover:bg-emerald-100 border border-emerald-100'
+ ? 'bg-brand-700 text-white shadow-xs'
+ : 'bg-brand-50 text-slate-700 hover:bg-brand-100 border border-brand-100'
  }`}
  >
  {status === 'all' && (lang === 'ar' ? 'الكل' : 'All')}
@@ -177,7 +177,7 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  <div className="overflow-x-auto">
  <table className="w-full text-left text-xs" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
  <thead>
- <tr className="border-b border-emerald-100 text-slate-500 font-mono uppercase text-[10px]">
+ <tr className="border-b border-brand-100 text-slate-500 font-mono uppercase text-[10px]">
  <th className="py-3 px-3">{lang === 'ar' ? 'رقم الحركة' : 'Invoice #'}</th>
  <th className="py-3 px-3">{lang === 'ar' ? 'العميل / الجهة' : 'Client / Entity'}</th>
  <th className="py-3 px-3">{lang === 'ar' ? 'التاريخ' : 'Date'}</th>
@@ -186,9 +186,9 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  <th className="py-3 px-3 text-center">{lang === 'ar' ? 'الحالة' : 'Status'}</th>
  </tr>
  </thead>
- <tbody className="divide-y divide-emerald-50 text-slate-800 font-medium">
+ <tbody className="divide-y divide-brand-50 text-slate-800 font-medium">
  {filteredTransactions.map((tx) => (
- <tr key={tx.id} className="hover:bg-emerald-50/30 transition-colors">
+ <tr key={tx.id} className="hover:bg-brand-50/30 transition-colors">
  <td className="py-3.5 px-3 font-mono font-bold text-[#047857]">{tx.id}</td>
  <td className="py-3.5 px-3 font-semibold text-slate-900">{tx.customer}</td>
  <td className="py-3.5 px-3 text-slate-500 font-mono text-[11px]">{tx.date}</td>
@@ -198,7 +198,7 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  </td>
  <td className="py-3.5 px-3 text-center">
  {tx.status === 'Paid' && (
- <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-[#047857] border border-emerald-200 rounded-full font-bold text-[10px]">
+ <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-brand-50 text-[#047857] border border-brand-200 rounded-full font-bold text-[10px]">
  <CheckCircle2 className="w-3 h-3 text-[#047857]" />
  {lang === 'ar' ? 'مدفوع' : 'Paid'}
  </span>

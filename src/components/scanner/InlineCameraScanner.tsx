@@ -274,19 +274,19 @@ export default function InlineCameraScanner({
 
   return (
     <div 
-      className="w-full bg-slate-950 border-2 border-emerald-500/80 rounded-2xl overflow-hidden shadow-2xl mt-2 transition-all select-none"
+      className="w-full bg-slate-950 border-2 border-brand-500/80 rounded-lg overflow-hidden shadow-2xl mt-2 transition-all select-none"
       dir={lang === 'ar' ? 'rtl' : 'ltr'}
       id="inline-pos-camera-scanner"
     >
       {/* Top Header Bar */}
       <div className="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-400">
+          <div className="p-1.5 rounded-lg bg-brand-500/20 text-brand-400">
             <Camera className="w-4 h-4" />
           </div>
           <span className="text-xs font-bold text-white flex items-center gap-1.5">
             {lang === 'ar' ? 'ماسح الكاميرا المباشر للبيع' : 'Live POS Camera Scanner'}
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+            <span className="w-2 h-2 rounded-full bg-brand-500 animate-ping inline-block" />
           </span>
         </div>
 
@@ -354,26 +354,26 @@ export default function InlineCameraScanner({
 
         {/* Target Reticle Overlay */}
         <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-4 z-20">
-          <div className={`relative w-56 h-40 sm:w-64 sm:h-44 rounded-2xl transition-all duration-300 ${
+          <div className={`relative w-56 h-40 sm:w-64 sm:h-44 rounded-lg transition-all duration-300 ${
             isDetected 
-              ? 'border-2 border-emerald-400 bg-emerald-500/20 ring-4 ring-emerald-500/40' 
-              : 'border-2 border-emerald-400/80 shadow-[0_0_25px_rgba(16,185,129,0.25)]'
+              ? 'border-2 border-brand-400 bg-brand-500/20 ring-4 ring-brand-500/40' 
+              : 'border-2 border-brand-400/80 shadow-[0_0_25px_rgba(16,185,129,0.25)]'
           }`}>
-            <div className="absolute -top-1.5 -left-1.5 w-5 h-5 border-t-3 border-l-3 border-emerald-400 rounded-tl-lg" />
-            <div className="absolute -top-1.5 -right-1.5 w-5 h-5 border-t-3 border-r-3 border-emerald-400 rounded-tr-lg" />
-            <div className="absolute -bottom-1.5 -left-1.5 w-5 h-5 border-b-3 border-l-3 border-emerald-400 rounded-bl-lg" />
-            <div className="absolute -bottom-1.5 -right-1.5 w-5 h-5 border-b-3 border-r-3 border-emerald-400 rounded-br-lg" />
+            <div className="absolute -top-1.5 -left-1.5 w-5 h-5 border-t-3 border-l-3 border-brand-400 rounded-tl-lg" />
+            <div className="absolute -top-1.5 -right-1.5 w-5 h-5 border-t-3 border-r-3 border-brand-400 rounded-tr-lg" />
+            <div className="absolute -bottom-1.5 -left-1.5 w-5 h-5 border-b-3 border-l-3 border-brand-400 rounded-bl-lg" />
+            <div className="absolute -bottom-1.5 -right-1.5 w-5 h-5 border-b-3 border-r-3 border-brand-400 rounded-br-lg" />
 
             {/* Moving Laser */}
             <motion.div
               animate={{ y: [4, 145, 4] }}
               transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-              className="w-full h-1 bg-emerald-400 shadow-[0_0_12px_#10b981] rounded-full"
+              className="w-full h-1 bg-brand-400 shadow-[0_0_12px_#10b981] rounded-full"
             />
           </div>
 
           <div className="mt-3 px-3 py-1 rounded-full bg-slate-900/90 border border-slate-700 text-[11px] font-semibold text-slate-300 flex items-center gap-1.5 shadow-md">
-            <Sparkles className="w-3 h-3 text-emerald-400 shrink-0" />
+            <Sparkles className="w-3 h-3 text-brand-400 shrink-0" />
             <span>{lang === 'ar' ? 'وجّه رمز الباركود داخل الإطار' : 'Align barcode inside frame'}</span>
           </div>
         </div>
@@ -386,7 +386,7 @@ export default function InlineCameraScanner({
             <button
               type="button"
               onClick={() => startCamera(facingMode)}
-              className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+              className="px-3.5 py-1.5 bg-brand-600 hover:bg-brand-700 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" />
               <span>{lang === 'ar' ? 'إعادة المحاولة' : 'Retry'}</span>
@@ -399,10 +399,10 @@ export default function InlineCameraScanner({
       {lastScannedCode && (
         <div className="px-4 py-2.5 bg-slate-900 border-t border-slate-800 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2 min-w-0">
-            <Tag className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <Tag className="w-3.5 h-3.5 text-brand-400 shrink-0" />
             <span className="font-mono text-slate-400 truncate">#{lastScannedCode}</span>
             {lastMatchedMed ? (
-              <span className="text-emerald-300 font-bold truncate max-w-[200px]">
+              <span className="text-brand-300 font-bold truncate max-w-[200px]">
                 {lastMatchedMed.name} ({Number(lastMatchedMed.price).toLocaleString()} SYP)
               </span>
             ) : (
@@ -412,7 +412,7 @@ export default function InlineCameraScanner({
             )}
           </div>
 
-          <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold shrink-0">
+          <span className="px-2 py-0.5 rounded bg-brand-500/20 text-brand-300 text-[10px] font-bold shrink-0">
             {lang === 'ar' ? '✓ تم الإرسال للمبيعات' : '✓ Added to POS'}
           </span>
         </div>

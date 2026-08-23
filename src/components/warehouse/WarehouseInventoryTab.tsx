@@ -285,7 +285,7 @@ export default function InventoryTab({
  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
  <div>
  <h1 className="text-2xl font-bold tracking-tight text-slate-800 flex items-center gap-2">
- <Activity className="text-emerald-600 w-6 h-6 stroke-[2.5]" />
+ <Activity className="text-brand-600 w-6 h-6 stroke-[2.5]" />
  {t.medicineInventoryLedger}
  </h1>
  <p className="text-slate-500 text-xs mt-0.5">
@@ -296,7 +296,7 @@ export default function InventoryTab({
   <button
    id="btn-warehouse-add-medicine"
    onClick={() => setIsStockIntakeOpen(true)}
-   className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
+   className="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all duration-200 shadow-sm active:scale-95 cursor-pointer"
   >
    <PackagePlus className="w-4 h-4" />
    {lang === 'ar' ? 'إضافة دواء / إدخال مخزون' : 'Add Medicine'}
@@ -310,7 +310,7 @@ export default function InventoryTab({
    <FileText className="w-3.5 h-3.5" />
    {t.generateRestockOrder}
    {lowStockItems.length > 0 && (
-    <span className="bg-emerald-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+    <span className="bg-brand-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
      {lowStockItems.length}
     </span>
    )}
@@ -366,9 +366,9 @@ export default function InventoryTab({
  <motion.div
  initial={{ opacity: 0 }}
  animate={{ opacity: 1 }}
- className="p-3.5 rounded-xl border border-emerald-100 bg-emerald-50/40 text-emerald-800 text-xs flex items-center gap-2 font-medium"
+ className="p-3.5 rounded-xl border border-brand-100 bg-brand-50/40 text-brand-800 text-xs flex items-center gap-2 font-medium"
  >
- <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+ <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span>
  {t.allClinicalComponentsSecure}
  </motion.div>
  )}
@@ -386,7 +386,7 @@ export default function InventoryTab({
  placeholder={t.searchPlaceholder}
  value={searchQuery}
  onChange={(e) => setSearchQuery(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200/80 focus:border-emerald-500/50 rounded-xl py-2 pl-9 pr-4 text-xs text-slate-800 placeholder-slate-400 focus:outline-none transition-all font-semibold"
+ className="w-full bg-slate-50 border border-slate-200/80 focus:border-brand-500/50 rounded-xl py-2 pl-9 pr-4 text-xs text-slate-800 placeholder-slate-400 focus:outline-none transition-all font-semibold"
  />
  </div>
 
@@ -421,7 +421,7 @@ export default function InventoryTab({
  id="category-filter"
  value={categoryFilter}
  onChange={(e) => setCategoryFilter(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200/80 focus:border-emerald-500/50 rounded-xl py-2 pl-12 pr-4 text-xs text-slate-700 font-semibold focus:outline-none transition-all appearance-none cursor-pointer"
+ className="w-full bg-slate-50 border border-slate-200/80 focus:border-brand-500/50 rounded-xl py-2 pl-12 pr-4 text-xs text-slate-700 font-semibold focus:outline-none transition-all appearance-none cursor-pointer"
  >
  {CATEGORIES.map(cat => (
  <option key={cat} value={cat}>
@@ -441,7 +441,7 @@ export default function InventoryTab({
  id="sort-by"
  value={sortBy}
  onChange={(e) => setSortBy(e.target.value as any)}
- className="w-full bg-slate-50 border border-slate-200/80 focus:border-emerald-500/50 rounded-xl py-2 pl-12 pr-4 text-xs text-slate-700 font-semibold focus:outline-none transition-all appearance-none cursor-pointer"
+ className="w-full bg-slate-50 border border-slate-200/80 focus:border-brand-500/50 rounded-xl py-2 pl-12 pr-4 text-xs text-slate-700 font-semibold focus:outline-none transition-all appearance-none cursor-pointer"
  >
  <option value="name">{translateSortOption('name')}</option>
  <option value="stock">{translateSortOption('stock')}</option>
@@ -481,8 +481,8 @@ export default function InventoryTab({
 
   {sortedMedicines.length === 0 ? (
    medicines.length === 0 ? (
-    <div className="p-12 rounded-2xl bg-white border border-emerald-100 text-center shadow-xs">
-     <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mx-auto mb-4">
+    <div className="p-12 rounded-lg bg-white border border-brand-100 text-center shadow-xs">
+     <div className="w-14 h-14 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600 mx-auto mb-4">
       <PackagePlus className="w-7 h-7 stroke-[2]" />
      </div>
      <h3 className="text-base font-bold text-slate-800 mb-1">
@@ -496,7 +496,7 @@ export default function InventoryTab({
      <button
       id="btn-empty-add-medicine"
       onClick={() => setIsStockIntakeOpen(true)}
-      className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white px-5 py-2.5 rounded-xl font-bold text-xs transition-all shadow-sm cursor-pointer"
+      className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white px-5 py-2.5 rounded-xl font-bold text-xs transition-all shadow-sm cursor-pointer"
      >
       <PackagePlus className="w-4 h-4" />
       {lang === 'ar' ? 'مسح باركود / إدخال دواء جديد' : 'Scan Barcode / Add Medicine'}
@@ -536,8 +536,8 @@ export default function InventoryTab({
  const stockRatio = stockTarget > 0 ? (item.stock / stockTarget) : 0;
  const progressPercentage = Math.min(100, Math.max(0, stockRatio * 100));
  
- let barColor = 'bg-emerald-500';
- let bgBarColor = 'bg-emerald-100';
+ let barColor = 'bg-brand-500';
+ let bgBarColor = 'bg-brand-100';
  if (stockRatio < 0.20) {
  barColor = 'bg-rose-500';
  bgBarColor = 'bg-rose-100';
@@ -557,7 +557,7 @@ export default function InventoryTab({
  {/* Part 1: Medicine Basic Details */}
  <div className="flex-1 min-w-0">
  <div className="flex items-center gap-2 flex-wrap">
- <span className="text-[10px] font-mono font-bold text-emerald-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md uppercase">
+ <span className="text-[10px] font-mono font-bold text-brand-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-md uppercase">
  {translateCategory(item.category)}
  </span>
  <span className="text-[10px] font-mono font-semibold text-slate-400 ">
@@ -565,7 +565,7 @@ export default function InventoryTab({
  </span>
  </div>
 
- <h3 className="text-sm font-bold text-slate-800 mt-1 group-hover:text-emerald-600 transition-colors tracking-tight flex items-center gap-1.5">
+ <h3 className="text-sm font-bold text-slate-800 mt-1 group-hover:text-brand-600 transition-colors tracking-tight flex items-center gap-1.5">
  {item.name}
  <span className="text-xs font-normal text-slate-400 font-mono">({item.strength})</span>
  </h3>
@@ -622,8 +622,8 @@ export default function InventoryTab({
  {t.lowStockStatus}
  </span>
  ) : (
- <span className="text-[9px] font-mono font-bold text-emerald-600 uppercase flex items-center gap-1">
- <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+ <span className="text-[9px] font-mono font-bold text-brand-600 uppercase flex items-center gap-1">
+ <span className="w-1.5 h-1.5 rounded-full bg-brand-500" />
  {t.secureStatus}
  </span>
  )}
@@ -634,7 +634,7 @@ export default function InventoryTab({
  <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0 border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-100 ">
  <div className="text-right">
  <span className="text-xs text-slate-400 font-mono block">{t.unitCost}</span>
- <span className="text-sm font-bold text-emerald-600 font-mono">
+ <span className="text-sm font-bold text-brand-600 font-mono">
  {(Number(item?.price) || 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'S.P.'}
  </span>
  </div>
@@ -646,7 +646,7 @@ export default function InventoryTab({
  if (item && (item as Medicine).id) openEditModal(item as Medicine);
  }}
  title={lang === 'ar' ? 'تعديل بيانات الدواء والمخزون' : 'Edit medicine details & stock'}
- className="p-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 hover:text-emerald-700 border border-emerald-200/70 rounded-xl transition-all cursor-pointer"
+ className="p-2 bg-brand-50 hover:bg-brand-100 text-brand-600 hover:text-brand-700 border border-brand-200/70 rounded-xl transition-all cursor-pointer"
  >
  <Pencil className="w-4 h-4" />
  </button>
@@ -657,7 +657,7 @@ export default function InventoryTab({
  onSelectMedicine(item.id);
  }}
  title={lang === 'ar' ? 'عرض السجل المفصل والتدقيق' : 'View detailed audit log'}
- className="p-2 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-emerald-600 border border-slate-200 rounded-xl transition-all cursor-pointer"
+ className="p-2 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-brand-600 border border-slate-200 rounded-xl transition-all cursor-pointer"
  >
  <Eye className="w-4 h-4" />
  </button>
@@ -691,7 +691,7 @@ export default function InventoryTab({
  e.stopPropagation();
  onUpdateStock(item.id, 100, lang === 'ar' ? "توريد سريع للمخزون" : "Bulk inventory injection");
  }}
- className="p-1.5 hover:bg-white text-slate-400 hover:text-emerald-600 rounded-lg transition-colors cursor-pointer"
+ className="p-1.5 hover:bg-white text-slate-400 hover:text-brand-600 rounded-lg transition-colors cursor-pointer"
  title={lang === 'ar' ? 'توريد ١٠٠ كرتونة' : 'Restock 100 Cartons'}
  >
  <Plus className="w-3.5 h-3.5" />
@@ -720,7 +720,7 @@ export default function InventoryTab({
  <div className="flex justify-between items-start mb-4">
  <div>
  <h3 className="text-md font-bold text-slate-800 flex items-center gap-2">
- <ShoppingBag className="text-emerald-600" />
+ <ShoppingBag className="text-brand-600" />
  {lang === 'ar' ? 'مولد طلبات التوريد الموحد' : 'Wholesale Order Dispatcher'}
  </h3>
  <p className="text-xs text-slate-400 mt-0.5">
@@ -737,7 +737,7 @@ export default function InventoryTab({
 
  {lowStockItems.length === 0 ? (
  <div className="py-8 text-center text-slate-500 text-xs font-semibold">
- <Check className="w-6 h-6 text-emerald-500 mx-auto mb-2" />
+ <Check className="w-6 h-6 text-brand-500 mx-auto mb-2" />
  {lang === 'ar' ? 'جميع المواد تطابق معايير الأمان المحددة.' : 'All stock items conform to active minimum safety thresholds.'}
  </div>
  ) : (
@@ -754,7 +754,7 @@ export default function InventoryTab({
  <div key={item.id} className="flex justify-between text-xs font-mono text-slate-600 border-b border-slate-200/50 pb-1.5 last:border-0 last:pb-0">
  <span>{item.name}</span>
  <span>
- {lang === 'ar' ? 'المخزون الحالي' : 'Stock'}: <b className="text-amber-600">{item.stock}</b> | {lang === 'ar' ? 'المقترح' : 'Suggested'}: <b className="text-emerald-600">+{suggestedOrder}</b>
+ {lang === 'ar' ? 'المخزون الحالي' : 'Stock'}: <b className="text-amber-600">{item.stock}</b> | {lang === 'ar' ? 'المقترح' : 'Suggested'}: <b className="text-brand-600">+{suggestedOrder}</b>
  </span>
  </div>
  );
@@ -765,13 +765,13 @@ export default function InventoryTab({
  <div>
  <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 mb-1.5 font-mono uppercase tracking-wider">
  <span>{t.telemetryPayload}</span>
- <span className="text-[10px] text-emerald-600 lowercase italic">{lang === 'ar' ? 'جاهز للنسخ والمشاركة' : 'Ready to share'}</span>
+ <span className="text-[10px] text-brand-600 lowercase italic">{lang === 'ar' ? 'جاهز للنسخ والمشاركة' : 'Ready to share'}</span>
  </div>
  <div className="relative">
  <textarea
  readOnly
  value={generateOrderString()}
- className="w-full bg-slate-900 border border-slate-950 text-emerald-400 font-mono text-xs p-3 rounded-xl h-24 focus:outline-none resize-none select-all shadow-inner"
+ className="w-full bg-slate-900 border border-slate-950 text-brand-400 font-mono text-xs p-3 rounded-xl h-24 focus:outline-none resize-none select-all shadow-inner"
  />
  <button
  id="btn-copy-payload"
@@ -780,7 +780,7 @@ export default function InventoryTab({
  >
  {copied ? (
  <>
- <Check className="w-3.5 h-3.5 text-emerald-600" />
+ <Check className="w-3.5 h-3.5 text-brand-600" />
  {lang === 'ar' ? 'تم النسخ' : 'Copied'}
  </>
  ) : (
@@ -806,7 +806,7 @@ export default function InventoryTab({
  </button>
  <button
  onClick={copyOrderToClipboard}
- className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+ className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
  >
  <Copy className="w-3.5 h-3.5" />
  {t.copyAndClose}
@@ -863,7 +863,7 @@ export default function InventoryTab({
  type="text"
  value={editForm.name || ''}
  onChange={(e) => setEditForm(f => ({ ...f, name: e.target.value }))}
- className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  />
  </label>
  <div className="grid grid-cols-2 gap-3">
@@ -873,7 +873,7 @@ export default function InventoryTab({
  type="number" min="0"
  value={editForm.price ?? ''}
  onChange={(e) => setEditForm(f => ({ ...f, price: Number(e.target.value) }))}
- className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  />
  </label>
  <label className="block">
@@ -882,7 +882,7 @@ export default function InventoryTab({
  type="number" min="0"
  value={editForm.minThreshold ?? ''}
  onChange={(e) => setEditForm(f => ({ ...f, minThreshold: Number(e.target.value) }))}
- className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  />
  </label>
  <label className="block">
@@ -890,7 +890,7 @@ export default function InventoryTab({
  <select
  value={editForm.category || 'General'}
  onChange={(e) => setEditForm(f => ({ ...f, category: e.target.value }))}
- className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl bg-white focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  >
  {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
  </select>
@@ -901,7 +901,7 @@ export default function InventoryTab({
  type="date"
  value={editForm.expiryDate || ''}
  onChange={(e) => setEditForm(f => ({ ...f, expiryDate: e.target.value }))}
- className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  />
  </label>
  <label className="block">
@@ -910,7 +910,7 @@ export default function InventoryTab({
  type="text"
  value={editForm.batchNumber || ''}
  onChange={(e) => setEditForm(f => ({ ...f, batchNumber: e.target.value }))}
- className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  />
  </label>
  <label className="block">
@@ -919,7 +919,7 @@ export default function InventoryTab({
  type="text"
  value={editForm.shelfLocation || ''}
  onChange={(e) => setEditForm(f => ({ ...f, shelfLocation: e.target.value }))}
- className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  />
  </label>
  </div>
@@ -929,14 +929,14 @@ export default function InventoryTab({
  type="text"
  value={editForm.supplier || ''}
  onChange={(e) => setEditForm(f => ({ ...f, supplier: e.target.value }))}
- className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="mt-1 w-full px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  />
  </label>
  </section>
 
  {/* Physical stock correction — distinct from sale/dispatch deductions */}
- <section className="space-y-3 p-3.5 bg-emerald-50/50 border border-emerald-100 rounded-xl">
- <h4 className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 flex items-center gap-1.5">
+ <section className="space-y-3 p-3.5 bg-brand-50/50 border border-brand-100 rounded-xl">
+ <h4 className="text-[10px] font-bold uppercase tracking-wider text-brand-700 flex items-center gap-1.5">
  <PackagePlus className="w-3.5 h-3.5" />
  {lang === 'ar' ? 'تسوية المخزون الفعلي (جرد)' : 'Physical Stock Correction'}
  </h4>
@@ -949,14 +949,14 @@ export default function InventoryTab({
  <button
  type="button"
  onClick={() => setEditQtyMode('set')}
- className={`flex-1 py-2 text-xs font-bold rounded-lg border transition-colors cursor-pointer ${editQtyMode === 'set' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-300'}`}
+ className={`flex-1 py-2 text-xs font-bold rounded-lg border transition-colors cursor-pointer ${editQtyMode === 'set' ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-300'}`}
  >
  {lang === 'ar' ? 'تعيين الكمية' : 'Set Count'}
  </button>
  <button
  type="button"
  onClick={() => setEditQtyMode('adjust')}
- className={`flex-1 py-2 text-xs font-bold rounded-lg border transition-colors cursor-pointer ${editQtyMode === 'adjust' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-300'}`}
+ className={`flex-1 py-2 text-xs font-bold rounded-lg border transition-colors cursor-pointer ${editQtyMode === 'adjust' ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-300'}`}
  >
  {lang === 'ar' ? 'زيادة/نقصان ±' : 'Adjust ±'}
  </button>
@@ -972,11 +972,11 @@ export default function InventoryTab({
  type="number"
  value={editQtyValue}
  onChange={(e) => setEditQtyValue(e.target.value)}
- className="w-full px-3 py-2 text-sm font-mono font-bold border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+ className="w-full px-3 py-2 text-sm font-mono font-bold border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
  placeholder={editQtyMode === 'set' ? (lang === 'ar' ? 'الكمية الجديدة' : 'New total') : (lang === 'ar' ? 'مثال: -5 أو +20' : 'e.g. -5 or +20')}
  />
  {editQtyMode === 'set' && Number.isFinite(Number(editQtyValue)) && (
- <span className={`font-mono text-xs font-black shrink-0 ${(Number(editQtyValue) - (editingMed.stock || 0)) >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+ <span className={`font-mono text-xs font-black shrink-0 ${(Number(editQtyValue) - (editingMed.stock || 0)) >= 0 ? 'text-brand-600' : 'text-rose-600'}`}>
  {(Number(editQtyValue) - (editingMed.stock || 0)) >= 0 ? '+' : ''}{Number(editQtyValue) - (editingMed.stock || 0)}
  </span>
  )}
@@ -990,7 +990,7 @@ export default function InventoryTab({
  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
  className="flex items-center justify-center gap-2 py-2 text-xs font-bold text-slate-500"
  >
- <Loader2 className="w-4 h-4 animate-spin text-emerald-600" />
+ <Loader2 className="w-4 h-4 animate-spin text-brand-600" />
  {lang === 'ar' ? 'جارٍ الحفظ...' : 'Saving changes...'}
  </motion.div>
  )}
@@ -999,10 +999,10 @@ export default function InventoryTab({
  initial={{ scale: 0.8, opacity: 0 }}
  animate={{ scale: 1, opacity: 1 }}
  transition={{ duration: 0.18 }}
- className="flex items-center justify-center gap-2 py-2 text-sm font-black text-emerald-700"
+ className="flex items-center justify-center gap-2 py-2 text-sm font-black text-brand-700"
  >
- <span className="w-6 h-6 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center">
- <Check className="w-4 h-4 text-emerald-600" />
+ <span className="w-6 h-6 rounded-full bg-brand-100 border border-brand-200 flex items-center justify-center">
+ <Check className="w-4 h-4 text-brand-600" />
  </span>
  {lang === 'ar' ? 'تم الحفظ بنجاح' : 'Changes saved'}
  </motion.div>

@@ -69,12 +69,12 @@ export const Drawer: React.FC<DrawerProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+            className="absolute inset-0 bg-slate-900/50 transition-opacity"
           />
           <motion.div
             {...slideVariants[position]}
             transition={{ type: 'spring', damping: 25, stiffness: 250 }}
-            className={`absolute ${positionClasses[position]} w-full ${position !== 'bottom' ? maxWidthClasses[maxWidth] : 'h-[85vh] sm:h-auto sm:max-h-[90vh]'} bg-white shadow-2xl flex flex-col z-10`}
+            className={`absolute ${positionClasses[position]} w-full ${position !== 'bottom' ? maxWidthClasses[maxWidth] : 'h-[85vh] sm:h-auto sm:max-h-[90vh]'} bg-white shadow-xl flex flex-col z-10`}
           >
             {title && (
               <div className="flex items-center justify-between px-4 py-4 md:px-6 border-b border-slate-100 shrink-0">

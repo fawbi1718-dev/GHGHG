@@ -105,7 +105,7 @@ export default function ItemViewTab({
  // Elegant fallback screen when no item is selected
  return (
  <div id="item-view-empty" className="p-8 rounded-xl bg-white border border-slate-200 text-center max-w-2xl mx-auto space-y-6 my-8 shadow-sm">
- <div className="w-14 h-14 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-emerald-600 mx-auto">
+ <div className="w-14 h-14 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-brand-600 mx-auto">
  <Activity className="w-7 h-7 stroke-[2.2] animate-pulse" />
  </div>
  <div>
@@ -139,7 +139,7 @@ export default function ItemViewTab({
  onClick={() => onSelectMedicine(m.id)}
  className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-xl px-3 py-1.5 text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer hover:scale-[1.02]"
  >
- <Package className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+ <Package className="w-3.5 h-3.5 text-brand-600 shrink-0" />
  {m.name}
  </button>
  ))
@@ -271,11 +271,11 @@ export default function ItemViewTab({
  switch (type) {
  case 'manual_add':
  case 'stock_in':
- return { bg: 'bg-emerald-50 text-emerald-700 border-emerald-200 ', icon: <TrendingUp className="w-3.5 h-3.5 text-emerald-600" /> };
+ return { bg: 'bg-brand-50 text-brand-700 border-brand-200 ', icon: <TrendingUp className="w-3.5 h-3.5 text-brand-600" /> };
  case 'manual_subtract':
  return { bg: 'bg-rose-50 text-rose-700 border-rose-200 ', icon: <TrendingDown className="w-3.5 h-3.5 text-rose-600" /> };
  case 'scan_add':
- return { bg: 'bg-blue-50 text-emerald-700 border-blue-200 ', icon: <Plus className="w-3.5 h-3.5 text-emerald-600" /> };
+ return { bg: 'bg-blue-50 text-brand-700 border-blue-200 ', icon: <Plus className="w-3.5 h-3.5 text-brand-600" /> };
  default:
  return { bg: 'bg-slate-100 text-slate-700 border-slate-200 ', icon: <Clock className="w-3.5 h-3.5 text-slate-500" /> };
  }
@@ -287,12 +287,12 @@ export default function ItemViewTab({
  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
  <button
  onClick={() => onSelectMedicine(null)}
- className="text-xs font-mono font-bold text-slate-500 hover:text-emerald-600 transition-colors flex items-center gap-1.5 bg-white border border-slate-200 px-3 py-1.5 rounded-xl cursor-pointer shadow-sm animate-pulse"
+ className="text-xs font-mono font-bold text-slate-500 hover:text-brand-600 transition-colors flex items-center gap-1.5 bg-white border border-slate-200 px-3 py-1.5 rounded-xl cursor-pointer shadow-sm animate-pulse"
  >
  {lang === 'ar' ? '← العودة للسجل العام' : '← Back to Ledger'}
  </button>
  <span className="text-xs text-slate-400 font-mono flex items-center gap-1">
- <Shield className="w-3.5 h-3.5 text-emerald-500" />
+ <Shield className="w-3.5 h-3.5 text-brand-500" />
  {lang === 'ar' ? 'رمز حماية العزل:' : 'Tenant Isolation Key:'} <b className="text-slate-600 ">pharmacy-east-01</b>
  </span>
  </div>
@@ -301,11 +301,11 @@ export default function ItemViewTab({
  {/* Analytics Card Column */}
  <div className="lg:col-span-4 space-y-6">
  <div className="p-6 rounded-xl bg-white border border-slate-200 relative overflow-hidden shadow-sm">
- <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+ <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/5 rounded-full blur-3xl pointer-events-none" />
  
  {/* Core Item Label */}
  <div>
- <span className="text-[10px] font-mono font-bold text-emerald-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-md uppercase">
+ <span className="text-[10px] font-mono font-bold text-brand-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-md uppercase">
  {translateCategory(medicine.category)}
  </span>
  <h2 className="text-xl font-bold tracking-tight text-slate-800 mt-3">
@@ -322,21 +322,21 @@ export default function ItemViewTab({
  <div>
  <div className="flex justify-between text-[11px] font-mono mb-1 text-slate-500">
  <span className="font-bold">{lang === 'ar' ? 'درجة إشباع المخزون' : 'Stock Saturation'}</span>
- <span className={isLowStock ? 'text-amber-600 font-bold' : 'text-emerald-600 font-bold'}>
+ <span className={isLowStock ? 'text-amber-600 font-bold' : 'text-brand-600 font-bold'}>
  {medicine.stock} / {medicine.minThreshold * 2} {lang === 'ar' ? 'علبة' : 'capacity'}
  </span>
  </div>
  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden relative">
  <div 
  className={`h-full rounded-full transition-all duration-500 ${
- isLowStock ? 'bg-amber-500' : 'bg-emerald-500'
+ isLowStock ? 'bg-amber-500' : 'bg-brand-500'
  }`}
  style={{ width: `${Math.min(100, (medicine.stock / ((medicine.minThreshold * 2) || 1)) * 100)}%` }}
  />
  </div>
  <div className="flex justify-between items-center text-[10px] font-mono text-slate-400 mt-1.5">
  <span>{lang === 'ar' ? 'حد طلب إعادة التوريد:' : 'Reorder threshold limit:'} {medicine.minThreshold}</span>
- <span className={isLowStock ? 'text-amber-600 font-bold' : 'text-emerald-600 font-bold'}>
+ <span className={isLowStock ? 'text-amber-600 font-bold' : 'text-brand-600 font-bold'}>
  {isLowStock ? (lang === 'ar' ? 'تنبيه: مخزون منخفض' : 'LOW TRIGGER') : (lang === 'ar' ? 'آمن' : 'SECURE')}
  </span>
  </div>
@@ -346,7 +346,7 @@ export default function ItemViewTab({
  <div className="p-3 bg-slate-50 rounded-xl border border-slate-150 flex justify-between items-center">
  <div className="font-mono">
  <span className="text-[9px] text-slate-400 uppercase block font-bold">{lang === 'ar' ? 'إجمالي قيمة المستودع' : 'Asset Valuation'}</span>
- <span className="text-md font-bold text-emerald-600 mt-0.5 block">
+ <span className="text-md font-bold text-brand-600 mt-0.5 block">
  {(Number(totalValuation) || 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'S.P.'}
  </span>
  </div>
@@ -379,7 +379,7 @@ export default function ItemViewTab({
  ? 'text-rose-600' 
  : isExpiringSoon 
  ? 'text-amber-600' 
- : 'text-emerald-600'
+ : 'text-brand-600'
  }`}>
  {isExpired 
  ? (lang === 'ar' ? 'منتهي الصلاحية' : 'EXPIRED') 
@@ -429,7 +429,7 @@ export default function ItemViewTab({
  onClick={() => setIsEditing(false)}
  className={`px-4 py-2 rounded-xl text-xs font-semibold font-mono transition-all border cursor-pointer ${
  !isEditing 
- ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' 
+ ? 'bg-brand-600 text-white border-brand-600 shadow-sm' 
  : 'bg-white text-slate-500 border-slate-200 hover:text-slate-800'
  }`}
  >
@@ -440,7 +440,7 @@ export default function ItemViewTab({
  onClick={() => setIsEditing(true)}
  className={`px-4 py-2 rounded-xl text-xs font-semibold font-mono transition-all border cursor-pointer ${
  isEditing 
- ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' 
+ ? 'bg-brand-600 text-white border-brand-600 shadow-sm' 
  : 'bg-white text-slate-500 border-slate-200 hover:text-slate-800'
  }`}
  >
@@ -460,7 +460,7 @@ export default function ItemViewTab({
  {/* Adjust Stock Form Card */}
  <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-4">
  <h3 className="text-md font-bold text-slate-800 flex items-center gap-2">
- <History className="text-emerald-600 stroke-[2.2]" />
+ <History className="text-brand-600 stroke-[2.2]" />
  {lang === 'ar' ? 'تسجيل حركة مخزنية جديدة' : 'Record Ledger Stock Change'}
  </h3>
  <p className="text-xs text-slate-400 leading-relaxed">
@@ -495,7 +495,7 @@ export default function ItemViewTab({
  placeholder="e.g. 10"
  value={transactionDelta}
  onChange={(e) => setTransactionDelta(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-emerald-500/50 transition-all font-mono"
+ className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-brand-500/50 transition-all font-mono"
  />
  </div>
 
@@ -508,7 +508,7 @@ export default function ItemViewTab({
  placeholder={lang === 'ar' ? 'مثال: صرف دواء بوصفة طبية' : 'e.g. Dispensed under prescription'}
  value={transactionNote}
  onChange={(e) => setTransactionNote(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none focus:border-emerald-500/50 transition-colors"
+ className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none focus:border-brand-500/50 transition-colors"
  />
  </div>
 
@@ -517,7 +517,7 @@ export default function ItemViewTab({
  <button
  id="btn-commit-ledger"
  type="submit"
- className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95 shadow-sm"
+ className="w-full py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95 shadow-sm"
  >
  {lang === 'ar' ? 'تقييد الحركة' : 'Commit'}
  </button>
@@ -529,7 +529,7 @@ export default function ItemViewTab({
  <div className="p-6 rounded-xl bg-indigo-50/50 border border-indigo-200/50 shadow-sm space-y-4">
  <div className="flex justify-between items-center pb-2">
  <h3 className="text-md font-bold text-indigo-900 flex items-center gap-2">
- <ShoppingCart className="text-emerald-600 w-5 h-5 stroke-[2.2]" />
+ <ShoppingCart className="text-brand-600 w-5 h-5 stroke-[2.2]" />
  {lang === 'ar' ? 'طلب توريد من المستودع (B2B)' : 'Wholesale Restock Request (B2B)'}
  </h3>
  </div>
@@ -549,13 +549,13 @@ export default function ItemViewTab({
  min="1"
  value={b2bQty}
  onChange={(e) => setB2bQty(e.target.value)}
- className="w-full bg-white border border-indigo-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-emerald-500/50 transition-all font-mono"
+ className="w-full bg-white border border-indigo-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-brand-500/50 transition-all font-mono"
  />
  </div>
  <button
  onClick={handleGenerateB2BOrder}
  disabled={isSubmittingB2B}
- className="w-full sm:w-auto px-6 py-2 bg-emerald-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-indigo-500/20"
+ className="w-full sm:w-auto px-6 py-2 bg-brand-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-indigo-500/20"
  >
  <Send className="w-3.5 h-3.5" />
  {lang === 'ar' ? 'إرسال طلب التوريد' : 'Submit Restock Request'}
@@ -567,7 +567,7 @@ export default function ItemViewTab({
  <div className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm space-y-4">
  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
  <h3 className="text-md font-bold text-slate-800 flex items-center gap-2">
- <Clock className="text-emerald-600 stroke-[2.2]" />
+ <Clock className="text-brand-600 stroke-[2.2]" />
  {lang === 'ar' ? 'سجل التدقيق التاريخي للبطاقة' : 'Audit History Timeline'}
  </h3>
  <span className="text-[10px] font-mono text-slate-400 font-bold uppercase">
@@ -584,7 +584,7 @@ export default function ItemViewTab({
  <div key={log.id} className="relative pl-6 pb-4 border-l border-slate-100 last:border-transparent last:pb-0">
  {/* Bullet Circle */}
  <div className={`absolute -left-1.5 top-1.5 w-3 h-3 rounded-full border-2 ${
- isDeltaPositive ? 'bg-emerald-500 border-white' : 'bg-rose-500 border-white'
+ isDeltaPositive ? 'bg-brand-500 border-white' : 'bg-rose-500 border-white'
  }`} />
 
  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 p-3 bg-slate-50 rounded-xl border border-slate-150 ">
@@ -611,7 +611,7 @@ export default function ItemViewTab({
  <span className="text-[10px] text-slate-400 block font-bold">
  {new Date(log.timestamp).toLocaleString()}
  </span>
- <span className="text-[9px] text-emerald-600 block mt-0.5 font-bold">
+ <span className="text-[9px] text-brand-600 block mt-0.5 font-bold">
  {lang === 'ar' ? 'المسؤول:' : 'Operator:'} {log.userEmail || "anonymous"}
  </span>
  </div>
@@ -655,7 +655,7 @@ export default function ItemViewTab({
  required
  value={editForm.strength || ''}
  onChange={(e) => setEditForm({ ...editForm, strength: e.target.value })}
- className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none focus:border-emerald-500/50 transition-all"
+ className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none focus:border-brand-500/50 transition-all"
  />
  </div>
 
@@ -668,7 +668,7 @@ export default function ItemViewTab({
  required
  value={editForm.shelfLocation || ''}
  onChange={(e) => setEditForm({ ...editForm, shelfLocation: e.target.value })}
- className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none focus:border-emerald-500/50 transition-all"
+ className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none focus:border-brand-500/50 transition-all"
  />
  </div>
 
@@ -681,7 +681,7 @@ export default function ItemViewTab({
  required
  value={editForm.price || ''}
  onChange={(e) => setEditForm({ ...editForm, price: parseFloat(e.target.value) || 0 })}
- className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-emerald-500/50 transition-all"
+ className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-brand-500/50 transition-all"
  />
  </div>
 
@@ -694,7 +694,7 @@ export default function ItemViewTab({
  required
  value={editForm.minThreshold || ''}
  onChange={(e) => setEditForm({ ...editForm, minThreshold: parseInt(e.target.value, 10) || 0 })}
- className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-emerald-500/50 transition-all"
+ className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-brand-500/50 transition-all"
  />
  </div>
 
@@ -707,7 +707,7 @@ export default function ItemViewTab({
  required
  value={editForm.batchNumber || ''}
  onChange={(e) => setEditForm({ ...editForm, batchNumber: e.target.value })}
- className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-emerald-500/50 transition-all font-mono"
+ className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none focus:border-brand-500/50 transition-all font-mono"
  />
  </div>
 
@@ -720,7 +720,7 @@ export default function ItemViewTab({
  required
  value={editForm.supplier || ''}
  onChange={(e) => setEditForm({ ...editForm, supplier: e.target.value })}
- className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none focus:border-emerald-500/50 transition-all"
+ className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none focus:border-brand-500/50 transition-all"
  />
  </div>
  </div>
@@ -736,7 +736,7 @@ export default function ItemViewTab({
  <button
  id="btn-save-details"
  type="submit"
- className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer active:scale-95 shadow-sm"
+ className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer active:scale-95 shadow-sm"
  >
  <Save className="w-3.5 h-3.5" />
  {lang === 'ar' ? 'حفظ التعديلات' : 'Save Details'}

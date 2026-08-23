@@ -21,7 +21,7 @@ export default function LegalModal({ isOpen, onClose, type, lang }: LegalModalPr
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden"
+          className="bg-white rounded-lg shadow-xl border border-slate-200 w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden"
         >
           <div className="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
             <h2 className="text-xl font-bold text-slate-900">
@@ -157,7 +157,7 @@ export default function LegalModal({ isOpen, onClose, type, lang }: LegalModalPr
           <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end">
             <button
               onClick={onClose}
-              className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-sm transition-colors cursor-pointer"
+              className="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-sm transition-colors cursor-pointer"
             >
               {isArabic ? 'إغلاق' : 'Close'}
             </button>

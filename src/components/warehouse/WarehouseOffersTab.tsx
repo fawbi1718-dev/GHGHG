@@ -602,7 +602,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
     <div className="flex-1 bg-[#F4F7F5] min-h-[calc(100vh-140px)] p-4 lg:p-8 font-sans">
       {/* Firebase Rules Notice Banner if needed */}
       {firestoreRulesNotice && (
-        <div className="mb-5 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+        <div className="mb-5 bg-amber-50 border border-amber-200 rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
           <div className="flex items-start gap-3">
             <div className="p-2 bg-amber-100 rounded-xl text-amber-800 shrink-0 mt-0.5 sm:mt-0">
               <AlertCircle className="w-5 h-5" />
@@ -629,16 +629,16 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
       )}
 
       {/* Top Header Card */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 bg-white p-5 rounded-2xl border border-emerald-100 shadow-sm gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 bg-white p-5 rounded-lg border border-brand-100 shadow-sm gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700">
+            <div className="w-10 h-10 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-700">
               <Tag className="w-5 h-5" />
             </div>
             <div>
               <h1 className="text-xl font-black text-slate-900 flex items-center gap-2">
                 {lang === 'ar' ? 'سوق الجملة وإدارة العروض' : 'Wholesale Offers & Pricing Hub'}
-                <span className="text-xs font-bold font-mono px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                <span className="text-xs font-bold font-mono px-2.5 py-0.5 rounded-full bg-brand-100 text-brand-800">
                   {offers.length} {lang === 'ar' ? 'عرض' : 'Offers'}
                 </span>
               </h1>
@@ -659,7 +659,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
               setInventorySearch('');
               setIsPublishModalOpen(true);
             }}
-            className="flex-1 sm:flex-none bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer"
+            className="flex-1 sm:flex-none bg-brand-700 hover:bg-brand-800 active:scale-95 text-white font-bold px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             {lang === 'ar' ? 'نشر عروض من المخزون' : 'Publish Offers from Inventory'}
@@ -670,49 +670,49 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6 items-stretch sm:items-center justify-between">
         <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-emerald-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-brand-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={lang === 'ar' ? 'بحث في عروضك المنشورة...' : 'Search your published offers by medicine or active ingredient...'}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white text-slate-800 text-xs font-bold border border-emerald-100 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 focus:outline-none transition-all shadow-sm"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white text-slate-800 text-xs font-bold border border-brand-100 focus:border-brand-400 focus:ring-2 focus:ring-brand-100 focus:outline-none transition-all shadow-sm"
           />
         </div>
 
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
           <button 
             onClick={() => setActiveFilter('all')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'all' ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-200'}`}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'all' ? 'bg-brand-800 text-white border-brand-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-200'}`}
           >
             {lang === 'ar' ? 'الكل' : 'All'} ({offers.length})
           </button>
           <button 
             onClick={() => setActiveFilter('active')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'active' ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-200'}`}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'active' ? 'bg-brand-800 text-white border-brand-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-200'}`}
           >
             ✓ {lang === 'ar' ? 'النشطة' : 'Active'} ({offers.filter(o => o.active).length})
           </button>
           <button 
             onClick={() => setActiveFilter('hidden')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'hidden' ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-200'}`}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'hidden' ? 'bg-brand-800 text-white border-brand-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-200'}`}
           >
-            👁️ {lang === 'ar' ? 'المخفية' : 'Hidden'} ({offers.filter(o => !o.active).length})
+            {lang === 'ar' ? 'المخفية' : 'Hidden'} ({offers.filter(o => !o.active).length})
           </button>
           <button 
             onClick={() => setActiveFilter('clearance')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'clearance' ? 'bg-emerald-800 text-white border-emerald-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-200'}`}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${activeFilter === 'clearance' ? 'bg-brand-800 text-white border-brand-800 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-brand-200'}`}
           >
-            🔥 {lang === 'ar' ? 'تصفيات' : 'Clearance'} ({offers.filter(o => o.isClearance).length})
+            {lang === 'ar' ? 'تصفيات' : 'Clearance'} ({offers.filter(o => o.isClearance).length})
           </button>
         </div>
       </div>
 
       {/* Offers Table */}
-      <div className="bg-white rounded-2xl border border-emerald-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-lg border border-brand-100 shadow-sm overflow-hidden">
         {isLoadingOffers ? (
           <div className="py-20 flex flex-col items-center justify-center gap-3">
-            <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+            <Loader2 className="w-8 h-8 text-brand-600 animate-spin" />
             <p className="text-sm font-bold text-slate-500">
               {lang === 'ar' ? 'جارٍ مزامنة العروض من قاعدة البيانات...' : 'Synchronizing wholesale offers from Firestore...'}
             </p>
@@ -720,7 +720,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50/70 border-b border-emerald-100 text-slate-600 font-bold uppercase text-[10px] tracking-wider">
+              <thead className="bg-slate-50/70 border-b border-brand-100 text-slate-600 font-bold uppercase text-[10px] tracking-wider">
                 <tr>
                   <th className="p-4">{lang === 'ar' ? 'المادة الدوائية' : 'Medicine Details'}</th>
                   <th className="p-4">{lang === 'ar' ? 'سعر الجملة' : 'Wholesale Price'}</th>
@@ -732,7 +732,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                   <th className="p-4 text-right">{lang === 'ar' ? 'الإجراءات' : 'Actions'}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-emerald-50">
+              <tbody className="divide-y divide-brand-50">
                 {filteredOffers.map(offer => (
                   <tr 
                     key={offer.id} 
@@ -747,12 +747,12 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                           <div className="text-xs text-slate-500 font-medium">{offer.composition}</div>
                         )}
                         {offer.company && (
-                          <div className="text-[10px] text-emerald-700 font-bold mt-0.5">{offer.company}</div>
+                          <div className="text-[10px] text-brand-700 font-bold mt-0.5">{offer.company}</div>
                         )}
                       </div>
                     </td>
-                    <td className="p-4 font-black text-emerald-800 font-mono text-sm">
-                      {offer.priceSyp.toLocaleString()} <span className="text-[10px] font-normal text-emerald-600">SYP</span>
+                    <td className="p-4 font-black text-brand-800 font-mono text-sm">
+                      {offer.priceSyp.toLocaleString()} <span className="text-[10px] font-normal text-brand-600">SYP</span>
                     </td>
                     <td className="p-4 font-mono font-bold text-slate-700 text-xs">
                       {offer.minimumOrderQuantity} {lang === 'ar' ? 'قطع' : 'units'}
@@ -782,7 +782,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                     </td>
                     <td className="p-4 text-center">
                       {offer.active ? (
-                        <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                        <span className="inline-flex items-center gap-1 text-xs font-bold text-brand-700 bg-brand-50 border border-brand-200 px-2.5 py-1 rounded-full">
                           <CheckCircle className="w-3.5 h-3.5" />
                           {lang === 'ar' ? 'نشط في السوق' : 'Live on Market'}
                         </span>
@@ -797,7 +797,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                       <div className="flex items-center justify-end gap-1.5">
                         <button 
                           onClick={() => handleToggleOfferStatus(offer)}
-                          className={`p-2 rounded-lg transition-colors cursor-pointer ${offer.active ? 'text-slate-400 hover:text-amber-600 hover:bg-amber-50' : 'text-emerald-600 hover:bg-emerald-50'}`}
+                          className={`p-2 rounded-lg transition-colors cursor-pointer ${offer.active ? 'text-slate-400 hover:text-amber-600 hover:bg-amber-50' : 'text-brand-600 hover:bg-brand-50'}`}
                           title={offer.active ? (lang === 'ar' ? 'إخفاء العرض' : 'Hide Offer') : (lang === 'ar' ? 'تفعيل العرض' : 'Publish Offer')}
                         >
                           {offer.active ? <EyeOff className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
@@ -807,7 +807,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                             setEditingOffer({ ...offer });
                             setIsEditingModalOpen(true);
                           }}
-                          className="p-2 rounded-lg text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 transition-colors cursor-pointer"
+                          className="p-2 rounded-lg text-slate-400 hover:text-brand-700 hover:bg-brand-50 transition-colors cursor-pointer"
                           title={lang === 'ar' ? 'تعديل العرض' : 'Edit Offer'}
                         >
                           <Edit className="w-4 h-4" />
@@ -827,7 +827,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                 {filteredOffers.length === 0 && (
                   <tr>
                     <td colSpan={8} className="p-12 text-center text-slate-500">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mx-auto mb-3">
+                      <div className="w-12 h-12 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600 mx-auto mb-3">
                         <Tag className="w-6 h-6" />
                       </div>
                       <h3 className="text-base font-bold text-slate-800 mb-1">
@@ -844,7 +844,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                           setDraftForms({});
                           setIsPublishModalOpen(true);
                         }}
-                        className="px-4 py-2 bg-emerald-700 text-white rounded-xl text-xs font-bold hover:bg-emerald-800 transition-colors cursor-pointer"
+                        className="px-4 py-2 bg-brand-700 text-white rounded-xl text-xs font-bold hover:bg-brand-800 transition-colors cursor-pointer"
                       >
                         {lang === 'ar' ? 'نشر أول عرض الآن' : 'Publish First Offer'}
                       </button>
@@ -872,33 +872,33 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
           {/* Search Inventory */}
           <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-emerald-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-brand-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={inventorySearch}
                 onChange={(e) => setInventorySearch(e.target.value)}
                 placeholder={lang === 'ar' ? 'ابحث في مخزون المستودع بالاسم، التركيب، أو الباركود...' : 'Search warehouse stock by trade name, generic, or barcode...'}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 text-slate-800 text-xs font-bold border border-slate-200 focus:border-emerald-500 focus:bg-white focus:outline-none transition-all"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 text-slate-800 text-xs font-bold border border-slate-200 focus:border-brand-500 focus:bg-white focus:outline-none transition-all"
               />
             </div>
             <div className="text-xs font-bold text-slate-500 flex items-center gap-1.5 px-3 py-2 bg-slate-100 rounded-xl whitespace-nowrap">
-              <Layers className="w-4 h-4 text-emerald-700" />
+              <Layers className="w-4 h-4 text-brand-700" />
               <span>{selectedMedIds.length} {lang === 'ar' ? 'محدد' : 'selected'}</span>
             </div>
           </div>
 
           {/* Quick Bulk Settings */}
           {selectedMedIds.length > 1 && (
-            <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-xl p-3.5 space-y-3">
+            <div className="bg-brand-50/70 border border-brand-200/80 rounded-xl p-3.5 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-emerald-900 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                <span className="text-xs font-bold text-brand-900 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-brand-700" />
                   {lang === 'ar' ? 'تطبيق إعدادات جماعية سريعة' : 'Quick Bulk Offer Presets'}
                 </span>
                 <button
                   type="button"
                   onClick={handleApplyBulkSettings}
-                  className="text-xs font-bold text-emerald-800 hover:text-emerald-950 underline cursor-pointer"
+                  className="text-xs font-bold text-brand-800 hover:text-brand-950 underline cursor-pointer"
                 >
                   {lang === 'ar' ? 'تطبيق على الكل' : 'Apply to all selected'}
                 </button>
@@ -914,7 +914,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                     min="1"
                     value={bulkMoq}
                     onChange={(e) => setBulkMoq(parseInt(e.target.value) || 1)}
-                    className="w-full px-2.5 py-1.5 text-xs font-mono font-bold bg-white border border-emerald-200 rounded-lg focus:outline-none focus:border-emerald-500"
+                    className="w-full px-2.5 py-1.5 text-xs font-mono font-bold bg-white border border-brand-200 rounded-lg focus:outline-none focus:border-brand-500"
                   />
                 </div>
                 <div>
@@ -926,7 +926,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                     placeholder="e.g. 10+1"
                     value={bulkBonus}
                     onChange={(e) => setBulkBonus(e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs font-bold bg-white border border-emerald-200 rounded-lg focus:outline-none focus:border-emerald-500"
+                    className="w-full px-2.5 py-1.5 text-xs font-bold bg-white border border-brand-200 rounded-lg focus:outline-none focus:border-brand-500"
                   />
                 </div>
               </div>
@@ -942,14 +942,14 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
               return (
                 <div 
                   key={item.id} 
-                  className={`p-3 transition-colors ${isSelected ? 'bg-emerald-50/50' : 'hover:bg-slate-50'}`}
+                  className={`p-3 transition-colors ${isSelected ? 'bg-brand-50/50' : 'hover:bg-slate-50'}`}
                 >
                   <div className="flex items-start gap-3">
                     <input
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => toggleSelectMedicine(item)}
-                      className="mt-1 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer border-slate-300"
+                      className="mt-1 w-4 h-4 rounded text-brand-600 focus:ring-brand-500 cursor-pointer border-slate-300"
                     />
 
                     <div className="flex-1 min-w-0">
@@ -959,7 +959,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                           <span className="text-[10px] text-slate-500 block truncate">{item.genericName}</span>
                         </div>
                         <div className="text-right">
-                          <span className="text-xs font-black font-mono text-emerald-800 block">
+                          <span className="text-xs font-black font-mono text-brand-800 block">
                             {item.price > 0 ? `${item.price.toLocaleString()} SYP` : 'N/A'}
                           </span>
                           <span className="text-[10px] text-slate-500 font-mono">
@@ -970,7 +970,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
 
                       {/* Expanded Draft Inputs when Selected */}
                       {isSelected && draft && (
-                        <div className="mt-3 pt-3 border-t border-emerald-100/70 grid grid-cols-2 sm:grid-cols-4 gap-2 bg-white p-2.5 rounded-lg border border-emerald-100">
+                        <div className="mt-3 pt-3 border-t border-brand-100/70 grid grid-cols-2 sm:grid-cols-4 gap-2 bg-white p-2.5 rounded-lg border border-brand-100">
                           <div>
                             <label className="block text-[9px] font-bold text-slate-600 uppercase mb-0.5">
                               {lang === 'ar' ? 'سعر الجملة (ل.س)' : 'Wholesale (SYP)'}
@@ -980,7 +980,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                               min="1"
                               value={draft.priceSyp || ''}
                               onChange={(e) => updateDraftField(item.id, 'priceSyp', parseInt(e.target.value) || 0)}
-                              className="w-full px-2 py-1 text-xs font-bold font-mono border border-slate-200 rounded focus:border-emerald-500"
+                              className="w-full px-2 py-1 text-xs font-bold font-mono border border-slate-200 rounded focus:border-brand-500"
                             />
                           </div>
 
@@ -993,7 +993,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                               min="1"
                               value={draft.availableQuantity || ''}
                               onChange={(e) => updateDraftField(item.id, 'availableQuantity', parseInt(e.target.value) || 0)}
-                              className="w-full px-2 py-1 text-xs font-bold font-mono border border-slate-200 rounded focus:border-emerald-500"
+                              className="w-full px-2 py-1 text-xs font-bold font-mono border border-slate-200 rounded focus:border-brand-500"
                             />
                           </div>
 
@@ -1006,7 +1006,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                               min="1"
                               value={draft.minimumOrderQuantity || ''}
                               onChange={(e) => updateDraftField(item.id, 'minimumOrderQuantity', parseInt(e.target.value) || 1)}
-                              className="w-full px-2 py-1 text-xs font-bold font-mono border border-slate-200 rounded focus:border-emerald-500"
+                              className="w-full px-2 py-1 text-xs font-bold font-mono border border-slate-200 rounded focus:border-brand-500"
                             />
                           </div>
 
@@ -1019,7 +1019,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                               placeholder="10+1"
                               value={draft.bonus || ''}
                               onChange={(e) => updateDraftField(item.id, 'bonus', e.target.value)}
-                              className="w-full px-2 py-1 text-xs font-bold border border-slate-200 rounded focus:border-emerald-500"
+                              className="w-full px-2 py-1 text-xs font-bold border border-slate-200 rounded focus:border-brand-500"
                             />
                           </div>
                         </div>
@@ -1063,16 +1063,16 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                 onClick={handlePublishOffers}
                 className={`relative overflow-hidden px-6 py-2.5 text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 ${
                   publishStatus === 'published' 
-                    ? 'bg-emerald-600 text-white' 
+                    ? 'bg-brand-600 text-white' 
                     : publishStatus === 'publishing'
-                    ? 'bg-emerald-800 text-white'
-                    : 'bg-emerald-700 hover:bg-emerald-800 text-white active:scale-95'
+                    ? 'bg-brand-800 text-white'
+                    : 'bg-brand-700 hover:bg-brand-800 text-white active:scale-95'
                 }`}
               >
                 {/* Subtle Light-Green Fill Progress Animation during publishing */}
                 {publishStatus === 'publishing' && (
                   <motion.div
-                    className="absolute inset-0 bg-emerald-500/30"
+                    className="absolute inset-0 bg-brand-500/30"
                     initial={{ x: '-100%' }}
                     animate={{ x: '100%' }}
                     transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
@@ -1088,7 +1088,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                   </>
                 ) : publishStatus === 'published' ? (
                   <>
-                    <Check className="w-4 h-4 text-emerald-200 relative z-10" />
+                    <Check className="w-4 h-4 text-brand-200 relative z-10" />
                     <span className="relative z-10">
                       {lang === 'ar' ? 'تم النشر بنجاح ✓' : 'Published ✓'}
                     </span>
@@ -1214,7 +1214,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                   value={editingOffer.priceSyp || ''}
                   onChange={(e) => setEditingOffer({ ...editingOffer, priceSyp: parseInt(e.target.value) || 0 })}
                   required
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs font-bold focus:border-emerald-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs font-bold focus:border-brand-500 focus:outline-none"
                 />
               </div>
 
@@ -1228,7 +1228,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                   value={editingOffer.availableQuantity || ''}
                   onChange={(e) => setEditingOffer({ ...editingOffer, availableQuantity: parseInt(e.target.value) || 0 })}
                   required
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs font-bold focus:border-emerald-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs font-bold focus:border-brand-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -1244,7 +1244,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                   value={editingOffer.minimumOrderQuantity || ''}
                   onChange={(e) => setEditingOffer({ ...editingOffer, minimumOrderQuantity: parseInt(e.target.value) || 1 })}
                   required
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs font-bold focus:border-emerald-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs font-bold focus:border-brand-500 focus:outline-none"
                 />
               </div>
 
@@ -1257,7 +1257,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                   placeholder="e.g. 10 + 1"
                   value={editingOffer.bonus || ''}
                   onChange={(e) => setEditingOffer({ ...editingOffer, bonus: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold focus:border-emerald-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl text-xs font-bold focus:border-brand-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -1272,7 +1272,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                   value={editingOffer.expiryDate || ''}
                   onChange={(e) => setEditingOffer({ ...editingOffer, expiryDate: e.target.value })}
                   required
-                  className="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs font-bold focus:border-emerald-500 focus:outline-none"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-xl font-mono text-xs font-bold focus:border-brand-500 focus:outline-none"
                 />
               </div>
 
@@ -1282,7 +1282,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
                     type="checkbox"
                     checked={editingOffer.isClearance}
                     onChange={(e) => setEditingOffer({ ...editingOffer, isClearance: e.target.checked })}
-                    className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500 cursor-pointer"
+                    className="w-4 h-4 text-brand-600 rounded focus:ring-brand-500 cursor-pointer"
                   />
                   <span className="text-xs font-bold text-rose-700">
                     {lang === 'ar' ? 'عرض تصفية خاص' : 'Clearance Special'}
@@ -1305,7 +1305,7 @@ export default function WarehouseOffersTab({ medicines = [], lang = 'en', trigge
 
               <button
                 type="submit"
-                className="px-5 py-2 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl shadow-sm transition-all cursor-pointer"
+                className="px-5 py-2 text-xs font-bold text-white bg-brand-700 hover:bg-brand-800 rounded-xl shadow-sm transition-all cursor-pointer"
               >
                 {lang === 'ar' ? 'حفظ التعديلات' : 'Save Changes'}
               </button>

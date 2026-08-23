@@ -385,18 +385,18 @@ export default function CompaniesDirectoryTab({
         <div className="space-y-8 animate-in fade-in duration-200">
           
           {/* Top Banner & Clinical Search Area */}
-          <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200/80 relative overflow-hidden">
+          <div className="bg-white p-6 sm:p-8 rounded-lg shadow-sm border border-slate-200/80 relative overflow-hidden">
             {/* Background Medical Watermark */}
             <div className="absolute right-0 top-0 bottom-0 opacity-[0.03] pointer-events-none flex items-center pr-6 overflow-hidden">
-              <Pill className="w-80 h-80 text-emerald-900 stroke-[1]" />
+              <Pill className="w-80 h-80 text-brand-900 stroke-[1]" />
             </div>
 
             <div className="relative z-10 max-w-3xl space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 text-xs font-bold uppercase tracking-wider">
-                <Stethoscope className="w-3.5 h-3.5 text-emerald-700" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-800 border border-brand-200/70 text-xs font-bold uppercase tracking-wider">
+                <Stethoscope className="w-3.5 h-3.5 text-brand-700" />
                 <span>{lang === 'ar' ? 'الدليل الدوائي والكتالوج الطبي' : 'Clinical Medicine Directory'}</span>
                 {totalMedsCount > 0 && (
-                  <span className="bg-emerald-200/60 text-emerald-900 px-2 py-0.5 rounded-full text-[11px] font-mono font-black">
+                  <span className="bg-brand-200/60 text-brand-900 px-2 py-0.5 rounded-full text-[11px] font-mono font-black">
                     {totalMedsCount.toLocaleString()} {lang === 'ar' ? 'صنف' : 'items'}
                   </span>
                 )}
@@ -426,7 +426,7 @@ export default function CompaniesDirectoryTab({
                       ? '🔍 ابحث بالاسم التجاري، المادة الفعالة، اسم الشركة، أو امسح الباركود...'
                       : '🔍 Search by medicine name, active ingredient, manufacturer, or barcode...'
                   }
-                  className={`w-full ${lang === 'ar' ? 'pr-12 pl-10' : 'pl-12 pr-10'} py-3.5 rounded-xl bg-slate-50 text-slate-900 text-sm font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all shadow-inner`}
+                  className={`w-full ${lang === 'ar' ? 'pr-12 pl-10' : 'pl-12 pr-10'} py-3.5 rounded-xl bg-slate-50 text-slate-900 text-sm font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all shadow-inner`}
                 />
                 {searchQuery && (
                   <button
@@ -443,7 +443,7 @@ export default function CompaniesDirectoryTab({
                 <button
                   type="button"
                   onClick={onOpenScanner}
-                  className="px-4 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white transition-all shadow-sm flex items-center gap-2 font-bold text-xs sm:text-sm shrink-0 cursor-pointer min-h-[48px]"
+                  className="px-4 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-700 active:scale-95 text-white transition-all shadow-sm flex items-center gap-2 font-bold text-xs sm:text-sm shrink-0 cursor-pointer min-h-[48px]"
                   title={lang === 'ar' ? 'ماسح الباركود والكاميرا' : 'Camera Barcode Scanner'}
                 >
                   <Camera className="w-4 h-4" />
@@ -458,7 +458,7 @@ export default function CompaniesDirectoryTab({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-800 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-brand-100/80 text-brand-800 flex items-center justify-center">
                     <Building2 className="w-4 h-4" />
                   </div>
                   <div>
@@ -473,7 +473,7 @@ export default function CompaniesDirectoryTab({
 
                 <button
                   onClick={() => setIsAllCompaniesModalOpen(true)}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50 text-emerald-700 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-brand-300 hover:bg-brand-50 text-brand-700 text-xs font-bold transition-all shadow-sm cursor-pointer"
                 >
                   <span>{lang === 'ar' ? 'كافة الشركات' : 'View All'}</span>
                   {lang === 'ar' ? <ChevronLeft className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
@@ -508,14 +508,14 @@ export default function CompaniesDirectoryTab({
                           setSelectedCompany(company);
                           setCompanySearchQuery('');
                         }}
-                        className="bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md rounded-xl p-3.5 sm:p-4 transition-all duration-200 flex items-center justify-between group cursor-pointer relative overflow-hidden"
+                        className="bg-white border border-slate-200 hover:border-brand-400 hover:shadow-md rounded-xl p-3.5 sm:p-4 transition-all duration-200 flex items-center justify-between group cursor-pointer relative overflow-hidden"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-800 font-black text-sm flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                          <div className="w-10 h-10 rounded-xl bg-brand-50 border border-brand-100 text-brand-800 font-black text-sm flex items-center justify-center shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-colors">
                             {initials}
                           </div>
                           <div className="min-w-0">
-                            <h3 className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-emerald-700 transition-colors truncate">
+                            <h3 className="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-brand-700 transition-colors truncate">
                               {company.name}
                             </h3>
                             {company.count !== undefined && (
@@ -525,7 +525,7 @@ export default function CompaniesDirectoryTab({
                             )}
                           </div>
                         </div>
-                        <div className="text-slate-300 group-hover:text-emerald-600 transition-colors shrink-0">
+                        <div className="text-slate-300 group-hover:text-brand-600 transition-colors shrink-0">
                           {lang === 'ar' ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                         </div>
                       </motion.div>
@@ -540,7 +540,7 @@ export default function CompaniesDirectoryTab({
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-emerald-100/80 text-emerald-800 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-brand-100/80 text-brand-800 flex items-center justify-center">
                   <Pill className="w-4 h-4" />
                 </div>
                 <div>
@@ -567,7 +567,7 @@ export default function CompaniesDirectoryTab({
                     onClick={() => setSelectedCategory(cat.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                       selectedCategory === cat.id
-                        ? 'bg-emerald-600 text-white shadow-sm'
+                        ? 'bg-brand-600 text-white shadow-sm'
                         : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
                     }`}
                   >
@@ -581,7 +581,7 @@ export default function CompaniesDirectoryTab({
             {(isSearching || (isLoadingInitialMeds && !searchQuery)) ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {Array.from({ length: 8 }).map((_, i) => (
-                  <div key={i} className="bg-white p-5 rounded-2xl border border-slate-200 space-y-4">
+                  <div key={i} className="bg-white p-5 rounded-lg border border-slate-200 space-y-4">
                     <div className="flex justify-between items-start">
                       <div className="space-y-1.5 flex-1">
                         <Skeleton className="h-5 w-3/4" />
@@ -616,13 +616,13 @@ export default function CompaniesDirectoryTab({
                       whileHover={{ y: -2 }}
                       transition={{ duration: 0.15 }}
                       onClick={() => setInspectedMedicine(item)}
-                      className="bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md rounded-2xl p-4 sm:p-5 transition-all duration-200 flex flex-col justify-between group cursor-pointer relative"
+                      className="bg-white border border-slate-200 hover:border-brand-400 hover:shadow-md rounded-lg p-4 sm:p-5 transition-all duration-200 flex flex-col justify-between group cursor-pointer relative"
                     >
                       {/* Top Row: Name & Price */}
                       <div className="space-y-3">
                         <div className="flex justify-between items-start gap-2">
                           <div className="flex-1 min-w-0">
-                            <h3 className="text-base font-bold text-slate-900 group-hover:text-emerald-700 transition-colors leading-snug line-clamp-2">
+                            <h3 className="text-base font-bold text-slate-900 group-hover:text-brand-700 transition-colors leading-snug line-clamp-2">
                               {item.name}
                             </h3>
                             {item.name_en && item.name_en !== item.name && (
@@ -632,7 +632,7 @@ export default function CompaniesDirectoryTab({
                             )}
                           </div>
                           
-                          <div className="shrink-0 bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-2.5 py-1 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap shadow-xs">
+                          <div className="shrink-0 bg-brand-50 text-brand-800 border border-brand-200/80 px-2.5 py-1 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap shadow-xs">
                             {Number(item.price || 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}
                           </div>
                         </div>
@@ -642,7 +642,7 @@ export default function CompaniesDirectoryTab({
                           {/* Active Ingredient */}
                           {item.composition && item.composition !== 'GENERAL' && (
                             <div className="flex items-center gap-1.5 text-slate-600">
-                              <FlaskConical className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                              <FlaskConical className="w-3.5 h-3.5 text-brand-600 shrink-0" />
                               <span className="font-semibold text-[11px] truncate" title={item.composition}>
                                 {item.composition}
                               </span>
@@ -681,7 +681,7 @@ export default function CompaniesDirectoryTab({
                           <button
                             type="button"
                             onClick={() => setActiveAlternativesMedicine(item)}
-                            className="flex-1 py-2 px-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 text-emerald-700 border border-slate-200 hover:border-emerald-300 transition-all font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                            className="flex-1 py-2 px-2.5 rounded-xl bg-slate-50 hover:bg-brand-50 text-brand-700 border border-slate-200 hover:border-brand-300 transition-all font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
                             title={lang === 'ar' ? 'البحث عن البدائل الدوائية' : 'Find Bio-Equivalents'}
                           >
                             <ArrowRightLeft className="w-3.5 h-3.5" />
@@ -704,8 +704,8 @@ export default function CompaniesDirectoryTab({
                           disabled={isOrdered}
                           className={`py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs ${
                             isOrdered
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
-                              : 'bg-emerald-600 hover:bg-emerald-700 text-white active:scale-95'
+                              ? 'bg-brand-50 text-brand-700 border border-brand-200 cursor-default'
+                              : 'bg-brand-600 hover:bg-brand-700 text-white active:scale-95'
                           }`}
                           title={lang === 'ar' ? 'إضافة لسلة البيع' : 'Add to POS Cart'}
                         >
@@ -728,8 +728,8 @@ export default function CompaniesDirectoryTab({
               </div>
             ) : (
               /* EMPTY STATE */
-              <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-3 shadow-sm">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-100">
+              <div className="bg-white rounded-lg border border-slate-200 p-12 text-center space-y-3 shadow-sm">
+                <div className="w-14 h-14 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center mx-auto border border-brand-100">
                   <Package className="w-7 h-7" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900">
@@ -758,19 +758,19 @@ export default function CompaniesDirectoryTab({
       {selectedCompany !== null && (
         <div className="space-y-6 animate-in fade-in duration-200">
           {/* Company Portfolio Header Card */}
-          <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-white border border-slate-200 shadow-sm rounded-lg p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3.5">
               <button
                 onClick={() => setSelectedCompany(null)}
-                className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 flex items-center justify-center transition-all cursor-pointer border border-slate-200"
+                className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-brand-50 hover:text-brand-700 text-slate-700 flex items-center justify-center transition-all cursor-pointer border border-slate-200"
                 title={lang === 'ar' ? 'العودة للدليل الرئيسي' : 'Back to Directory'}
               >
                 {lang === 'ar' ? <ArrowRightLeft className="w-4 h-4 rotate-180" /> : <ArrowLeft className="w-4 h-4" />}
               </button>
 
               <div className="space-y-0.5">
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase">
-                  <Building2 className="w-3 h-3 text-emerald-600" />
+                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-brand-50 text-brand-800 text-[10px] font-bold uppercase">
+                  <Building2 className="w-3 h-3 text-brand-600" />
                   <span>{lang === 'ar' ? 'ملف الشركة المصنعة' : 'Manufacturer Portfolio'}</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-black text-slate-900">
@@ -790,7 +790,7 @@ export default function CompaniesDirectoryTab({
                 value={companySearchQuery}
                 onChange={(e) => setCompanySearchQuery(e.target.value)}
                 placeholder={lang === 'ar' ? 'ابحث في منتجات الشركة...' : 'Search within company...'}
-                className={`w-full ${lang === 'ar' ? 'pr-9 pl-8' : 'pl-9 pr-8'} py-2.5 rounded-xl bg-slate-50 text-slate-900 text-xs font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+                className={`w-full ${lang === 'ar' ? 'pr-9 pl-8' : 'pl-9 pr-8'} py-2.5 rounded-xl bg-slate-50 text-slate-900 text-xs font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500`}
               />
               {companySearchQuery && (
                 <button
@@ -807,7 +807,7 @@ export default function CompaniesDirectoryTab({
           {isLoadingPortfolio ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="bg-white p-5 rounded-2xl border border-slate-200 space-y-3">
+                <div key={i} className="bg-white p-5 rounded-lg border border-slate-200 space-y-3">
                   <Skeleton className="h-5 w-3/4" />
                   <Skeleton className="h-3 w-1/2" />
                   <Skeleton className="h-4 w-full pt-2" />
@@ -824,12 +824,12 @@ export default function CompaniesDirectoryTab({
                     whileHover={{ y: -2 }}
                     transition={{ duration: 0.15 }}
                     onClick={() => setInspectedMedicine(item)}
-                    className="bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-md rounded-2xl p-4 sm:p-5 transition-all duration-200 flex flex-col justify-between group cursor-pointer"
+                    className="bg-white border border-slate-200 hover:border-brand-400 hover:shadow-md rounded-lg p-4 sm:p-5 transition-all duration-200 flex flex-col justify-between group cursor-pointer"
                   >
                     <div className="space-y-3">
                       <div className="flex justify-between items-start gap-2">
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-base font-bold text-slate-900 group-hover:text-emerald-700 transition-colors leading-snug">
+                          <h3 className="text-base font-bold text-slate-900 group-hover:text-brand-700 transition-colors leading-snug">
                             {item.name}
                           </h3>
                           {item.name_en && item.name_en !== item.name && (
@@ -838,7 +838,7 @@ export default function CompaniesDirectoryTab({
                             </p>
                           )}
                         </div>
-                        <div className="shrink-0 bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-2.5 py-1 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap">
+                        <div className="shrink-0 bg-brand-50 text-brand-800 border border-brand-200/80 px-2.5 py-1 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap">
                           {Number(item.price || 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}
                         </div>
                       </div>
@@ -846,7 +846,7 @@ export default function CompaniesDirectoryTab({
                       <div className="space-y-1.5 pt-2 border-t border-slate-100 text-xs">
                         {item.composition && (
                           <div className="flex items-center gap-1.5 text-slate-600">
-                            <FlaskConical className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <FlaskConical className="w-3.5 h-3.5 text-brand-600 shrink-0" />
                             <span className="font-semibold text-[11px] truncate" title={item.composition}>
                               {item.composition}
                             </span>
@@ -866,7 +866,7 @@ export default function CompaniesDirectoryTab({
                         <button
                           type="button"
                           onClick={() => setActiveAlternativesMedicine(item)}
-                          className="flex-1 py-2 px-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 text-emerald-700 border border-slate-200 hover:border-emerald-300 transition-all font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                          className="flex-1 py-2 px-2.5 rounded-xl bg-slate-50 hover:bg-brand-50 text-brand-700 border border-slate-200 hover:border-brand-300 transition-all font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"
                         >
                           <ArrowRightLeft className="w-3.5 h-3.5" />
                           <span>{lang === 'ar' ? 'البدائل' : 'Equivalents'}</span>
@@ -878,8 +878,8 @@ export default function CompaniesDirectoryTab({
                         disabled={isOrdered}
                         className={`py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer ${
                           isOrdered
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
-                            : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                            ? 'bg-brand-50 text-brand-700 border border-brand-200 cursor-default'
+                            : 'bg-brand-600 hover:bg-brand-700 text-white'
                         }`}
                       >
                         {isOrdered ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
@@ -891,7 +891,7 @@ export default function CompaniesDirectoryTab({
               })}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-3 shadow-sm">
+            <div className="bg-white rounded-lg border border-slate-200 p-12 text-center space-y-3 shadow-sm">
               <Package className="w-10 h-10 text-slate-300 mx-auto" />
               <h3 className="text-base font-bold text-slate-900">
                 {lang === 'ar' ? 'لم يتم العثور على أدوية للشركة' : 'No Products Found For Company'}
@@ -917,16 +917,16 @@ export default function CompaniesDirectoryTab({
               exit={{ scale: 0.96, opacity: 0, y: 12 }}
               transition={{ type: 'spring', damping: 26, stiffness: 320 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl bg-white border border-slate-200/90 rounded-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden my-auto relative"
+              className="w-full max-w-2xl bg-white border border-slate-200/90 rounded-xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden my-auto relative"
             >
               {/* Sticky Top Header with Clear Exit Controls */}
               <div className="sticky top-0 z-20 px-5 sm:px-6 py-4 border-b border-slate-100 bg-white/95 backdrop-blur-md flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-brand-100 text-brand-800 flex items-center justify-center shrink-0">
                     <Stethoscope className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-[11px] font-black uppercase tracking-wider text-emerald-800 block">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-brand-800 block">
                       {lang === 'ar' ? 'الملف الطبي للمستحضر' : 'Clinical Product Profile'}
                     </span>
                     <span className="text-xs text-slate-500 font-semibold">
@@ -962,7 +962,7 @@ export default function CompaniesDirectoryTab({
               <div className="p-5 sm:p-6 flex-1 overflow-y-auto space-y-6 bg-[#FAFBFC]">
                 
                 {/* 1. PRIMARY MEDICINE HEADER */}
-                <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-2xs space-y-4">
+                <div className="bg-white rounded-lg p-5 sm:p-6 border border-slate-200 shadow-2xs space-y-4">
                   
                   {/* Title & English Formulation */}
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
@@ -978,11 +978,11 @@ export default function CompaniesDirectoryTab({
                     </div>
 
                     {/* Prominent Price & Active Status */}
-                    <div className="shrink-0 flex flex-row sm:flex-col items-baseline sm:items-end justify-between gap-1 bg-emerald-50/70 border border-emerald-100 px-3.5 py-2 rounded-xl">
-                      <span className="text-[10px] font-bold text-emerald-800 uppercase">
+                    <div className="shrink-0 flex flex-row sm:flex-col items-baseline sm:items-end justify-between gap-1 bg-brand-50/70 border border-brand-100 px-3.5 py-2 rounded-xl">
+                      <span className="text-[10px] font-bold text-brand-800 uppercase">
                         {lang === 'ar' ? 'السعر الرسمي' : 'Catalog Price'}
                       </span>
-                      <span className="text-lg sm:text-xl font-black text-emerald-900 font-mono">
+                      <span className="text-lg sm:text-xl font-black text-brand-900 font-mono">
                         {Number(inspectedMedicine.price || 0).toLocaleString()} <span className="text-xs font-bold font-sans">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
                       </span>
                     </div>
@@ -994,7 +994,7 @@ export default function CompaniesDirectoryTab({
                     {/* Active Ingredient / Composition */}
                     <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 space-y-0.5 sm:col-span-2">
                       <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <FlaskConical className="w-3.5 h-3.5 text-emerald-600" />
+                        <FlaskConical className="w-3.5 h-3.5 text-brand-600" />
                         <span>{lang === 'ar' ? 'المادة الفعالة / Active Ingredient' : 'Active Ingredient Formulation'}</span>
                       </span>
                       <p className="text-sm font-mono font-bold text-slate-900 break-words leading-relaxed pt-0.5">
@@ -1027,7 +1027,7 @@ export default function CompaniesDirectoryTab({
                 </div>
 
                 {/* 2. SECONDARY: CATALOG & TECHNICAL INFORMATION (Tidy compact key/values) */}
-                <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-2xs space-y-3">
+                <div className="bg-white rounded-lg p-5 border border-slate-200 shadow-2xs space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700">
                       <Barcode className="w-4 h-4 text-slate-500" />
@@ -1054,9 +1054,9 @@ export default function CompaniesDirectoryTab({
                         <button
                           type="button"
                           onClick={() => handleCopyText(inspectedMedicine.barcode, 'barcode')}
-                          className="text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer shrink-0"
+                          className="text-brand-700 hover:text-brand-900 bg-brand-50 hover:bg-brand-100 px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer shrink-0"
                         >
-                          {copiedKey === 'barcode' ? <Check className="w-3 h-3 text-emerald-700" /> : <Copy className="w-3 h-3" />}
+                          {copiedKey === 'barcode' ? <Check className="w-3 h-3 text-brand-700" /> : <Copy className="w-3 h-3" />}
                           <span>{copiedKey === 'barcode' ? (lang === 'ar' ? 'تم النسخ' : 'Copied') : (lang === 'ar' ? 'نسخ' : 'Copy')}</span>
                         </button>
                       )}
@@ -1077,7 +1077,7 @@ export default function CompaniesDirectoryTab({
                         onClick={() => handleCopyText(inspectedMedicine.id, 'sako')}
                         className="text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer shrink-0"
                       >
-                        {copiedKey === 'sako' ? <Check className="w-3 h-3 text-emerald-700" /> : <Copy className="w-3 h-3" />}
+                        {copiedKey === 'sako' ? <Check className="w-3 h-3 text-brand-700" /> : <Copy className="w-3 h-3" />}
                         <span>{copiedKey === 'sako' ? (lang === 'ar' ? 'تم النسخ' : 'Copied') : (lang === 'ar' ? 'نسخ ID' : 'Copy ID')}</span>
                       </button>
                     </div>
@@ -1087,7 +1087,7 @@ export default function CompaniesDirectoryTab({
                       <span className="text-slate-500 font-semibold">
                         {lang === 'ar' ? 'حالة التخزين والمزامنة:' : 'Local Storage Status:'}
                       </span>
-                      <div className="flex items-center gap-1 text-emerald-700 font-bold text-[11px]">
+                      <div className="flex items-center gap-1 text-brand-700 font-bold text-[11px]">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>{lang === 'ar' ? 'متزامن محلياً (IndexedDB)' : 'Synced in Local DB'}</span>
                       </div>
@@ -1109,9 +1109,9 @@ export default function CompaniesDirectoryTab({
                     setActiveAlternativesMedicine(target);
                   }}
                   disabled={!inspectedMedicine.composition || inspectedMedicine.composition === 'GENERAL'}
-                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-emerald-50 text-emerald-800 border border-slate-200 hover:border-emerald-300 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs"
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-brand-50 text-brand-800 border border-slate-200 hover:border-brand-300 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-2xs"
                 >
-                  <ArrowRightLeft className="w-4 h-4 text-emerald-600" />
+                  <ArrowRightLeft className="w-4 h-4 text-brand-600" />
                   <span>{lang === 'ar' ? 'البحث عن البدائل المتكافئة' : 'View Bio-Equivalents'}</span>
                 </button>
 
@@ -1125,7 +1125,7 @@ export default function CompaniesDirectoryTab({
                         setInspectedMedicine(null);
                         onStartIntake(target);
                       }}
-                      className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer min-h-[42px]"
+                      className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer min-h-[42px]"
                     >
                       <PackagePlus className="w-4 h-4" />
                       <span>{lang === 'ar' ? 'إضافة إلى مخزون المستودع' : 'Add to Warehouse Inventory'}</span>
@@ -1134,7 +1134,7 @@ export default function CompaniesDirectoryTab({
                     <button
                       type="button"
                       onClick={() => handleAddToPOS(inspectedMedicine)}
-                      className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer min-h-[42px]"
+                      className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer min-h-[42px]"
                     >
                       <ShoppingCart className="w-4 h-4" />
                       <span>{lang === 'ar' ? 'إضافة إلى نقطة البيع' : 'Add to POS Cart'}</span>
@@ -1171,20 +1171,20 @@ export default function CompaniesDirectoryTab({
               exit={{ scale: 0.96, opacity: 0, y: 12 }}
               transition={{ type: 'spring', damping: 26, stiffness: 320 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto"
+              className="w-full max-w-2xl bg-white border border-slate-200 rounded-xl shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto"
             >
               {/* Sticky Header with Obvious Close Button */}
               <div className="sticky top-0 z-20 p-5 border-b border-slate-100 bg-white/95 backdrop-blur-md flex items-center justify-between gap-4">
                 <div className="space-y-1 min-w-0">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200/80">
-                    <ArrowRightLeft className="w-3 h-3 text-emerald-600" />
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-50 text-brand-800 border border-brand-200/80">
+                    <ArrowRightLeft className="w-3 h-3 text-brand-600" />
                     <span>{lang === 'ar' ? 'البدائل والمكافئات العلمية' : 'Bio-Equivalent Formulations'}</span>
                   </div>
                   <h3 className="text-lg font-black text-slate-900 truncate">
                     {activeAlternativesMedicine.name}
                   </h3>
                   <div className="text-xs font-mono text-slate-500 flex items-center gap-1.5 truncate">
-                    <FlaskConical className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <FlaskConical className="w-3.5 h-3.5 text-brand-600 shrink-0" />
                     <span className="truncate max-w-md">{activeAlternativesMedicine.composition || 'Active Ingredient'}</span>
                   </div>
                 </div>
@@ -1229,7 +1229,7 @@ export default function CompaniesDirectoryTab({
                     return (
                       <div
                         key={alt.id}
-                        className="bg-white rounded-xl p-4 border border-slate-200 hover:border-emerald-300 shadow-2xs hover:shadow-xs transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+                        className="bg-white rounded-xl p-4 border border-slate-200 hover:border-brand-300 shadow-2xs hover:shadow-xs transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
                       >
                         <div className="space-y-1 flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
@@ -1244,7 +1244,7 @@ export default function CompaniesDirectoryTab({
                           </div>
 
                           <div className="flex items-center gap-3 text-xs text-slate-500">
-                            <span className="font-bold text-emerald-700">
+                            <span className="font-bold text-brand-700">
                               {displayName}
                             </span>
                             {alt.form && (
@@ -1261,7 +1261,7 @@ export default function CompaniesDirectoryTab({
                               {altPrice ? `${altPrice.toLocaleString()} SYP` : 'Quote'}
                             </div>
                             {basePrice > 0 && altPrice > 0 && priceDiff !== 0 && (
-                              <div className={`text-[10px] font-bold ${priceDiff < 0 ? 'text-emerald-600' : 'text-slate-400'}`}>
+                              <div className={`text-[10px] font-bold ${priceDiff < 0 ? 'text-brand-600' : 'text-slate-400'}`}>
                                 {priceDiff < 0 ? `▼ -${Math.abs(priceDiff).toLocaleString()} SYP` : `▲ +${priceDiff.toLocaleString()} SYP`}
                               </div>
                             )}
@@ -1272,8 +1272,8 @@ export default function CompaniesDirectoryTab({
                             disabled={isOrdered}
                             className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs ${
                               isOrdered
-                                ? 'bg-emerald-50 border border-emerald-200 text-emerald-700 cursor-default'
-                                : 'bg-emerald-600 hover:bg-emerald-700 text-white active:scale-95'
+                                ? 'bg-brand-50 border border-brand-200 text-brand-700 cursor-default'
+                                : 'bg-brand-600 hover:bg-brand-700 text-white active:scale-95'
                             }`}
                           >
                             {isOrdered ? (
@@ -1324,12 +1324,12 @@ export default function CompaniesDirectoryTab({
               exit={{ scale: 0.96, opacity: 0, y: 12 }}
               transition={{ type: 'spring', damping: 26, stiffness: 320 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-3xl bg-white border border-slate-200 rounded-3xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden my-auto"
+              className="w-full max-w-3xl bg-white border border-slate-200 rounded-xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden my-auto"
             >
               {/* Header */}
               <div className="p-5 border-b border-slate-100 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-brand-100 text-brand-800 flex items-center justify-center">
                     <Building2 className="w-5 h-5" />
                   </div>
                   <div>
@@ -1362,7 +1362,7 @@ export default function CompaniesDirectoryTab({
                     value={allCompaniesSearch}
                     onChange={(e) => setAllCompaniesSearch(e.target.value)}
                     placeholder={lang === 'ar' ? 'ابحث عن اسم الشركة المصنعة...' : 'Filter companies...'}
-                    className={`w-full ${lang === 'ar' ? 'pr-9 pl-4' : 'pl-9 pr-4'} py-2.5 rounded-xl bg-white text-slate-900 text-xs font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+                    className={`w-full ${lang === 'ar' ? 'pr-9 pl-4' : 'pl-9 pr-4'} py-2.5 rounded-xl bg-white text-slate-900 text-xs font-semibold border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500`}
                   />
                 </div>
               </div>
@@ -1379,14 +1379,14 @@ export default function CompaniesDirectoryTab({
                         setIsAllCompaniesModalOpen(false);
                         setCompanySearchQuery('');
                       }}
-                      className="bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-xs rounded-xl p-3.5 transition-all flex items-center justify-between group cursor-pointer"
+                      className="bg-white border border-slate-200 hover:border-brand-400 hover:shadow-xs rounded-xl p-3.5 transition-all flex items-center justify-between group cursor-pointer"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-800 font-bold text-xs flex items-center justify-center shrink-0 border border-emerald-100">
+                        <div className="w-9 h-9 rounded-lg bg-brand-50 text-brand-800 font-bold text-xs flex items-center justify-center shrink-0 border border-brand-100">
                           {initials}
                         </div>
                         <div className="min-w-0">
-                          <h4 className="text-xs font-bold text-slate-800 group-hover:text-emerald-700 transition-colors truncate">
+                          <h4 className="text-xs font-bold text-slate-800 group-hover:text-brand-700 transition-colors truncate">
                             {company.name}
                           </h4>
                           {company.count !== undefined && (
@@ -1397,7 +1397,7 @@ export default function CompaniesDirectoryTab({
                         </div>
                       </div>
 
-                      <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-emerald-600 shrink-0" />
+                      <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-600 shrink-0" />
                     </div>
                   );
                 })}

@@ -749,18 +749,18 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
     <div className="flex flex-col bg-[#F4F7F5] font-sans text-slate-800 min-h-0" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       
       {/* Top Header & View Navigation */}
-      <header className="bg-white border-b border-emerald-100/80 px-4 py-3.5 shrink-0 sticky top-0 z-30 shadow-xs">
+      <header className="bg-white border-b border-brand-100/80 px-4 py-3.5 shrink-0 sticky top-0 z-30 shadow-xs">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           
           {/* Title & Badge */}
           <div className="flex items-center gap-2.5 self-start sm:self-auto">
-            <div className="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-xs">
+            <div className="w-9 h-9 rounded-xl bg-brand-700 text-white flex items-center justify-center shadow-xs">
               <Store className="w-5 h-5" />
             </div>
             <div>
               <h1 className="text-base font-bold text-slate-900 leading-tight flex items-center gap-2">
                 {lang === 'ar' ? 'سوق مستودعات الأدوية B2B' : 'B2B Warehouse Marketplace'}
-                <span className="text-[10px] font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-mono font-bold bg-brand-50 text-brand-800 border border-brand-200 px-2 py-0.5 rounded-full">
                   {warehouses.length} {lang === 'ar' ? 'مستودع نشط' : 'Active Warehouses'}
                 </span>
               </h1>
@@ -780,11 +780,11 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                 }}
                 className={`flex-1 sm:flex-initial px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 ${
                   activeTab === 'marketplace' 
-                    ? 'bg-white text-emerald-800 shadow-xs border border-slate-200/50' 
+                    ? 'bg-white text-brand-800 shadow-xs border border-slate-200/50' 
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                <Store className="w-3.5 h-3.5 text-emerald-600" />
+                <Store className="w-3.5 h-3.5 text-brand-600" />
                 <span>{lang === 'ar' ? 'سوق المستودعات' : 'Warehouses'}</span>
               </button>
               <button
@@ -792,14 +792,14 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                 onClick={() => setActiveTab('tracking')}
                 className={`flex-1 sm:flex-initial px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center justify-center gap-2 ${
                   activeTab === 'tracking' 
-                    ? 'bg-white text-emerald-800 shadow-xs border border-slate-200/50' 
+                    ? 'bg-white text-brand-800 shadow-xs border border-slate-200/50' 
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                <Truck className="w-3.5 h-3.5 text-emerald-600" />
+                <Truck className="w-3.5 h-3.5 text-brand-600" />
                 <span>{lang === 'ar' ? 'تتبع الطلبات' : 'Order Tracking'}</span>
                 {activeOrders.length > 0 && (
-                  <span className="text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded-full">
+                  <span className="text-[10px] font-mono font-bold bg-brand-100 text-brand-800 px-1.5 py-0.2 rounded-full">
                     {activeOrders.length}
                   </span>
                 )}
@@ -812,12 +812,12 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
               onClick={() => setIsCartOpen(true)}
               className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
                 cartItemCount > 0
-                  ? 'bg-emerald-700 hover:bg-emerald-800 text-white border-emerald-600 shadow-md shadow-emerald-700/20 active:scale-95'
+                  ? 'bg-brand-700 hover:bg-brand-800 text-white border-brand-600 shadow-md shadow-brand-700/20 active:scale-95'
                   : 'bg-white hover:bg-slate-50 text-slate-600 border-slate-200'
               }`}
             >
               <div className="relative flex items-center">
-                <ShoppingCart className={`w-3.5 h-3.5 ${cartItemCount > 0 ? 'text-white' : 'text-emerald-700'}`} />
+                <ShoppingCart className={`w-3.5 h-3.5 ${cartItemCount > 0 ? 'text-white' : 'text-brand-700'}`} />
                 {cartItemCount > 0 && (
                   <span className="absolute -top-2 -right-2.5 bg-amber-400 text-slate-950 font-mono font-black text-[9px] min-w-4 h-4 px-1 rounded-full flex items-center justify-center shadow-xs">
                     {cartItemCount}
@@ -868,9 +868,9 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                 <div className="space-y-6">
                   
                   {/* Global Cross-Marketplace Search Bar */}
-                  <div className="bg-white p-4 rounded-2xl border border-emerald-100 shadow-xs space-y-2">
+                  <div className="bg-white p-4 rounded-lg border border-brand-100 shadow-xs space-y-2">
                     <div className="relative">
-                      <Search className="w-4 h-4 text-emerald-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      <Search className="w-4 h-4 text-brand-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
                       <input
                         type="text"
                         value={globalSearchQuery}
@@ -880,7 +880,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                             ? 'ابحث عن دواء، مادة فعالة، أو مستودع عبر كامل السوق المركزي...'
                             : 'Search medicine, active ingredient, or warehouse across the entire marketplace...'
                         }
-                        className="w-full pl-10 pr-10 py-3 rounded-xl bg-[#F4F7F5] text-slate-900 text-xs font-bold border border-emerald-100 focus:border-emerald-400 focus:bg-white focus:ring-2 focus:ring-emerald-100 focus:outline-none transition-all"
+                        className="w-full pl-10 pr-10 py-3 rounded-xl bg-[#F4F7F5] text-slate-900 text-xs font-bold border border-brand-100 focus:border-brand-400 focus:bg-white focus:ring-2 focus:ring-brand-100 focus:outline-none transition-all"
                       />
                       {globalSearchQuery && (
                         <button
@@ -904,9 +904,9 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                          <Search className="w-3.5 h-3.5 text-emerald-600" />
+                          <Search className="w-3.5 h-3.5 text-brand-600" />
                           <span>{lang === 'ar' ? 'نتائج البحث الدوائي' : 'Medicine Search Results'}</span>
-                          <span className="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-mono">
+                          <span className="bg-brand-100 text-brand-800 px-2 py-0.5 rounded-full text-[10px] font-mono">
                             {globalSearchResults.length}
                           </span>
                         </h2>
@@ -915,7 +915,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                       {globalSearchResults.length > 0 ? (
                         <div className="space-y-3">
                           {globalSearchResults.map((group, idx) => (
-                            <div key={idx} className="bg-white border border-emerald-100 rounded-2xl p-4 sm:p-5 shadow-xs space-y-3">
+                            <div key={idx} className="bg-white border border-brand-100 rounded-lg p-4 sm:p-5 shadow-xs space-y-3">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                                 <div>
                                   <h3 className="text-base font-bold text-slate-900">{group.title}</h3>
@@ -923,7 +923,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                                     <p className="text-xs text-slate-500 font-medium">{group.subtitle}</p>
                                   )}
                                 </div>
-                                <span className="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-xl self-start sm:self-auto">
+                                <span className="text-xs font-bold text-brand-800 bg-brand-50 border border-brand-200 px-2.5 py-1 rounded-xl self-start sm:self-auto">
                                   {group.offers.length} {lang === 'ar' ? 'بائعون يوفرونه' : 'Sellers Offering'}
                                 </span>
                               </div>
@@ -937,20 +937,20 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                                   return (
                                     <div 
                                       key={offer.id}
-                                      className="p-3 bg-[#F8FAF9] border border-emerald-100/90 rounded-xl flex items-center justify-between gap-3 hover:border-emerald-300 transition-all"
+                                      className="p-3 bg-[#F8FAF9] border border-brand-100/90 rounded-xl flex items-center justify-between gap-3 hover:border-brand-300 transition-all"
                                     >
                                       <div className="space-y-1 min-w-0">
                                         <div className="flex items-center gap-1.5">
-                                          <Building2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                                          <Building2 className="w-3.5 h-3.5 text-brand-700 shrink-0" />
                                           <button
                                             onClick={() => setSelectedWarehouseId(offer.sellerTenantId)}
-                                            className="text-xs font-bold text-slate-800 hover:text-emerald-800 underline-offset-2 hover:underline truncate cursor-pointer text-left"
+                                            className="text-xs font-bold text-slate-800 hover:text-brand-800 underline-offset-2 hover:underline truncate cursor-pointer text-left"
                                           >
                                             {offer.sellerName}
                                           </button>
                                         </div>
                                         <div className="flex items-center gap-2 text-[11px]">
-                                          <span className="font-black text-emerald-800 font-mono">
+                                          <span className="font-black text-brand-800 font-mono">
                                             {offer.priceSyp.toLocaleString()} SYP
                                           </span>
                                           <span className="text-slate-400">•</span>
@@ -964,14 +964,14 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                                           )}
                                           {(offer as any).offerKind === 'surplus' && (
                                             <span className="font-bold bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.2 rounded text-[10px]">
-                                              ♻️ {lang === 'ar' ? 'فائض' : 'Surplus'}
+                                              {lang === 'ar' ? 'فائض' : 'Surplus'}
                                             </span>
                                           )}
                                           {offer.expiryDate && (() => {
                                             const dte = Math.ceil((new Date(offer.expiryDate).getTime() - Date.now()) / 86400000);
                                             return dte > 0 && dte <= 90 ? (
                                               <span className="text-amber-700 font-bold bg-amber-50 px-1.5 py-0.2 rounded text-[10px]" title={offer.expiryDate}>
-                                                ⏳ {dte}{lang === 'ar' ? 'ي' : 'd'}
+                                                {dte}{lang === 'ar' ? 'ي' : 'd'}
                                               </span>
                                             ) : null;
                                           })()}
@@ -984,25 +984,25 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                                           <button
                                             id={`btn-search-add-${offer.id}`}
                                             onClick={() => updateCart(offer.id, minOrder)}
-                                            className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-2xs"
+                                            className="px-3 py-1.5 bg-brand-700 hover:bg-brand-800 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer active:scale-95 shadow-2xs"
                                           >
                                             <ShoppingCart className="w-3 h-3" />
                                             <span>{lang === 'ar' ? 'إضافة للسلة' : 'Add to Cart'}</span>
                                           </button>
                                         ) : (
-                                          <div className="flex items-center bg-white border border-emerald-300 rounded-lg overflow-hidden h-[30px]">
+                                          <div className="flex items-center bg-white border border-brand-300 rounded-lg overflow-hidden h-[30px]">
                                             <button
                                               onClick={() => updateCart(offer.id, inCartQty - (inCartQty <= minOrder ? minOrder : 1))}
-                                              className="w-7 h-full text-emerald-800 font-bold hover:bg-emerald-50 cursor-pointer"
+                                              className="w-7 h-full text-brand-800 font-bold hover:bg-brand-50 cursor-pointer"
                                             >
                                               -
                                             </button>
-                                            <span className="px-2 text-xs font-mono font-bold text-emerald-950">
+                                            <span className="px-2 text-xs font-mono font-bold text-brand-950">
                                               {inCartQty}
                                             </span>
                                             <button
                                               onClick={() => updateCart(offer.id, inCartQty + 1)}
-                                              className="w-7 h-full text-emerald-800 font-bold hover:bg-emerald-50 cursor-pointer"
+                                              className="w-7 h-full text-brand-800 font-bold hover:bg-brand-50 cursor-pointer"
                                             >
                                               +
                                             </button>
@@ -1017,7 +1017,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                           ))}
                         </div>
                       ) : (
-                        <div className="bg-white border border-emerald-100 rounded-2xl p-10 text-center space-y-2">
+                        <div className="bg-white border border-brand-100 rounded-lg p-10 text-center space-y-2">
                           <p className="text-sm font-bold text-slate-700">
                             {lang === 'ar' ? 'لا توجد أدوية مطابقة معروضة حالياً' : 'No matching medicines are currently offered.'}
                           </p>
@@ -1033,7 +1033,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-                        <Building2 className="w-3.5 h-3.5 text-emerald-600" />
+                        <Building2 className="w-3.5 h-3.5 text-brand-600" />
                         <span>{lang === 'ar' ? 'البائعون المعتمدون' : 'Verified Sellers'}</span>
                         <span className="bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full text-[10px] font-mono">
                           {warehouses.length}
@@ -1044,7 +1044,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                     {isLoadingOffers ? (
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {[1, 2, 3, 4, 5, 6].map(n => (
-                          <div key={n} className="bg-white rounded-2xl p-5 border border-slate-100 shadow-2xs space-y-3 animate-pulse">
+                          <div key={n} className="bg-white rounded-lg p-5 border border-slate-100 shadow-2xs space-y-3 animate-pulse">
                             <div className="flex items-center gap-3">
                               <div className="w-12 h-12 bg-slate-200 rounded-xl"></div>
                               <div className="space-y-1.5 flex-1">
@@ -1063,28 +1063,28 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                             key={wh.id}
                             id={`warehouse-card-${wh.id}`}
                             onClick={() => setSelectedWarehouseId(wh.id)}
-                            className="bg-white border border-emerald-100/90 hover:border-emerald-400 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative overflow-hidden"
+                            className="bg-white border border-brand-100/90 hover:border-brand-400 rounded-lg p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group relative overflow-hidden"
                           >
                             <div className="space-y-3">
                               {/* Warehouse Header */}
                               <div className="flex items-start gap-3">
-                                <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 group-hover:bg-emerald-700 group-hover:text-white transition-colors shrink-0 shadow-2xs">
+                                <div className="w-12 h-12 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-700 group-hover:bg-brand-700 group-hover:text-white transition-colors shrink-0 shadow-2xs">
                                   <Building2 className="w-6 h-6" />
                                 </div>
                                 <div className="min-w-0 flex-1">
                                   <div className="flex items-center justify-between gap-1">
-                                    <h3 className="text-base font-bold text-slate-900 group-hover:text-emerald-800 transition-colors truncate">
+                                    <h3 className="text-base font-bold text-slate-900 group-hover:text-brand-800 transition-colors truncate">
                                       {wh.name}
                                     </h3>
                                     {wh.sellerType === 'RETAIL_PHARMACY' && (
                                       <span className="shrink-0 text-[9px] font-black uppercase tracking-wide bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.5 rounded-md">
-                                        🏥 {lang === 'ar' ? 'صيدلية' : 'Pharmacy'}
+                                        {lang === 'ar' ? 'صيدلية' : 'Pharmacy'}
                                       </span>
                                     )}
                                   </div>
                                   {wh.city && (
                                     <span className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5">
-                                      <MapPin className="w-3 h-3 text-emerald-600" />
+                                      <MapPin className="w-3 h-3 text-brand-600" />
                                       {wh.city}
                                     </span>
                                   )}
@@ -1093,8 +1093,8 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
 
                               {/* Badges / Metrics */}
                               <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                                <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
-                                  <Package className="w-3.5 h-3.5 text-emerald-600" />
+                                <span className="bg-brand-50 text-brand-800 border border-brand-200 text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                  <Package className="w-3.5 h-3.5 text-brand-600" />
                                   {wh.totalOffers} {lang === 'ar' ? 'أصناف معروضة' : 'Active Offers'}
                                 </span>
 
@@ -1130,9 +1130,9 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                             </div>
 
                             {/* Storefront Enter CTA */}
-                            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-700 group-hover:text-emerald-900">
+                            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-brand-700 group-hover:text-brand-900">
                               <span>{lang === 'ar' ? 'فتح متجر المستودع' : 'Browse Warehouse Offers'}</span>
-                              <div className="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center group-hover:bg-emerald-700 group-hover:text-white transition-colors">
+                              <div className="w-6 h-6 rounded-full bg-brand-50 flex items-center justify-center group-hover:bg-brand-700 group-hover:text-white transition-colors">
                                 {lang === 'ar' ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
                               </div>
                             </div>
@@ -1140,8 +1140,8 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                         ))}
                       </div>
                     ) : (
-                      <div className="bg-white border border-emerald-100 rounded-2xl p-12 text-center space-y-3 shadow-xs">
-                        <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 mx-auto mb-2">
+                      <div className="bg-white border border-brand-100 rounded-lg p-12 text-center space-y-3 shadow-xs">
+                        <div className="w-16 h-16 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-700 mx-auto mb-2">
                           <Building2 className="w-8 h-8" />
                         </div>
                         <h3 className="text-lg font-bold text-slate-900">
@@ -1174,7 +1174,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                     {lang === 'ar' ? 'متابعة وتأكيد استلام الطلبيات الصادرة إلى المستودعات' : 'Track and confirm receipt of purchase orders sent to wholesale warehouses'}
                   </p>
                 </div>
-                <span className="text-xs font-mono font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-xl">
+                <span className="text-xs font-mono font-bold bg-brand-100 text-brand-800 px-3 py-1 rounded-xl">
                   {filteredActiveOrders.length}{filteredActiveOrders.length !== activeOrders.length ? ` / ${activeOrders.length}` : ''} {lang === 'ar' ? 'طلبية' : 'Orders'}
                 </span>
               </div>
@@ -1208,7 +1208,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
 
               {isLoadingOrders ? (
                 <div className="py-16 flex flex-col items-center justify-center gap-3">
-                  <Loader2 className="w-7 h-7 text-emerald-600 animate-spin" />
+                  <Loader2 className="w-7 h-7 text-brand-600 animate-spin" />
                   <p className="text-xs font-bold text-slate-500">
                     {lang === 'ar' ? 'جارٍ تحميل طلبيات الشراء...' : 'Loading purchase orders...'}
                   </p>
@@ -1219,10 +1219,10 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                     const isTerminal = order.status === 'DRAFT' || order.status === 'RECEIVED';
                     const isExpanded = !isTerminal || expandedOrderId === order.orderId;
                     return (
-                    <div key={order.orderId} className={`bg-white rounded-2xl border shadow-xs overflow-hidden transition-colors ${order.status === 'PENDING_APPROVAL' ? 'border-amber-200/70' : order.status === 'DISPATCHED' ? 'border-purple-200/70' : 'border-emerald-100 opacity-90 hover:opacity-100'}`}>
-                      <div className="p-4 border-b border-emerald-50 flex justify-between items-center bg-slate-50/70">
+                    <div key={order.orderId} className={`bg-white rounded-lg border shadow-xs overflow-hidden transition-colors ${order.status === 'PENDING_APPROVAL' ? 'border-amber-200/70' : order.status === 'DISPATCHED' ? 'border-purple-200/70' : 'border-brand-100 opacity-90 hover:opacity-100'}`}>
+                      <div className="p-4 border-b border-brand-50 flex justify-between items-center bg-slate-50/70">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-black text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg font-mono">
+                          <span className="text-xs font-black text-brand-800 bg-brand-100 px-2.5 py-1 rounded-lg font-mono">
                             {order.orderId}
                           </span>
                           <span className="text-[11px] text-slate-400 font-medium">
@@ -1255,7 +1255,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                             <div key={item.id} className="flex justify-between items-center text-xs">
                               <span className="font-bold text-slate-800">{item.name}</span>
                               <span className="text-slate-500 font-mono">
-                                {item.requestedQuantity}x <span className="font-bold text-emerald-800 font-mono">{(item.costAtOrder || 0).toLocaleString()} SYP</span>
+                                {item.requestedQuantity}x <span className="font-bold text-brand-800 font-mono">{(item.costAtOrder || 0).toLocaleString()} SYP</span>
                               </span>
                             </div>
                           ))}
@@ -1270,21 +1270,21 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                           </button>
                         )}
 
-                        <div className="pt-3 border-t border-emerald-50 flex justify-between items-center">
+                        <div className="pt-3 border-t border-brand-50 flex justify-between items-center">
                           <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                             {lang === 'ar' ? 'إجمالي قيمة الطلبية' : 'Total Order Value'}
                           </span>
-                          <span className="font-black text-emerald-900 font-mono text-base">
+                          <span className="font-black text-brand-900 font-mono text-base">
                             {(order.items?.reduce((sum: number, item: any) => sum + (item.requestedQuantity * (item.costAtOrder || 0)), 0) || 0).toLocaleString()} SYP
                           </span>
                         </div>
 
                         {order.status === 'DISPATCHED' && (
-                          <div className="pt-3 border-t border-emerald-50">
+                          <div className="pt-3 border-t border-brand-50">
                             <button
                               id={`btn-receive-order-${order.orderId}`}
                               onClick={() => handleReceiveOrder(order.orderId)}
-                              className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
+                              className="w-full flex items-center justify-center gap-2 py-3 bg-brand-700 hover:bg-brand-800 text-white rounded-xl font-bold text-xs transition-all shadow-sm active:scale-95 cursor-pointer"
                             >
                               <Package className="w-4 h-4" />
                               {lang === 'ar' ? 'تأكيد استلام الطلبية وتحديث المخزون' : 'Confirm Delivery & Update Inventory'}
@@ -1297,8 +1297,8 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                   })}
                 </div>
               ) : (
-                <div className="py-16 text-center text-slate-500 bg-white rounded-2xl border border-emerald-100 shadow-sm space-y-2">
-                  <FileText className="w-12 h-12 mx-auto text-emerald-200" />
+                <div className="py-16 text-center text-slate-500 bg-white rounded-lg border border-brand-100 shadow-sm space-y-2">
+                  <FileText className="w-12 h-12 mx-auto text-brand-200" />
                   <p className="text-sm font-bold text-slate-800">
                     {orderStatusFilter === 'ALL'
                       ? (lang === 'ar' ? 'لا توجد طلبات شراء مسجلة حالياً.' : 'No active purchase orders recorded.')
@@ -1329,17 +1329,17 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
             <button
               id="btn-open-cart-drawer"
               onClick={() => setIsCartOpen(true)}
-              className="w-full bg-emerald-800 hover:bg-emerald-900 text-white rounded-2xl p-4 shadow-xl flex items-center justify-between cursor-pointer border border-emerald-700 active:scale-[0.98] transition-all"
+              className="w-full bg-brand-800 hover:bg-brand-900 text-white rounded-lg p-4 shadow-xl flex items-center justify-between cursor-pointer border border-brand-700 active:scale-[0.98] transition-all"
             >
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <ShoppingCart className="w-5 h-5" />
-                  <span className="absolute -top-2 -right-2 bg-amber-500 text-emerald-950 text-[10px] font-black px-1.5 rounded-full shadow-2xs">
+                  <span className="absolute -top-2 -right-2 bg-amber-500 text-brand-950 text-[10px] font-black px-1.5 rounded-full shadow-2xs">
                     {cartItemCount}
                   </span>
                 </div>
                 <div className="text-left leading-tight">
-                  <span className="block text-[10px] text-emerald-300 font-bold uppercase tracking-wider">
+                  <span className="block text-[10px] text-brand-300 font-bold uppercase tracking-wider">
                     {lang === 'ar' 
                       ? `${warehouseOrderCount} طلبيات مستودعات` 
                       : `${warehouseOrderCount} Warehouse Order${warehouseOrderCount > 1 ? 's' : ''}`}
@@ -1373,15 +1373,15 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
               transition={{ type: 'spring', damping: 26, stiffness: 320 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl bg-[#F4F7F5] rounded-3xl shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto border border-emerald-100"
+              className="w-full max-w-2xl bg-[#F4F7F5] rounded-xl shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto border border-brand-100"
             >
               {/* Cart Drawer Header */}
-              <div className="p-5 border-b border-emerald-100 bg-white flex justify-between items-center sticky top-0 z-10">
+              <div className="p-5 border-b border-brand-100 bg-white flex justify-between items-center sticky top-0 z-10">
                 <div>
                   <h2 className="text-lg font-black text-slate-900">
                     {lang === 'ar' ? 'مراجعة طلبات الشراء للمستودعات' : 'Multi-Warehouse Order Review'}
                   </h2>
-                  <p className="text-xs font-bold text-emerald-700">
+                  <p className="text-xs font-bold text-brand-700">
                     {lang === 'ar'
                       ? `سيتم إنشاء ${warehouseOrderCount} طلبيات شراء منفصلة (${cartItemCount} عبوة)`
                       : `Will create ${warehouseOrderCount} separate POs for each warehouse (${cartItemCount} units)`}
@@ -1398,20 +1398,20 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
               {/* Grouped Cart Items List */}
               <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
                 {(Object.values(cartByWarehouse) as WarehouseCartGroup[]).map(group => (
-                  <div key={group.sellerTenantId} className="bg-white border border-emerald-100 rounded-2xl overflow-hidden shadow-xs">
+                  <div key={group.sellerTenantId} className="bg-white border border-brand-100 rounded-lg overflow-hidden shadow-xs">
                     
                     {/* Warehouse Group Header */}
-                    <div className="bg-emerald-50/80 px-4 py-3 border-b border-emerald-100 flex items-center justify-between">
+                    <div className="bg-brand-50/80 px-4 py-3 border-b border-brand-100 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Building2 className="w-4 h-4 text-emerald-700" />
-                        <span className="font-bold text-xs text-emerald-950">{group.sellerName}</span>
+                        <Building2 className="w-4 h-4 text-brand-700" />
+                        <span className="font-bold text-xs text-brand-950">{group.sellerName}</span>
                         {group.sellerCity && (
                           <span className="text-[10px] text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">
                             {group.sellerCity}
                           </span>
                         )}
                       </div>
-                      <span className="text-xs font-mono font-bold text-emerald-900">
+                      <span className="text-xs font-mono font-bold text-brand-900">
                         {group.subtotalSyp.toLocaleString()} SYP
                       </span>
                     </div>
@@ -1438,7 +1438,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                                   {(lang === 'ar' && offer.tradeNameAr) ? offer.tradeNameAr : offer.tradeNameEn}
                                 </h4>
                                 <div className="text-[11px] text-slate-500 flex items-center gap-2 mt-0.5">
-                                  <span>{qty}x <span className="font-mono text-emerald-800 font-bold">{offer.priceSyp.toLocaleString()} SYP</span></span>
+                                  <span>{qty}x <span className="font-mono text-brand-800 font-bold">{offer.priceSyp.toLocaleString()} SYP</span></span>
                                   {bonusText && (
                                     <span className="text-amber-700 font-bold bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded text-[10px]">
                                       {bonusText}
@@ -1447,7 +1447,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                                 </div>
                               </div>
 
-                              <span className="font-black text-emerald-900 font-mono text-xs whitespace-nowrap">
+                              <span className="font-black text-brand-900 font-mono text-xs whitespace-nowrap">
                                 {(qty * offer.priceSyp).toLocaleString()} SYP
                               </span>
                             </div>
@@ -1495,7 +1495,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                 ))}
 
                 {/* Payment Terms Selector */}
-                <div className="bg-white border border-emerald-100 rounded-2xl p-4 space-y-3 shadow-xs">
+                <div className="bg-white border border-brand-100 rounded-lg p-4 space-y-3 shadow-xs">
                   <h3 className="font-bold text-xs text-slate-800">
                     {lang === 'ar' ? 'طريقة السداد المعتمدة' : 'Payment Terms'}
                   </h3>
@@ -1504,7 +1504,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                       onClick={() => setPaymentType('cash')}
                       className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                         paymentType === 'cash' 
-                          ? 'bg-emerald-50 border-emerald-500 text-emerald-900 shadow-xs' 
+                          ? 'bg-brand-50 border-brand-500 text-brand-900 shadow-xs' 
                           : 'bg-white border-slate-200 text-slate-500'
                       }`}
                     >
@@ -1515,7 +1515,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                       onClick={() => setPaymentType('credit')}
                       className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                         paymentType === 'credit' 
-                          ? 'bg-emerald-50 border-emerald-500 text-emerald-900 shadow-xs' 
+                          ? 'bg-brand-50 border-brand-500 text-brand-900 shadow-xs' 
                           : 'bg-white border-slate-200 text-slate-500'
                       }`}
                     >
@@ -1527,18 +1527,18 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
               </div>
 
               {/* Checkout Submission Action Bar */}
-              <div className="p-4 bg-white border-t border-emerald-100 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] sticky bottom-0">
+              <div className="p-4 bg-white border-t border-brand-100 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] sticky bottom-0">
                 <div className="flex justify-between items-center mb-4">
                   <div>
                     <span className="font-bold text-slate-500 text-xs block">
                       {lang === 'ar' ? 'إجمالي الطلبيات:' : 'Total Procurement Value:'}
                     </span>
-                    <span className="text-[11px] text-emerald-700 font-bold">
+                    <span className="text-[11px] text-brand-700 font-bold">
                       {warehouseOrderCount} {lang === 'ar' ? 'طلبيات شراء مستقلة' : 'distinct warehouse orders'}
                     </span>
                   </div>
-                  <span className="font-black text-xl text-emerald-950 font-mono">
-                    {cartTotalSyp.toLocaleString()} <span className="text-xs text-emerald-700">SYP</span>
+                  <span className="font-black text-xl text-brand-950 font-mono">
+                    {cartTotalSyp.toLocaleString()} <span className="text-xs text-brand-700">SYP</span>
                   </span>
                 </div>
 
@@ -1546,7 +1546,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                   id="btn-place-orders"
                   onClick={handleDispatchOrders}
                   disabled={isSubmitting || hasCartValidationErrors}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold text-xs transition-all shadow-sm cursor-pointer disabled:opacity-60 active:scale-95"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-brand-700 hover:bg-brand-800 text-white rounded-xl font-bold text-xs transition-all shadow-sm cursor-pointer disabled:opacity-60 active:scale-95"
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1577,9 +1577,9 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-white rounded-3xl p-6 w-full max-w-lg text-center shadow-xl border border-emerald-100 space-y-4 max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-xl p-6 w-full max-w-lg text-center shadow-xl border border-brand-100 space-y-4 max-h-[90vh] overflow-y-auto"
             >
-              <div className="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto shadow-xs">
+              <div className="w-14 h-14 bg-brand-100 text-brand-700 rounded-lg flex items-center justify-center mx-auto shadow-xs">
                 <CheckCircle className="w-7 h-7" />
               </div>
               <div>
@@ -1594,15 +1594,15 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
               </div>
 
               {/* List of Created Orders with item count, total, and status */}
-              <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 space-y-3 text-left">
+              <div className="bg-slate-50 border border-slate-200/80 rounded-lg p-3.5 space-y-3 text-left">
                 {showSuccessModal.orders.map((ord) => (
                   <div key={ord.orderId} className="bg-white rounded-xl p-3 border border-slate-200 space-y-2">
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-1.5">
-                        <Building2 className="w-4 h-4 text-emerald-700" />
+                        <Building2 className="w-4 h-4 text-brand-700" />
                         <span className="font-bold text-xs text-slate-900">{ord.warehouseName}</span>
                       </div>
-                      <span className="font-mono text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      <span className="font-mono text-xs font-bold text-brand-800 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
                         {ord.orderId}
                       </span>
                     </div>
@@ -1618,7 +1618,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                         <span className="text-slate-400 block text-[10px]">
                           {lang === 'ar' ? 'الإجمالي:' : 'Total:'}
                         </span>
-                        <span className="font-bold text-emerald-900 font-mono">{ord.totalSyp.toLocaleString()} SYP</span>
+                        <span className="font-bold text-brand-900 font-mono">{ord.totalSyp.toLocaleString()} SYP</span>
                       </div>
                       <div>
                         <span className="text-slate-400 block text-[10px]">
@@ -1641,7 +1641,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                     setShowSuccessModal(null);
                     setActiveTab('tracking');
                   }}
-                  className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors shadow-sm"
+                  className="w-full py-3 bg-brand-700 hover:bg-brand-800 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors shadow-sm"
                 >
                   {lang === 'ar' ? 'متابعة الطلبيات في التتبع' : 'Track Orders in Purchase Tracking'}
                 </button>

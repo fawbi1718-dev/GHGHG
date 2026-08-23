@@ -572,7 +572,7 @@ export default function CentralScannerModal({
       id="central-barcode-scanner-overlay"
     >
       <div 
-        className="relative w-full h-full sm:h-auto sm:max-h-[92vh] sm:max-w-lg bg-slate-950 sm:border sm:border-slate-800 sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden text-white pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
+        className="relative w-full h-full sm:h-auto sm:max-h-[92vh] sm:max-w-lg bg-slate-950 sm:border sm:border-slate-800 sm:rounded-xl shadow-2xl flex flex-col overflow-hidden text-white pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
         onClick={(e) => e.stopPropagation()}
         id="central-barcode-scanner-dialog"
       >
@@ -588,7 +588,7 @@ export default function CentralScannerModal({
                 onClick={() => setCurrentMode('SELL')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                   currentMode === 'SELL'
-                    ? 'bg-emerald-600 text-white shadow-sm'
+                    ? 'bg-brand-600 text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
                 }`}
                 title={lang === 'ar' ? 'وضع البيع' : 'POS Sales Mode'}
@@ -621,7 +621,7 @@ export default function CentralScannerModal({
               onClick={() => setShowManualInput(!showManualInput)}
               className={`p-2.5 rounded-xl border transition-all cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center ${
                 showManualInput 
-                  ? 'bg-emerald-600 border-emerald-500 text-white shadow-md' 
+                  ? 'bg-brand-600 border-brand-500 text-white shadow-md' 
                   : 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700'
               }`}
               title={lang === 'ar' ? 'إدخال يدوي للرمز' : 'Manual Code Input'}
@@ -689,14 +689,14 @@ export default function CentralScannerModal({
                     value={manualCode}
                     onChange={(e) => setManualCode(e.target.value)}
                     placeholder={lang === 'ar' ? 'أدخل رقم الباركود (مثال: 621000...)' : 'Type barcode number...'}
-                    className="w-full bg-slate-950 border border-slate-700 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs font-mono text-white placeholder-slate-500 focus:outline-none"
+                    className="w-full bg-slate-950 border border-slate-700 focus:border-brand-500 rounded-xl px-4 py-2.5 text-xs font-mono text-white placeholder-slate-500 focus:outline-none"
                     autoFocus
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={!manualCode.trim()}
-                  className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer min-h-[40px]"
+                  className="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer min-h-[40px]"
                 >
                   <Search className="w-4 h-4" />
                   <span>{lang === 'ar' ? 'بحث' : 'Search'}</span>
@@ -717,18 +717,18 @@ export default function CentralScannerModal({
               exit={{ y: -20, opacity: 0 }}
               className={`absolute top-16 left-1/2 -translate-x-1/2 z-40 max-w-sm w-[90%] px-4 py-2.5 rounded-xl shadow-2xl border text-xs font-bold flex items-center gap-2.5 ${
                 toast.type === 'success'
-                  ? 'bg-emerald-950/95 border-emerald-500 text-emerald-200'
+                  ? 'bg-brand-950/95 border-brand-500 text-brand-200'
                   : toast.type === 'error'
                   ? 'bg-rose-950/95 border-rose-500 text-rose-200'
                   : 'bg-slate-900/95 border-slate-700 text-slate-200'
               }`}
             >
               {toast.type === 'success' ? (
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-brand-400 shrink-0" />
               ) : toast.type === 'error' ? (
                 <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
               ) : (
-                <Zap className="w-4 h-4 text-emerald-400 shrink-0" />
+                <Zap className="w-4 h-4 text-brand-400 shrink-0" />
               )}
               <span className="truncate">{toast.message}</span>
             </motion.div>
@@ -758,26 +758,26 @@ export default function CentralScannerModal({
           <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center p-6 z-20">
             {/* Target Scan Frame */}
             <div 
-              className={`relative w-64 h-48 sm:w-72 sm:h-52 rounded-2xl transition-all duration-300 ${
+              className={`relative w-64 h-48 sm:w-72 sm:h-52 rounded-lg transition-all duration-300 ${
                 isDetectedOrFound 
-                  ? 'border-2 border-emerald-400 bg-emerald-500/20 ring-4 ring-emerald-500/40' 
+                  ? 'border-2 border-brand-400 bg-brand-500/20 ring-4 ring-brand-500/40' 
                   : currentMode === 'SELL' 
-                  ? 'border-2 border-emerald-400/80 shadow-[0_0_30px_rgba(16,185,129,0.25)]' 
+                  ? 'border-2 border-brand-400/80 shadow-[0_0_30px_rgba(16,185,129,0.25)]' 
                   : 'border-2 border-purple-400/80 shadow-[0_0_30px_rgba(168,85,247,0.25)]'
               }`}
             >
               {/* 4 Corner Brackets */}
               <div className={`absolute -top-1.5 -left-1.5 w-6 h-6 border-t-4 border-l-4 rounded-tl-xl ${
-                currentMode === 'SELL' ? 'border-emerald-400' : 'border-purple-400'
+                currentMode === 'SELL' ? 'border-brand-400' : 'border-purple-400'
               }`} />
               <div className={`absolute -top-1.5 -right-1.5 w-6 h-6 border-t-4 border-r-4 rounded-tr-xl ${
-                currentMode === 'SELL' ? 'border-emerald-400' : 'border-purple-400'
+                currentMode === 'SELL' ? 'border-brand-400' : 'border-purple-400'
               }`} />
               <div className={`absolute -bottom-1.5 -left-1.5 w-6 h-6 border-b-4 border-l-4 rounded-bl-xl ${
-                currentMode === 'SELL' ? 'border-emerald-400' : 'border-purple-400'
+                currentMode === 'SELL' ? 'border-brand-400' : 'border-purple-400'
               }`} />
               <div className={`absolute -bottom-1.5 -right-1.5 w-6 h-6 border-b-4 border-r-4 rounded-br-xl ${
-                currentMode === 'SELL' ? 'border-emerald-400' : 'border-purple-400'
+                currentMode === 'SELL' ? 'border-brand-400' : 'border-purple-400'
               }`} />
 
               {/* Animated Laser Scanning Line */}
@@ -787,7 +787,7 @@ export default function CentralScannerModal({
                   transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
                   className={`w-full h-1 rounded-full shadow-lg ${
                     currentMode === 'SELL'
-                      ? 'bg-emerald-400 shadow-[0_0_15px_#10b981]'
+                      ? 'bg-brand-400 shadow-[0_0_15px_#10b981]'
                       : 'bg-purple-400 shadow-[0_0_15px_#a855f7]'
                   }`}
                 />
@@ -802,7 +802,7 @@ export default function CentralScannerModal({
 
             {/* Instruction Pill */}
             <div className="mt-5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs font-semibold text-slate-300 flex items-center gap-2 shadow-lg">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <Sparkles className="w-3.5 h-3.5 text-brand-400 shrink-0" />
               <span>
                 {lang === 'ar' 
                   ? 'وجّه رمز الباركود داخل الإطار' 
@@ -814,7 +814,7 @@ export default function CentralScannerModal({
           {/* INITIALIZING SPINNER (Subtle & Non-blocking) */}
           {!isCameraLive && (scannerState === 'INITIALIZING' || scannerState === 'REQUESTING_PERMISSION') && (
             <div className="absolute inset-0 bg-slate-950/80 flex flex-col items-center justify-center text-center p-6 space-y-3 z-10 pointer-events-none">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 animate-pulse">
+              <div className="w-12 h-12 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 animate-pulse">
                 <Camera className="w-6 h-6" />
               </div>
               <div className="space-y-1">
@@ -833,7 +833,7 @@ export default function CentralScannerModal({
           {/* CAMERA ERROR / NO CAMERA OVERLAY */}
           {(scannerState === 'CAMERA_ERROR' || scannerState === 'NO_CAMERA') && (
             <div className="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center text-center p-6 space-y-4 z-20">
-              <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
+              <div className="w-14 h-14 rounded-lg bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
                 <ShieldAlert className="w-7 h-7" />
               </div>
               <div className="space-y-2 max-w-sm">
@@ -852,7 +852,7 @@ export default function CentralScannerModal({
                 <button
                   type="button"
                   onClick={() => startCameraPipeline(facingMode)}
-                  className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                  className="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>{lang === 'ar' ? 'إعادة المحاولة' : 'Retry Camera'}</span>
@@ -885,7 +885,7 @@ export default function CentralScannerModal({
                 </div>
 
                 {lastResult.item ? (
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px] font-bold flex items-center gap-1">
+                  <span className="px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30 text-[11px] font-bold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>{lang === 'ar' ? 'مسجل بالكتالوج' : 'Matched in Catalog'}</span>
                   </span>
@@ -899,7 +899,7 @@ export default function CentralScannerModal({
 
               {/* Medicine Details Card */}
               {lastResult.item ? (
-                <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 flex items-center justify-between gap-3">
+                <div className="bg-slate-950 p-3.5 rounded-lg border border-slate-800 flex items-center justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <h4 className="text-sm font-bold text-white truncate">
                       {lastResult.item.name || lastResult.item.nameEn || lastResult.item.name_en}
@@ -908,12 +908,12 @@ export default function CentralScannerModal({
                       {lastResult.item.company || lastResult.item.company_name || lastResult.item.form || 'Pharmaceutical Product'}
                     </p>
                     <div className="flex items-center gap-2 mt-1.5">
-                      <span className="text-xs font-black font-mono text-emerald-400">
+                      <span className="text-xs font-black font-mono text-brand-400">
                         {Number(lastResult.item.price || 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}
                       </span>
                       <span className="text-[10px] text-slate-500">•</span>
                       <span className={`text-[10px] font-bold ${
-                        (lastResult.item.stock ?? 1) > 0 ? 'text-emerald-400' : 'text-rose-400'
+                        (lastResult.item.stock ?? 1) > 0 ? 'text-brand-400' : 'text-rose-400'
                       }`}>
                         {lang === 'ar' ? 'المخزون:' : 'Stock:'} {lastResult.item.stock ?? 'N/A'}
                       </span>
@@ -930,7 +930,7 @@ export default function CentralScannerModal({
                       >
                         <Minus className="w-3 h-3" />
                       </button>
-                      <span className="w-8 text-center font-bold text-xs font-mono text-emerald-400">
+                      <span className="w-8 text-center font-bold text-xs font-mono text-brand-400">
                         {scannedQuantity}
                       </span>
                       <button
@@ -945,7 +945,7 @@ export default function CentralScannerModal({
                     <button
                       type="button"
                       onClick={handleAddWithQuantity}
-                      className="p-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md transition-all flex items-center justify-center cursor-pointer min-h-[40px]"
+                      className="p-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl shadow-md transition-all flex items-center justify-center cursor-pointer min-h-[40px]"
                       title={lang === 'ar' ? 'إضافة للسلة' : 'Add to Cart'}
                     >
                       <Check className="w-4 h-4" />
@@ -954,7 +954,7 @@ export default function CentralScannerModal({
                 </div>
               ) : (
                 /* Unregistered Barcode Action Card */
-                <div className="bg-slate-950 p-3 rounded-2xl border border-amber-500/30 flex items-center justify-between gap-3">
+                <div className="bg-slate-950 p-3 rounded-lg border border-amber-500/30 flex items-center justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-bold text-amber-300">
                       {lang === 'ar' ? 'هذا الباركود غير مسجل في النظام' : 'This barcode is not yet registered'}
@@ -984,7 +984,7 @@ export default function CentralScannerModal({
             /* Idle Hardware & Tips Footer */
             <div className="flex items-center justify-between text-[11px] text-slate-400 max-w-md mx-auto">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
                 <span>
                   {lang === 'ar' 
                     ? 'الماسح جاهز للعمل (يدعم الكاميرا والماسح السلكي USB)' 

@@ -127,7 +127,7 @@ export default function DiscrepancyReconciliationModal({ medicine, onClose, trig
  {loading ? (
  <div className="text-center py-10 text-slate-500">{lang === 'ar' ? 'جاري التحميل...' : 'Loading batches...'}</div>
  ) : batches.length === 0 ? (
- <div className="text-center py-10 text-emerald-600 font-medium">
+ <div className="text-center py-10 text-brand-600 font-medium">
  {lang === 'ar' ? 'لا توجد فروقات سالبة لهذه المادة' : 'No negative discrepancies found for this item.'}
  </div>
  ) : (
@@ -166,7 +166,7 @@ export default function DiscrepancyReconciliationModal({ medicine, onClose, trig
  type="number" 
  value={physicalCount}
  onChange={e => setPhysicalCount(Number(e.target.value))}
- className="w-full border border-slate-300 rounded-lg p-2 text-sm focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+ className="w-full border border-slate-300 rounded-lg p-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none"
  />
  </div>
  <div>
@@ -176,7 +176,7 @@ export default function DiscrepancyReconciliationModal({ medicine, onClose, trig
  value={reason}
  placeholder={lang === 'ar' ? 'مثال: جرد فعلي' : 'e.g. Physical count adjustment'}
  onChange={e => setReason(e.target.value)}
- className="w-full border border-slate-300 rounded-lg p-2 text-sm focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none"
+ className="w-full border border-slate-300 rounded-lg p-2 text-sm focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none"
  />
  </div>
  </div>
@@ -190,7 +190,7 @@ export default function DiscrepancyReconciliationModal({ medicine, onClose, trig
  <button 
  onClick={handleReconcile}
  disabled={isSubmitting}
- className="px-4 py-2 text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors flex items-center gap-2"
+ className="px-4 py-2 text-sm font-bold bg-brand-600 hover:bg-brand-700 text-white rounded-lg transition-colors flex items-center gap-2"
  >
  <Check className="w-4 h-4" />
  {isSubmitting ? (lang === 'ar' ? 'جاري الحفظ...' : 'Saving...') : (lang === 'ar' ? 'حفظ المطابقة' : 'Apply Adjustment')}

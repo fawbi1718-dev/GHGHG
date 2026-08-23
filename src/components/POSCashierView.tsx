@@ -295,7 +295,7 @@ export default function POSCashierView({
  const addItemToCart = useCallback(async (med: Medicine, qty: number = 1) => {
  if (med.stock <= 0) {
  hardware.playScanError();
- triggerToast(lang === 'ar' ? '❌ نفد المخزون! الكمية الحالية: 0.' : '❌ Out of Stock! Current quantity: 0.', 'error');
+ triggerToast(lang === 'ar' ? ' نفد المخزون! الكمية الحالية: 0.' : ' Out of Stock! Current quantity: 0.', 'error');
  return;
  }
  
@@ -399,8 +399,8 @@ export default function POSCashierView({
  if (triggerToast) {
  triggerToast(
  lang === 'ar' 
- ? `⚠️ الصنف غير مسجل في مستودعك. (${lookupCode}) انقر للربط.` 
- : `⚠️ Item not registered in storage (${lookupCode}). Click to link.`,
+ ? `الصنف غير مسجل في مستودعك. (${lookupCode}) انقر للربط.` 
+ : `Item not registered in storage (${lookupCode}). Click to link.`,
  'error'
  );
  }
@@ -634,12 +634,12 @@ export default function POSCashierView({
  >
  <div id="printable-receipt" className="p-6 bg-white flex-1 overflow-y-auto">
  <div className="text-center border-b border-dashed border-slate-300 pb-4 mb-4">
- <h2 className="text-xl font-black text-slate-900 mb-1">🌿 Eshmun Pharmacy</h2>
+ <h2 className="text-xl font-black text-slate-900 mb-1">E Eshmun Pharmacy</h2>
  <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">{lang === 'ar' ? 'إيصال رسمي' : 'Official Receipt'}</p>
  <p className="text-xs text-slate-400 mt-2 font-mono">{lastSaleData.time}</p>
  <p className="text-xs text-slate-400 font-mono mt-1">Receipt #{lastSaleData.invoiceId}</p>
  {lastSaleData.paymentMethod === 'Credit' && (
- <p className="text-xs font-bold text-emerald-600 bg-blue-50 py-1 px-2 rounded mt-2 uppercase">Deferred / Credit</p>
+ <p className="text-xs font-bold text-brand-600 bg-blue-50 py-1 px-2 rounded mt-2 uppercase">Deferred / Credit</p>
  )}
  </div>
  
@@ -659,7 +659,7 @@ export default function POSCashierView({
  
  <div className="border-t border-dashed border-slate-300 pt-4 flex justify-between items-center">
  <span className="text-lg font-black text-slate-800">Total</span>
- <span className="text-xl font-black text-emerald-700 font-mono">
+ <span className="text-xl font-black text-brand-700 font-mono">
  {lastSaleData.total.toLocaleString()} SYP
  </span>
  </div>
@@ -670,7 +670,7 @@ export default function POSCashierView({
  onClick={() => window.print()}
  className="py-3 px-4 bg-white border-2 border-slate-200 text-slate-700 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-slate-100 transition-colors"
  >
- <span>🖨️</span>
+ <span>️</span>
  {lang === 'ar' ? 'طباعة' : 'Print Receipt'}
  </button>
  <button 
@@ -678,9 +678,9 @@ export default function POSCashierView({
  setShowSuccessOverlay(false);
  setLastSaleData(null);
  }}
- className="py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors shadow-sm"
+ className="py-3 px-4 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors shadow-sm"
  >
- <span>✅</span>
+ <span></span>
  {lang === 'ar' ? 'عملية جديدة' : 'Done / New Sale'}
  </button>
  </div>
@@ -708,7 +708,7 @@ export default function POSCashierView({
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                  <ShoppingCart className="w-5 h-5 text-emerald-700" />
+                  <ShoppingCart className="w-5 h-5 text-brand-700" />
                   {lang === "ar" ? "نقطة البيع (الكاشير)" : "Point of Sale (POS)"}
                 </h2>
                 <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -716,9 +716,9 @@ export default function POSCashierView({
                 </p>
               </div>
               <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold font-mono border ${
-                scannerReady ? "border-emerald-200 text-emerald-800 bg-emerald-50" : "border-amber-200 text-amber-800 bg-amber-50"
+                scannerReady ? "border-brand-200 text-brand-800 bg-brand-50" : "border-amber-200 text-amber-800 bg-amber-50"
               }`}>
-                {scannerReady ? <Zap className="w-4 h-4 text-emerald-600" /> : <PauseCircle className="w-4 h-4 text-amber-600" />}
+                {scannerReady ? <Zap className="w-4 h-4 text-brand-600" /> : <PauseCircle className="w-4 h-4 text-amber-600" />}
                 <span>{scannerReady ? (lang === "ar" ? "الماسح جاهز" : "SCANNER READY") : (lang === "ar" ? "الادخال اليدوي" : "INPUT MODE")}</span>
               </div>
             </div>
@@ -726,14 +726,14 @@ export default function POSCashierView({
             {/* SEARCH & SCANNER INPUT */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-emerald-600" />
+                <Search className="h-5 w-5 text-brand-600" />
               </div>
               <Input
                 ref={searchInputRef as any}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={lang === "ar" ? "مسح باركود أو إدخال اسم الدواء [F2]" : "Scan barcode or enter medicine name [F2]"}
-                className="block w-full pl-11 pr-14 py-3 sm:py-3.5 border-2 border-emerald-500 rounded-xl text-base sm:text-lg font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-600 bg-slate-50 focus:bg-white transition-colors"
+                className="block w-full pl-11 pr-14 py-3 sm:py-3.5 border-2 border-brand-500 rounded-xl text-base sm:text-lg font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-brand-500/20 focus:border-brand-600 bg-slate-50 focus:bg-white transition-colors"
                 autoComplete="off"
                 spellCheck="false"
               />
@@ -742,8 +742,8 @@ export default function POSCashierView({
                 onClick={handleOpenScannerClick}
                 className={`absolute inset-y-2 right-2 px-3 flex items-center justify-center rounded-lg transition-all border cursor-pointer ${
                   isInlineScannerOpen || isCameraScannerOpen
-                    ? "bg-emerald-600 text-white border-emerald-500 shadow-md ring-2 ring-emerald-400/50"
-                    : "bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border-emerald-200"
+                    ? "bg-brand-600 text-white border-brand-500 shadow-md ring-2 ring-brand-400/50"
+                    : "bg-brand-100 text-brand-800 hover:bg-brand-200 border-brand-200"
                 }`}
                 title={lang === "ar" ? "ماسح الكاميرا" : "Camera Scanner"}
               >
@@ -789,7 +789,7 @@ export default function POSCashierView({
                 <span>{lang === "ar" ? `نتائج البحث (${filteredMedicines.length})` : `Search Results (${filteredMedicines.length})`}</span>
                 <button 
                   onClick={() => { setSearchQuery(""); setSelectedCategory("all"); }} 
-                  className="text-emerald-700 hover:underline cursor-pointer"
+                  className="text-brand-700 hover:underline cursor-pointer"
                 >
                   {lang === "ar" ? "إغلاق النتائج" : "Clear Results"}
                 </button>
@@ -800,7 +800,7 @@ export default function POSCashierView({
                   <div className="p-6 text-center text-slate-500">
                     {isSearchingAlternatives ? (
                       <div className="flex flex-col items-center justify-center py-4">
-                        <Zap className="w-8 h-8 text-emerald-600 animate-pulse mb-2" />
+                        <Zap className="w-8 h-8 text-brand-600 animate-pulse mb-2" />
                         <p className="text-xs font-bold text-slate-700">
                           {lang === "ar" ? "جاري البحث عن البدائل التكافؤية..." : "Searching catalog for bio-equivalents..."}
                         </p>
@@ -835,9 +835,9 @@ export default function POSCashierView({
                   visibleMedicines.map((med, idx) => (
                     <div 
                       key={med.id} 
-                      className={`flex items-center justify-between p-3 hover:bg-emerald-50/50 transition-colors cursor-pointer ${
+                      className={`flex items-center justify-between p-3 hover:bg-brand-50/50 transition-colors cursor-pointer ${
                         med.stock <= 0 ? "bg-amber-50/30" : ""
-                      } ${idx === selectedIndex && searchQuery ? "bg-emerald-50 ring-1 ring-inset ring-emerald-500/30" : ""}`}
+                      } ${idx === selectedIndex && searchQuery ? "bg-brand-50 ring-1 ring-inset ring-brand-500/30" : ""}`}
                       onClick={() => {
                         if (med.stock > 0) {
                           addItemToCart(med);
@@ -866,8 +866,8 @@ export default function POSCashierView({
                       </div>
                       <div className="flex items-center gap-3 shrink-0">
                         <div className="text-right">
-                          <div className="font-bold text-emerald-700 text-sm sm:text-base font-mono">
-                            {med.price.toLocaleString()} <span className="text-[10px] text-emerald-600/70">SYP</span>
+                          <div className="font-bold text-brand-700 text-sm sm:text-base font-mono">
+                            {med.price.toLocaleString()} <span className="text-[10px] text-brand-600/70">SYP</span>
                           </div>
                           <div className={`text-[11px] font-bold ${med.stock > 10 ? "text-slate-500" : "text-amber-600"}`}>
                             {lang === "ar" ? "المخزون:" : "Stock:"} {med.stock}
@@ -876,7 +876,7 @@ export default function POSCashierView({
                         {med.stock > 0 ? (
                           <button 
                             type="button"
-                            className="p-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white transition-colors shadow-sm cursor-pointer"
+                            className="p-2 rounded-lg bg-brand-700 hover:bg-brand-800 text-white transition-colors shadow-sm cursor-pointer"
                             title={lang === "ar" ? "إضافة إلى السلة" : "Add to cart"}
                           >
                             <Plus className="w-4 h-4" />
@@ -908,12 +908,12 @@ export default function POSCashierView({
             {/* Cart Header */}
             <div className="p-3.5 sm:p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <ShoppingCart className="w-5 h-5 text-emerald-700" />
+                <ShoppingCart className="w-5 h-5 text-brand-700" />
                 <h3 className="font-bold text-slate-900 text-sm sm:text-base">
                   {lang === "ar" ? "سلة المبيعات" : "Transaction Cart"}
                 </h3>
                 <span className={`px-2 py-0.5 rounded-full text-xs font-bold font-mono ${
-                  cart.length > 0 ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-600"
+                  cart.length > 0 ? "bg-brand-100 text-brand-800" : "bg-slate-200 text-slate-600"
                 }`}>
                   {cart.reduce((s, i) => s + i.quantity, 0)} {lang === "ar" ? "عنصر" : "items"}
                 </span>
@@ -952,7 +952,7 @@ export default function POSCashierView({
                         exit={{ opacity: 0, height: 0 }}
                         key={item.id} 
                         className={`p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 transition-colors ${
-                          item.isRecentlyAdded ? "bg-emerald-50/70" : "bg-white hover:bg-slate-50/60"
+                          item.isRecentlyAdded ? "bg-brand-50/70" : "bg-white hover:bg-slate-50/60"
                         }`}
                       >
                         {/* Item Information */}
@@ -1032,10 +1032,10 @@ export default function POSCashierView({
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-2xl sm:text-3xl font-black text-emerald-700 font-mono tracking-tight">
+                      <span className="text-2xl sm:text-3xl font-black text-brand-700 font-mono tracking-tight">
                         {totalDue.toLocaleString()}
                       </span>
-                      <span className="text-sm font-bold text-emerald-600/80 ml-1.5">SYP</span>
+                      <span className="text-sm font-bold text-brand-600/80 ml-1.5">SYP</span>
                     </div>
                   </div>
 
@@ -1043,7 +1043,7 @@ export default function POSCashierView({
                   <button
                     onClick={() => checkout("Cash")}
                     disabled={cart.length === 0 || isProcessing}
-                    className="w-full mt-1 py-3.5 sm:py-4 rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2 sm:gap-3 transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-700/20 active:scale-[0.98] cursor-pointer"
+                    className="w-full mt-1 py-3.5 sm:py-4 rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2 sm:gap-3 transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-brand-600 hover:bg-brand-700 text-white shadow-lg shadow-brand-700/20 active:scale-[0.98] cursor-pointer"
                   >
                     {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Receipt className="w-5 h-5" />}
                     <span>{lang === "ar" ? "إتمام البيع (الدفع نقداً) [Enter]" : "Complete Sale (Cash) [Enter]"}</span>

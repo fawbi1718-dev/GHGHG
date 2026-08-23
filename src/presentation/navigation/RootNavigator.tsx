@@ -485,7 +485,7 @@ export default function RootNavigator({
  return (
  <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 animate-pulse">
  <div className="flex flex-col items-center space-y-4">
- <Loader2 className="w-12 h-12 text-emerald-600 animate-spin" />
+ <Loader2 className="w-12 h-12 text-brand-600 animate-spin" />
  <h2 className="text-xl font-bold font-mono text-slate-800 ">Loading...</h2>
  </div>
  </div>
@@ -559,16 +559,16 @@ export default function RootNavigator({
  
  {/* DESKTOP SIDEBAR */}
  <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 z-40 shrink-0 shadow-sm pt-[env(safe-area-inset-top,0px)]" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
- <div className="p-4 flex items-center gap-3 shrink-0">
- <div className="w-10 h-10 rounded-xl bg-emerald-700 flex items-center justify-center shadow-sm">
- <span className="text-xl">🌿</span>
+ <div className="p-4 flex items-center gap-3 shrink-0 border-b border-slate-200">
+ <div className="w-9 h-9 rounded-md bg-slate-900 flex items-center justify-center">
+ <span className="text-sm font-black text-white font-mono">E</span>
  </div>
  <div className="flex flex-col">
- <h1 className="text-xl font-bold text-slate-900 tracking-tight leading-none">
+ <h1 className="text-base font-bold text-slate-900 tracking-tight leading-none">
  Eshmun
  </h1>
- <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono mt-1">
- Pharmacy POS
+ <span className="text-[9px] font-semibold text-slate-500 uppercase tracking-[0.18em] font-mono mt-1">
+ Pharmacy Platform
  </span>
  </div>
  </div>
@@ -586,13 +586,13 @@ export default function RootNavigator({
  setActiveTab(tab.id as any);
  }
  }}
- className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-bold transition-all ${
+ className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-semibold border-l-2 transition-colors ${
  isActive
- ? 'bg-emerald-50 text-emerald-800'
- : 'text-slate-600 hover:text-emerald-700 hover:bg-slate-50'
+ ? 'bg-slate-100 text-slate-900 border-brand-700'
+ : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border-transparent'
  }`}
  >
- <tab.icon className={`w-5 h-5 ${isActive ? 'text-emerald-600' : 'text-slate-400'}`} />
+ <tab.icon className={`w-4 h-4 ${isActive ? 'text-brand-700' : 'text-slate-400'}`} />
  <span>{tab.label}</span>
  </button>
  );
@@ -606,7 +606,7 @@ export default function RootNavigator({
  onClick={() => setIsAccountModalOpen(true)}
  className="w-full flex items-center gap-3 px-3 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg font-bold text-sm transition-colors border border-slate-200 mt-2"
  >
- <div className="w-7 h-7 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-mono text-xs shadow-sm">
+ <div className="w-7 h-7 rounded-md bg-brand-100 text-brand-800 flex items-center justify-center font-mono text-xs shadow-sm">
  {currentSession?.fullName?.charAt(0) || 'U'}
  </div>
  <div className="flex flex-col items-start min-w-0">
@@ -623,10 +623,10 @@ export default function RootNavigator({
  {/* MOBILE HEADER */}
  <header className="md:hidden flex-none z-30 bg-white/95 border-b border-slate-200 px-4 py-3 flex items-center justify-between" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
  <div className="flex items-center gap-2.5">
- <div className="w-8 h-8 rounded-lg bg-emerald-700 flex items-center justify-center shadow-sm">
- <span className="text-sm">🌿</span>
+ <div className="w-8 h-8 rounded-md bg-slate-900 flex items-center justify-center">
+ <span className="text-sm font-black text-white font-mono">E</span>
  </div>
- <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-none">
+ <h1 className="text-base font-bold text-slate-900 tracking-tight leading-none">
  Eshmun
  </h1>
  </div>
@@ -634,7 +634,7 @@ export default function RootNavigator({
  <SyncStatusWidget />
  <button 
  onClick={() => setIsAccountModalOpen(true)}
- className="w-8 h-8 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs"
+ className="w-8 h-8 rounded-md bg-slate-100 border border-slate-300 text-slate-700 flex items-center justify-center font-semibold text-xs"
  >
  {currentSession?.fullName?.charAt(0) || 'U'}
  </button>
@@ -821,16 +821,14 @@ export default function RootNavigator({
                     setActiveTab(tab.id as any);
                   }
                 }}
-                className={"w-full flex flex-col items-center justify-center min-h-[50px] py-1 px-1 rounded-xl transition-all cursor-pointer select-none active:scale-95 " + (
+                className={"w-full flex flex-col items-center justify-center min-h-[48px] py-1 px-0.5 rounded-md transition-colors cursor-pointer select-none border-t-2 " + (
                   isActive 
-                    ? "text-emerald-800 font-bold bg-emerald-50/90" 
-                    : "text-slate-500 hover:text-slate-800 font-medium"
+                    ? "text-slate-900 font-semibold bg-slate-100 border-brand-700" 
+                    : "text-slate-500 hover:text-slate-800 font-medium border-transparent"
                 )}
               >
-                <div className={"p-1.5 rounded-lg mb-0.5 transition-colors " + (isActive ? "bg-emerald-100 text-emerald-800" : "bg-transparent text-slate-400")}>
-                  <tab.icon className="w-5 h-5 shrink-0" />
-                </div>
-                <span className="leading-tight tracking-tight truncate max-w-full text-center whitespace-nowrap text-[11px] font-semibold">
+                <tab.icon className={`w-[18px] h-[18px] shrink-0 mb-0.5 ${isActive ? 'text-brand-700' : 'text-slate-400'}`} />
+                <span className="leading-tight tracking-tight truncate max-w-full text-center whitespace-nowrap text-[10px] font-semibold">
                   {tab.label}
                 </span>
               </button>
@@ -866,9 +864,9 @@ export default function RootNavigator({
       >
         <div className="space-y-5" dir={lang === "ar" ? "rtl" : "ltr"}>
           {/* Account / Pharmacy Info */}
-          <div className="bg-slate-50 border border-emerald-100 rounded-xl p-4 flex items-center justify-between gap-3">
+          <div className="bg-slate-50 border border-brand-100 rounded-xl p-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-11 h-11 rounded-xl bg-emerald-700 text-white font-black text-base flex items-center justify-center shrink-0 shadow-sm">
+              <div className="w-11 h-11 rounded-xl bg-brand-700 text-white font-black text-base flex items-center justify-center shrink-0 shadow-sm">
                 {currentSession?.fullName?.charAt(0) || currentSession?.name?.charAt(0) || "E"}
               </div>
               <div className="min-w-0">
@@ -877,7 +875,7 @@ export default function RootNavigator({
                 </h3>
                 <p className="text-xs text-slate-500 truncate">{currentSession?.email || "authenticated@eshmun.local"}</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-bold font-mono uppercase">
+                  <span className="px-2 py-0.5 rounded-md bg-brand-100 text-brand-800 text-[10px] font-bold font-mono uppercase">
                     {currentSession?.role || "STAFF"}
                   </span>
                   <span className="text-xs text-slate-600 font-medium truncate">
@@ -899,7 +897,7 @@ export default function RootNavigator({
                 onClick={() => setLang("ar")}
                 className={`py-2 px-3 rounded-lg font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer ${
                   lang === "ar"
-                    ? "bg-white shadow-xs text-emerald-800"
+                    ? "bg-white shadow-xs text-brand-800"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -910,7 +908,7 @@ export default function RootNavigator({
                 onClick={() => setLang("en")}
                 className={`py-2 px-3 rounded-lg font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer ${
                   lang === "en"
-                    ? "bg-white shadow-xs text-emerald-800"
+                    ? "bg-white shadow-xs text-brand-800"
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -936,7 +934,7 @@ export default function RootNavigator({
             </label>
             <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="w-2.5 h-2.5 rounded-full bg-brand-500 animate-pulse" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-800">
                     {lang === "ar" ? "محرك المزامنة السحابية" : "Cloud Sync Engine"}
@@ -957,9 +955,9 @@ export default function RootNavigator({
                     triggerToast("Sync completed", "info");
                   }
                 }}
-                className="px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-xs font-bold rounded-lg transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-brand-100 hover:bg-brand-200 text-brand-800 text-xs font-bold rounded-lg transition-colors cursor-pointer"
               >
-                🔄 {lang === "ar" ? "مزامنة الآن" : "Sync Now"}
+                {lang === "ar" ? "مزامنة الآن" : "Sync Now"}
               </button>
             </div>
           </div>
@@ -970,14 +968,14 @@ export default function RootNavigator({
               onClick={() => { setActiveTab("settings"); setIsAccountModalOpen(false); }}
               className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-bold text-xs flex items-center justify-between transition-colors cursor-pointer"
             >
-              <span>⚙️ {lang === "ar" ? "صفحة الإعدادات الكاملة" : "Full Settings Page"}</span>
+              <span>{lang === "ar" ? "صفحة الإعدادات الكاملة" : "Full Settings Page"}</span>
               <span>→</span>
             </button>
             <button
               onClick={() => { setActiveTab("analytics"); setIsAccountModalOpen(false); }}
               className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-bold text-xs flex items-center justify-between transition-colors cursor-pointer"
             >
-              <span>📊 {lang === "ar" ? "التقارير والمبيعات" : "Reports & Analytics"}</span>
+              <span>{lang === "ar" ? "التقارير والمبيعات" : "Reports & Analytics"}</span>
               <span>→</span>
             </button>
           </div>

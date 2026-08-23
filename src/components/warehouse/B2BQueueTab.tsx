@@ -600,9 +600,9 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
   return (
     <div className="space-y-6 max-w-7xl mx-auto p-4 sm:p-6" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-200/60 shadow-2xs">
+          <div className="p-3 bg-brand-50 text-brand-700 rounded-xl border border-brand-200/60 shadow-2xs">
             <PackageCheck className="w-6 h-6" />
           </div>
           <div>
@@ -627,15 +627,15 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
 
       {/* Main Order Stream */}
       {isLoading && orders.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 shadow-xs">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto"></div>
+        <div className="text-center py-16 bg-white rounded-lg border border-slate-200 shadow-xs">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600 mx-auto"></div>
           <p className="mt-4 text-slate-500 font-mono text-sm">
             {lang === 'ar' ? 'جارٍ مزامنة قائمة الطلبات الواردة...' : 'Syncing queue in real time...'}
           </p>
         </div>
       ) : orders.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center shadow-xs space-y-3">
-          <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto border border-emerald-100 text-emerald-700">
+        <div className="bg-white border border-slate-200 rounded-xl p-12 text-center shadow-xs space-y-3">
+          <div className="w-16 h-16 bg-brand-50 rounded-lg flex items-center justify-center mx-auto border border-brand-100 text-brand-700">
             <CheckCircle className="w-8 h-8" />
           </div>
           <h3 className="text-lg font-bold text-slate-900">
@@ -661,19 +661,19 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-                  className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+                  className="bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden"
                 >
                   {/* Top Status Bar */}
-                  <div className="bg-slate-50/80 px-5 py-3 border-b border-emerald-100/60 flex flex-wrap items-center justify-between gap-3">
+                  <div className="bg-slate-50/80 px-5 py-3 border-b border-brand-100/60 flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-2.5">
                       <span className="relative flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-600"></span>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-600"></span>
                       </span>
-                      <span className="text-xs font-black uppercase tracking-wider text-emerald-900">
+                      <span className="text-xs font-black uppercase tracking-wider text-brand-900">
                         {lang === 'ar' ? 'طلب توريد جديد' : 'NEW ORDER'}
                       </span>
-                      <span className="font-mono text-xs font-bold text-emerald-800 bg-white px-2.5 py-0.5 rounded-md border border-emerald-200 shadow-2xs">
+                      <span className="font-mono text-xs font-bold text-brand-800 bg-white px-2.5 py-0.5 rounded-md border border-brand-200 shadow-2xs">
                         #{order.orderId}
                       </span>
                     </div>
@@ -684,7 +684,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                         {lang === 'ar' ? `قيد الانتظار: ${order.timeWaiting}` : `Waiting: ${order.timeWaiting}`}
                       </span>
                       <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-600 bg-white px-2 py-1 rounded-lg border border-slate-200 shadow-2xs">
-                        <Activity className="w-3 h-3 text-emerald-600" />
+                        <Activity className="w-3 h-3 text-brand-600" />
                         {lang === 'ar' ? 'بانتظار الموافقة' : 'Pending Approval'}
                       </span>
                     </div>
@@ -695,7 +695,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
                       {/* Left/Right Org Details */}
                       <div className="flex items-start gap-4">
-                        <div className="w-13 h-13 rounded-2xl bg-emerald-100/90 border border-emerald-200 flex items-center justify-center shrink-0 text-emerald-800 shadow-xs">
+                        <div className="w-13 h-13 rounded-lg bg-brand-100/90 border border-brand-200 flex items-center justify-center shrink-0 text-brand-800 shadow-xs">
                           <Building className="w-6 h-6 stroke-[2]" />
                         </div>
                         <div className="space-y-1">
@@ -711,14 +711,14 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600 pt-0.5">
                             {/* Location */}
                             <span className="flex items-center gap-1.5 font-medium">
-                              <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                              <MapPin className="w-3.5 h-3.5 text-brand-600 shrink-0" />
                               <span className="text-slate-700">{displayLocation}</span>
                             </span>
 
                             {/* Phone */}
                             {order.buyerPhone && (
                               <span className="flex items-center gap-1.5">
-                                <Phone className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                <Phone className="w-3.5 h-3.5 text-brand-600 shrink-0" />
                                 <span className="text-slate-600">{lang === 'ar' ? 'الهاتف:' : 'Phone:'}</span>
                                 <span dir="ltr" className="font-mono font-bold bg-white px-2 py-0.5 rounded border border-slate-200 text-slate-800">
                                   {order.buyerPhone}
@@ -742,9 +742,9 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                         <span className="text-[10px] text-slate-600 uppercase font-bold tracking-wider block mb-0.5">
                           {lang === 'ar' ? 'إجمالي قيمة الطلب' : 'Total Order Value'}
                         </span>
-                        <div className="text-xl font-black font-mono text-emerald-900">
+                        <div className="text-xl font-black font-mono text-brand-900">
                           {(Number(order?.totalValue) || 0).toLocaleString()}{' '}
-                          <span className="text-xs text-emerald-700 font-bold">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
+                          <span className="text-xs text-brand-700 font-bold">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
                         </div>
                         <span className="text-[10px] text-slate-600 font-mono block mt-0.5">
                           {order.items.length} {lang === 'ar' ? 'أصناف دوائية مطلوبة' : 'line items requested'}
@@ -783,7 +783,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                               <td className="py-3 font-mono text-center text-slate-600">
                                 {(Number(item?.costAtOrder) || 0).toLocaleString()}
                               </td>
-                              <td className="py-3 font-mono text-left font-bold text-emerald-900">
+                              <td className="py-3 font-mono text-left font-bold text-brand-900">
                                 {(Number((item?.costAtOrder || 0) * (item?.requestedQuantity || 0))).toLocaleString()}
                               </td>
                             </tr>
@@ -798,9 +798,9 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                     <button 
                       id={`btn-pick-verify-${order.orderId}`}
                       onClick={() => setActiveDispatchOrder(order)}
-                      className="w-full sm:w-auto min-h-[44px] px-4 py-2.5 text-emerald-800 bg-white hover:bg-emerald-50 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer border border-emerald-200/80 shadow-2xs active:scale-98"
+                      className="w-full sm:w-auto min-h-[44px] px-4 py-2.5 text-brand-800 bg-white hover:bg-brand-50 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer border border-brand-200/80 shadow-2xs active:scale-98"
                     >
-                      <PackageCheck className="w-4 h-4 text-emerald-600" />
+                      <PackageCheck className="w-4 h-4 text-brand-600" />
                       {lang === 'ar' ? 'فحص الباركود والصلاحيات (FEFO)' : 'Pick & Verify Items'}
                     </button>
 
@@ -816,7 +816,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                       <button 
                         id={`btn-dispatch-${order.orderId}`}
                         onClick={() => setActiveDispatchOrder(order)}
-                        className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                        className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer active:scale-98"
                       >
                         <CheckCircle className="w-4 h-4 stroke-[2.2]" />
                         {lang === 'ar' ? 'اعتماد وتجهيز الإرسال' : 'Accept / Dispatch'}
@@ -836,7 +836,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
           <button
             id="btn-toggle-order-history"
             onClick={() => setShowHistory(v => !v)}
-            className="flex-1 flex items-center justify-between px-5 py-3.5 bg-white border border-slate-200 rounded-2xl shadow-xs hover:bg-slate-50 transition-colors cursor-pointer"
+            className="flex-1 flex items-center justify-between px-5 py-3.5 bg-white border border-slate-200 rounded-lg shadow-xs hover:bg-slate-50 transition-colors cursor-pointer"
           >
             <span className="flex items-center gap-2 text-sm font-black text-slate-700">
               <HistoryIcon className="w-4 h-4 text-slate-400" />
@@ -853,7 +853,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
               onClick={loadOrderHistory}
               disabled={isLoadingHistory}
               title={lang === 'ar' ? 'تحديث السجل' : 'Refresh history'}
-              className="p-3 bg-white border border-slate-200 rounded-2xl text-slate-500 hover:text-emerald-600 hover:border-emerald-200 transition-colors cursor-pointer disabled:opacity-50"
+              className="p-3 bg-white border border-slate-200 rounded-lg text-slate-500 hover:text-brand-600 hover:border-brand-200 transition-colors cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${isLoadingHistory ? 'animate-spin' : ''}`} />
             </button>
@@ -899,7 +899,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                     <Skeleton className="h-16 w-full rounded-xl" />
                   </div>
                 ) : filteredHistory.length === 0 ? (
-                  <div className="bg-white border border-slate-200 rounded-2xl">
+                  <div className="bg-white border border-slate-200 rounded-lg">
                     <EmptyState
                       icon={<Inbox className="w-8 h-8 text-slate-300" />}
                       title={lang === 'ar' ? 'لا توجد طلبات منتهية بعد' : 'No finished orders yet'}
@@ -940,7 +940,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                             </div>
                             <div className="text-right shrink-0 flex items-center gap-3">
                               <div>
-                                <span className="block font-mono text-sm font-black text-emerald-800">
+                                <span className="block font-mono text-sm font-black text-brand-800">
                                   {(Number(o.totalValue) || 0).toLocaleString()}
                                 </span>
                                 <span className="block text-[10px] text-slate-400 font-mono">{dateStr}</span>
@@ -994,10 +994,10 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
               transition={{ duration: 0.2 }}
-              className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4"
+              className="bg-white rounded-lg max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100">
+                <div className="w-12 h-12 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100">
                   <AlertTriangle className="w-6 h-6 stroke-[2.2]" />
                 </div>
                 <button
@@ -1031,7 +1031,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>{lang === 'ar' ? 'القيمة الإجمالية:' : 'Total Value:'}</span>
-                  <span className="font-bold text-emerald-900 font-mono">{(Number(orderToReject.totalValue) || 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}</span>
+                  <span className="font-bold text-brand-900 font-mono">{(Number(orderToReject.totalValue) || 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}</span>
                 </div>
               </div>
 
@@ -1052,7 +1052,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                     value={counterQty}
                     onChange={(e) => setCounterQty(e.target.value)}
                     placeholder="e.g. 6"
-                    className="w-full px-2.5 py-2 text-xs font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500"
+                    className="w-full px-2.5 py-2 text-xs font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500"
                   />
                 </label>
                 <label className="col-span-2">
@@ -1064,7 +1064,7 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                     value={rejectNote}
                     onChange={(e) => setRejectNote(e.target.value)}
                     placeholder={lang === 'ar' ? 'مثال: يتوفر الأسبوع القادم' : 'e.g. restocking next week'}
-                    className="w-full px-2.5 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500"
+                    className="w-full px-2.5 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500"
                   />
                 </label>
               </div>

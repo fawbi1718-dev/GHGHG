@@ -58,7 +58,7 @@ export const Modal: React.FC<ModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity pointer-events-auto"
+            className="fixed inset-0 bg-slate-900/50 transition-opacity pointer-events-auto"
           />
           <div className="relative z-10 w-full flex justify-center items-center pointer-events-none my-auto">
             <motion.div
@@ -66,8 +66,8 @@ export const Modal: React.FC<ModalProps> = ({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
               transition={{ type: 'spring', damping: 26, stiffness: 320 }}
-              className={`w-full bg-white shadow-2xl pointer-events-auto flex flex-col overflow-hidden rounded-2xl border border-slate-200/80 ${maxWidthClasses[maxWidth]} ${
-                fullScreenOnMobile ? 'h-full sm:h-auto sm:max-h-[90vh] sm:rounded-2xl rounded-none' : 'max-h-[88vh]'
+              className={`w-full bg-white shadow-xl pointer-events-auto flex flex-col overflow-hidden rounded-lg border border-slate-300 ${maxWidthClasses[maxWidth]} ${
+                fullScreenOnMobile ? 'h-full sm:h-auto sm:max-h-[90vh] sm:rounded-lg rounded-none' : 'max-h-[88vh]'
               }`}
             >
               {title && (

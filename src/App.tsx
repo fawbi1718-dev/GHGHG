@@ -169,8 +169,8 @@ function AppContent() {
 
       {/* Non-destructive Sync Progress (Rendered as overlay without unmounting the app tree) */}
       {(isSyncing || syncError) && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-emerald-950/80 backdrop-blur-sm text-white p-6">
-          <div className="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-xl w-full p-6 shadow-2xl flex flex-col items-center">
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-brand-950/80 backdrop-blur-sm text-white p-6">
+          <div className="bg-slate-900 border border-slate-700/80 rounded-lg max-w-xl w-full p-6 shadow-2xl flex flex-col items-center">
             <h2 className="text-xl font-bold mb-4">
               {lang === 'ar' ? 'مزامنة كتالوج الأدوية للعمل دون اتصال...' : 'Setting up Pharmacy Catalog for Offline Use...'}
             </h2>
@@ -179,7 +179,7 @@ function AppContent() {
               <>
                 <div className="w-full bg-slate-800 rounded-full h-3 mb-3 overflow-hidden border border-slate-700">
                   <div 
-                    className="bg-emerald-500 h-3 rounded-full transition-all duration-300" 
+                    className="bg-brand-500 h-3 rounded-full transition-all duration-300" 
                     style={{ width: `${Math.min(100, Math.round((syncProgress.loaded / (syncProgress.total || 1)) * 100)) || 0}%` }}
                   />
                 </div>
@@ -195,7 +195,7 @@ function AppContent() {
                 <div className="flex gap-2">
                   <button 
                     onClick={startSync}
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                    className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer"
                   >
                     {lang === 'ar' ? 'إعادة المحاولة' : 'Retry'}
                   </button>
@@ -213,7 +213,7 @@ function AppContent() {
               {syncLogs.map((log, i) => (
                 <div key={i} className={`
                   ${log.type === 'error' ? 'text-red-400 font-bold' : ''}
-                  ${log.type === 'success' ? 'text-emerald-400' : ''}
+                  ${log.type === 'success' ? 'text-brand-400' : ''}
                   ${log.type === 'info' ? 'text-slate-300' : ''}
                 `}>
                   <span className="text-slate-600 opacity-70">[{new Date().toLocaleTimeString()}]</span> {log.msg}

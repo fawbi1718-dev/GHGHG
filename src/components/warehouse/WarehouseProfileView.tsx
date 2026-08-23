@@ -213,24 +213,24 @@ export default function WarehouseProfileView({
           onClick={onBack}
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl transition-all shadow-xs border border-slate-200 active:scale-95 cursor-pointer"
         >
-          {lang === 'ar' ? <ArrowRight className="w-4 h-4 text-emerald-700" /> : <ArrowLeft className="w-4 h-4 text-emerald-700" />}
+          {lang === 'ar' ? <ArrowRight className="w-4 h-4 text-brand-700" /> : <ArrowLeft className="w-4 h-4 text-brand-700" />}
           <span>{lang === 'ar' ? 'الرجوع إلى سوق الجملة' : 'Back to Marketplace'}</span>
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-brand-50 text-brand-800 border border-brand-200">
+            <ShieldCheck className="w-4 h-4 text-brand-600" />
             {lang === 'ar' ? 'ملف المورد المعتمد' : 'Verified Supplier Profile'}
           </span>
         </div>
       </div>
 
       {/* Hero Supplier Profile Identity Banner */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden relative">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden relative">
         {/* Subtle patterned header background */}
-        <div className="h-32 sm:h-40 bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 relative overflow-hidden">
+        <div className="h-32 sm:h-40 bg-slate-800 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px] opacity-10" />
-          <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-emerald-500/20 rounded-full blur-2xl" />
+          <div className="absolute -bottom-10 -right-10 w-48 h-48 bg-brand-500/20 rounded-full blur-2xl" />
           <div className="absolute -top-10 -left-10 w-48 h-48 bg-teal-400/20 rounded-full blur-2xl" />
         </div>
 
@@ -239,8 +239,8 @@ export default function WarehouseProfileView({
           {/* Overlapping Identity Avatar */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 -mt-14 sm:-mt-16 mb-5">
             <div className="flex items-end gap-4">
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-1.5 shadow-xl border-2 border-white shrink-0">
-                <div className="w-full h-full rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 flex items-center justify-center text-emerald-800">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-lg bg-white p-1.5 shadow-xl border-2 border-white shrink-0">
+                <div className="w-full h-full rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-brand-800">
                   <Building2 className="w-12 h-12 stroke-[1.8]" />
                 </div>
               </div>
@@ -250,8 +250,8 @@ export default function WarehouseProfileView({
                   <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                     {displayName}
                   </h1>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-50 text-brand-800 border border-brand-200">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-brand-600" />
                     {lang === 'ar' ? 'مستودع أدوية مرخص' : 'Licensed Supplier'}
                   </span>
                 </div>
@@ -270,10 +270,10 @@ export default function WarehouseProfileView({
                   {lang === 'ar' ? 'تقييم الالتزام' : 'Fulfillment Score'}
                 </span>
               </div>
-              <div className="hidden sm:flex items-center gap-1.5 bg-emerald-50 text-emerald-900 border border-emerald-200/80 px-3 py-1.5 rounded-xl shadow-2xs">
-                <Clock className="w-4 h-4 text-emerald-600" />
+              <div className="hidden sm:flex items-center gap-1.5 bg-brand-50 text-brand-900 border border-brand-200/80 px-3 py-1.5 rounded-xl shadow-2xs">
+                <Clock className="w-4 h-4 text-brand-600" />
                 <span className="font-mono font-black text-xs">99.4%</span>
-                <span className="text-[10px] text-emerald-700 font-bold">
+                <span className="text-[10px] text-brand-700 font-bold">
                   {lang === 'ar' ? 'تسليم بالموعد' : 'On-Time'}
                 </span>
               </div>
@@ -281,10 +281,10 @@ export default function WarehouseProfileView({
           </div>
 
           {/* Supplier Public Metadata Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-slate-50/90 rounded-2xl border border-slate-200/70 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4 bg-slate-50/90 rounded-lg border border-slate-200/70 mb-6">
             {/* City & Address */}
             <div className="flex items-start gap-3 p-2.5">
-              <div className="p-2 bg-white rounded-xl text-emerald-700 shadow-2xs border border-slate-200/60 shrink-0">
+              <div className="p-2 bg-white rounded-xl text-brand-700 shadow-2xs border border-slate-200/60 shrink-0">
                 <MapPin className="w-4 h-4" />
               </div>
               <div className="space-y-0.5 min-w-0">
@@ -294,7 +294,7 @@ export default function WarehouseProfileView({
                 <p className="text-xs font-bold text-slate-800 truncate">{displayCity}</p>
                 <p className="text-[11px] text-slate-500 truncate">{displayAddress}</p>
                 {distanceKm !== null && (
-                  <span className="inline-block font-mono text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded mt-0.5">
+                  <span className="inline-block font-mono text-[10px] font-bold text-brand-700 bg-brand-50 px-1.5 py-0.2 rounded mt-0.5">
                     {lang === 'ar' ? `على بعد ${distanceKm} كم` : `${distanceKm} km away`}
                   </span>
                 )}
@@ -303,7 +303,7 @@ export default function WarehouseProfileView({
 
             {/* Direct Contact Phone */}
             <div className="flex items-start gap-3 p-2.5">
-              <div className="p-2 bg-white rounded-xl text-emerald-700 shadow-2xs border border-slate-200/60 shrink-0">
+              <div className="p-2 bg-white rounded-xl text-brand-700 shadow-2xs border border-slate-200/60 shrink-0">
                 <Phone className="w-4 h-4" />
               </div>
               <div className="space-y-0.5 min-w-0">
@@ -320,7 +320,7 @@ export default function WarehouseProfileView({
                       title={lang === 'ar' ? 'نسخ الرقم' : 'Copy phone'}
                       className="p-1 hover:bg-slate-200 rounded text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
                     >
-                      {phoneCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      {phoneCopied ? <Check className="w-3.5 h-3.5 text-brand-600" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>
                   </div>
                 ) : (
@@ -333,14 +333,14 @@ export default function WarehouseProfileView({
 
             {/* Total Stock Volume */}
             <div className="flex items-start gap-3 p-2.5">
-              <div className="p-2 bg-white rounded-xl text-emerald-700 shadow-2xs border border-slate-200/60 shrink-0">
+              <div className="p-2 bg-white rounded-xl text-brand-700 shadow-2xs border border-slate-200/60 shrink-0">
                 <Package className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
                 <span className="text-[10px] uppercase font-bold text-slate-600 block">
                   {lang === 'ar' ? 'المخزون الجاهز للشحن' : 'Ready Stock Volume'}
                 </span>
-                <p className="font-mono text-sm font-black text-emerald-900">
+                <p className="font-mono text-sm font-black text-brand-900">
                   {warehouse.totalStockUnits.toLocaleString()}{' '}
                   <span className="text-[10px] text-slate-500 font-normal">{lang === 'ar' ? 'عبوة' : 'units'}</span>
                 </p>
@@ -352,7 +352,7 @@ export default function WarehouseProfileView({
 
             {/* Delivery & Logistics Window */}
             <div className="flex items-start gap-3 p-2.5">
-              <div className="p-2 bg-white rounded-xl text-emerald-700 shadow-2xs border border-slate-200/60 shrink-0">
+              <div className="p-2 bg-white rounded-xl text-brand-700 shadow-2xs border border-slate-200/60 shrink-0">
                 <Truck className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
@@ -376,11 +376,11 @@ export default function WarehouseProfileView({
             </span>
             {(warehouse as any).sellerType === 'RETAIL_PHARMACY' && (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">
-                🏥 {lang === 'ar' ? 'صيدلية بائعة (فائض مخزون)' : 'Pharmacy Seller (Surplus)'}
+                {lang === 'ar' ? 'صيدلية بائعة (فائض مخزون)' : 'Pharmacy Seller (Surplus)'}
               </span>
             )}
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200">
-              <Layers className="w-3.5 h-3.5 text-emerald-600" />
+              <Layers className="w-3.5 h-3.5 text-brand-600" />
               {warehouse.totalOffers} {lang === 'ar' ? 'عرض متاح' : 'Total Offers'}
             </span>
 
@@ -400,7 +400,7 @@ export default function WarehouseProfileView({
 
             {((warehouse as any).surplusOffersCount || 0) > 0 && (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">
-                ♻️ {((warehouse as any).surplusOffersCount)} {lang === 'ar' ? 'عروض فائض' : 'Surplus Offers'}
+                {((warehouse as any).surplusOffersCount)} {lang === 'ar' ? 'عروض فائض' : 'Surplus Offers'}
               </span>
             )}
 
@@ -409,7 +409,7 @@ export default function WarehouseProfileView({
                 <span
                   className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold border ${
                     trust.fulfilledPct >= 80
-                      ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                      ? 'bg-brand-50 text-brand-800 border-brand-200'
                       : trust.fulfilledPct >= 50
                         ? 'bg-amber-50 text-amber-800 border-amber-200'
                         : 'bg-rose-50 text-rose-700 border-rose-200'
@@ -418,11 +418,11 @@ export default function WarehouseProfileView({
                     ? `محسوبة من ${trust.total} طلبية حقيقية (${trust.rejectedPct}% مرفوضة)`
                     : `Computed from ${trust.total} real orders (${trust.rejectedPct}% rejected)`}
                 >
-                  🛡️ {lang === 'ar' ? 'نسبة التنفيذ:' : 'Fulfillment rate:'} {trust.fulfilledPct}%
+                  {lang === 'ar' ? 'نسبة التنفيذ:' : 'Fulfillment rate:'} {trust.fulfilledPct}%
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-slate-50 text-slate-500 border border-slate-200">
-                  🛡️ {lang === 'ar' ? 'بائع جديد — لا سجل بعد' : 'New seller — no history yet'}
+                  {lang === 'ar' ? 'بائع جديد — لا سجل بعد' : 'New seller — no history yet'}
                 </span>
               )
             )}
@@ -431,11 +431,11 @@ export default function WarehouseProfileView({
       </div>
 
       {/* Storefront Search, Category Filters, & Manufacturer Pills */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
+      <div className="bg-white rounded-lg border border-slate-200 p-4 sm:p-5 shadow-xs space-y-4">
         <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
           {/* Search Field */}
           <div className="relative flex-1 max-w-lg">
-            <Search className="w-4 h-4 text-emerald-600 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-brand-600 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
@@ -445,7 +445,7 @@ export default function WarehouseProfileView({
                   ? `ابحث في قائمة أدوية ${displayName}...`
                   : `Search medicines from ${displayName}...`
               }
-              className="w-full pl-9 pr-8 py-2.5 bg-slate-50 rounded-xl text-xs font-medium text-slate-800 border border-slate-200 focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
+              className="w-full pl-9 pr-8 py-2.5 bg-slate-50 rounded-xl text-xs font-medium text-slate-800 border border-slate-200 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all"
             />
             {searchQuery && (
               <button
@@ -463,7 +463,7 @@ export default function WarehouseProfileView({
               onClick={() => setSelectedFilter('all')}
               className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                 selectedFilter === 'all'
-                  ? 'bg-emerald-700 text-white shadow-xs'
+                  ? 'bg-brand-700 text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
@@ -473,7 +473,7 @@ export default function WarehouseProfileView({
               onClick={() => setSelectedFilter('bonus')}
               className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                 selectedFilter === 'bonus'
-                  ? 'bg-emerald-700 text-white shadow-xs'
+                  ? 'bg-brand-700 text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
@@ -484,11 +484,11 @@ export default function WarehouseProfileView({
               onClick={() => setSelectedFilter('high_stock')}
               className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                 selectedFilter === 'high_stock'
-                  ? 'bg-emerald-700 text-white shadow-xs'
+                  ? 'bg-brand-700 text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
-              <Package className="w-3.5 h-3.5 text-emerald-600" />
+              <Package className="w-3.5 h-3.5 text-brand-600" />
               {lang === 'ar' ? 'كميات وافرة (+200)' : 'High Stock (+200)'}
             </button>
             {warehouse.clearanceOffersCount > 0 && (
@@ -496,7 +496,7 @@ export default function WarehouseProfileView({
                 onClick={() => setSelectedFilter('clearance')}
                 className={`px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                   selectedFilter === 'clearance'
-                    ? 'bg-emerald-700 text-white shadow-xs'
+                    ? 'bg-brand-700 text-white shadow-xs'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -527,7 +527,7 @@ export default function WarehouseProfileView({
                 onClick={() => setSelectedCompany(comp === selectedCompany ? null : comp)}
                 className={`px-2.5 py-1 rounded-lg text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer ${
                   selectedCompany === comp
-                    ? 'bg-emerald-800 text-white'
+                    ? 'bg-brand-800 text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
@@ -542,7 +542,7 @@ export default function WarehouseProfileView({
       {isLoading || isLoadingProfile ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3, 4, 5, 6].map((n) => (
-            <div key={n} className="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-3 animate-pulse">
+            <div key={n} className="bg-white rounded-lg p-5 border border-slate-200 shadow-xs space-y-3 animate-pulse">
               <div className="flex justify-between items-start">
                 <div className="h-4 bg-slate-200 rounded-md w-2/3" />
                 <div className="h-4 bg-slate-100 rounded-full w-12" />
@@ -565,13 +565,13 @@ export default function WarehouseProfileView({
                 key={offer.id}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white border border-slate-200 hover:border-emerald-300 rounded-2xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
+                className="bg-white border border-slate-200 hover:border-brand-300 rounded-lg p-4 sm:p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
               >
                 <div className="space-y-3">
                   {/* Header & Badges */}
                   <div className="flex justify-between items-start gap-2">
                     <div>
-                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-emerald-800 transition-colors leading-snug">
+                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-brand-800 transition-colors leading-snug">
                         {itemName}
                       </h3>
                       {lang === 'ar' && offer.tradeNameEn && offer.tradeNameEn !== itemName && (
@@ -585,7 +585,7 @@ export default function WarehouseProfileView({
                     )}
                     {(offer as any).offerKind === 'surplus' && (
                       <span className="bg-teal-50 text-teal-800 border border-teal-200 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap">
-                        ♻️ Surplus
+                        Surplus
                       </span>
                     )}
                   </div>
@@ -614,7 +614,7 @@ export default function WarehouseProfileView({
                       </span>
                     )}
                     {offer.company && (
-                      <span className="bg-emerald-50/70 text-emerald-800 text-[10px] px-2 py-0.5 rounded-md font-bold border border-emerald-100">
+                      <span className="bg-brand-50/70 text-brand-800 text-[10px] px-2 py-0.5 rounded-md font-bold border border-brand-100">
                         {offer.company}
                       </span>
                     )}
@@ -626,12 +626,12 @@ export default function WarehouseProfileView({
                       <span className="text-[10px] text-slate-600 font-bold block mb-0.5">
                         {lang === 'ar' ? 'سعر الجملة' : 'Wholesale Unit Price'}
                       </span>
-                      <span className="font-black text-emerald-900 font-mono text-base">
-                        {offer.priceSyp.toLocaleString()} <span className="text-[11px] text-emerald-700 font-bold">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
+                      <span className="font-black text-brand-900 font-mono text-base">
+                        {offer.priceSyp.toLocaleString()} <span className="text-[11px] text-brand-700 font-bold">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
                       </span>
                     </div>
                     <div className={lang === 'ar' ? 'text-left' : 'text-right'}>
-                      <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md block mb-1">
+                      <span className="text-[10px] text-brand-800 font-bold bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-md block mb-1">
                         {offer.availableQuantity.toLocaleString()} {lang === 'ar' ? 'متوفر' : 'Units'}
                       </span>
                       <span className="text-[9px] text-slate-600 font-bold block bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md font-mono">
@@ -647,24 +647,24 @@ export default function WarehouseProfileView({
                     <button
                       id={`btn-add-offer-${offer.id}`}
                       onClick={() => updateCart(offer.id, minOrder)}
-                      className="w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
+                      className="w-full py-2.5 px-4 bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
                     >
                       <Plus className="w-4 h-4" />
                       <span>{lang === 'ar' ? 'إضافة إلى السلة' : 'Add to Cart'}</span>
                     </button>
                   ) : (
-                    <div className="flex items-center justify-between bg-emerald-50/80 border border-emerald-200 rounded-xl p-1">
+                    <div className="flex items-center justify-between bg-brand-50/80 border border-brand-200 rounded-xl p-1">
                       <button
                         onClick={() => updateCart(offer.id, inCartQty - 1)}
-                        className="w-8 h-8 rounded-lg bg-white text-emerald-800 hover:bg-emerald-100 flex items-center justify-center font-bold transition-all shadow-2xs cursor-pointer"
+                        className="w-8 h-8 rounded-lg bg-white text-brand-800 hover:bg-brand-100 flex items-center justify-center font-bold transition-all shadow-2xs cursor-pointer"
                       >
                         <Minus className="w-3.5 h-3.5" />
                       </button>
                       <div className="text-center">
-                        <span className="font-mono font-black text-xs text-emerald-900 block">
+                        <span className="font-mono font-black text-xs text-brand-900 block">
                           {inCartQty} {lang === 'ar' ? 'عبوة' : 'units'}
                         </span>
-                        <span className="text-[9px] text-emerald-700 font-bold font-mono">
+                        <span className="text-[9px] text-brand-700 font-bold font-mono">
                           {(inCartQty * offer.priceSyp).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}
                         </span>
                       </div>
@@ -675,7 +675,7 @@ export default function WarehouseProfileView({
                           }
                         }}
                         disabled={inCartQty >= offer.availableQuantity}
-                        className="w-8 h-8 rounded-lg bg-emerald-700 text-white hover:bg-emerald-800 disabled:opacity-40 flex items-center justify-center font-bold transition-all shadow-2xs cursor-pointer"
+                        className="w-8 h-8 rounded-lg bg-brand-700 text-white hover:bg-brand-800 disabled:opacity-40 flex items-center justify-center font-bold transition-all shadow-2xs cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" />
                       </button>
@@ -688,8 +688,8 @@ export default function WarehouseProfileView({
         </div>
       ) : (
         /* Empty State */
-        <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center shadow-xs space-y-3">
-          <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto text-slate-400">
+        <div className="bg-white border border-slate-200 rounded-xl p-12 text-center shadow-xs space-y-3">
+          <div className="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center mx-auto text-slate-400">
             <Search className="w-8 h-8" />
           </div>
           <h3 className="text-base font-bold text-slate-900">
@@ -707,7 +707,7 @@ export default function WarehouseProfileView({
                 setSelectedFilter('all');
                 setSelectedCompany(null);
               }}
-              className="mt-2 px-4 py-2 bg-emerald-50 text-emerald-800 text-xs font-bold rounded-xl border border-emerald-200 hover:bg-emerald-100 transition-colors cursor-pointer"
+              className="mt-2 px-4 py-2 bg-brand-50 text-brand-800 text-xs font-bold rounded-xl border border-brand-200 hover:bg-brand-100 transition-colors cursor-pointer"
             >
               {lang === 'ar' ? 'إعادة ضبط الفلاتر' : 'Reset Filters'}
             </button>

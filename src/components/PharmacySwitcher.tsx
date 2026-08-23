@@ -72,13 +72,13 @@ export default function PharmacySwitcher() {
  <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-6">
  <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
  <h3 className="font-bold text-slate-800 flex items-center gap-2">
- <Building2 className="w-4 h-4 text-emerald-500" />
+ <Building2 className="w-4 h-4 text-brand-500" />
  Manage Workspaces
  </h3>
  {!isAdding && (
  <button 
  onClick={() => setIsAdding(true)}
- className="text-xs flex items-center gap-1 font-bold text-emerald-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
+ className="text-xs flex items-center gap-1 font-bold text-brand-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
  >
  <Plus className="w-3.5 h-3.5" />
  New Workspace
@@ -89,7 +89,7 @@ export default function PharmacySwitcher() {
  <div className="p-4">
  {isLoadingList ? (
  <div className="flex justify-center p-4">
- <Loader2 className="w-6 h-6 animate-spin text-emerald-500" />
+ <Loader2 className="w-6 h-6 animate-spin text-brand-500" />
  </div>
  ) : (
  <div className="space-y-3">
@@ -97,7 +97,7 @@ export default function PharmacySwitcher() {
  <div 
  key={pharmacy.id}
  onClick={() => switchPharmacy(pharmacy.id)}
- className={`p-4 rounded-xl border ${activePharmacy?.id === pharmacy.id ? 'border-emerald-500 bg-blue-50/50 ' : 'border-slate-200 hover:border-blue-300 cursor-pointer transition-colors'} flex items-center justify-between`}
+ className={`p-4 rounded-xl border ${activePharmacy?.id === pharmacy.id ? 'border-brand-500 bg-blue-50/50 ' : 'border-slate-200 hover:border-blue-300 cursor-pointer transition-colors'} flex items-center justify-between`}
  >
  <div>
  <h4 className="font-bold text-slate-800 flex items-center gap-2">
@@ -105,10 +105,10 @@ export default function PharmacySwitcher() {
  {pharmacy.tenantType === 'WHOLESALE_WAREHOUSE' ? (
  <span className="text-[10px] uppercase font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200 ">Warehouse</span>
  ) : (
- <span className="text-[10px] uppercase font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200 ">Retail</span>
+ <span className="text-[10px] uppercase font-bold text-brand-600 bg-brand-100 px-2 py-0.5 rounded-full border border-brand-200 ">Retail</span>
  )}
  {activePharmacy?.id === pharmacy.id && (
- <span className="text-[10px] uppercase font-bold text-emerald-600 bg-blue-100 px-2 py-0.5 rounded-full">Active</span>
+ <span className="text-[10px] uppercase font-bold text-brand-600 bg-blue-100 px-2 py-0.5 rounded-full">Active</span>
  )}
  </h4>
  <p className="text-xs text-slate-500 flex items-center gap-1 mt-1">
@@ -117,7 +117,7 @@ export default function PharmacySwitcher() {
  </p>
  </div>
  {activePharmacy?.id === pharmacy.id && (
- <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+ <CheckCircle2 className="w-5 h-5 text-brand-500" />
  )}
  </div>
  ))}
@@ -175,7 +175,7 @@ export default function PharmacySwitcher() {
  <button 
  type="submit"
  disabled={!isFormValid}
- className="px-3 py-1.5 text-xs font-bold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 disabled:opacity-50"
+ className="px-3 py-1.5 text-xs font-bold text-white bg-brand-600 rounded-lg hover:bg-brand-700 disabled:opacity-50"
  >
  Create Workspace
  </button>

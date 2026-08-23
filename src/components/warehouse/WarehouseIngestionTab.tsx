@@ -176,7 +176,7 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
  <div>
  <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
- <PackagePlus className="text-emerald-600" />
+ <PackagePlus className="text-brand-600" />
  {lang === 'ar' ? 'إدخال مخزون المستودع' : 'Warehouse Stock Ingestion'}
  </h1>
  <p className="text-sm text-slate-500 mt-1">
@@ -204,14 +204,14 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  onChange={e => setBarcode(e.target.value)}
  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleLookup(); } }}
  placeholder={lang === 'ar' ? 'أدخل أو امسح الباركود...' : 'Scan or enter barcode...'}
- className="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-lg font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500"
+ className="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-lg font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
  autoFocus
  />
  <button
  type="button"
  onClick={handleLookup}
  disabled={isSearching || !barcode}
- className="px-6 py-3 bg-slate-800 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl font-bold transition-all flex items-center gap-2"
+ className="px-6 py-3 bg-slate-800 hover:bg-brand-700 disabled:opacity-50 text-white rounded-xl font-bold transition-all flex items-center gap-2"
  >
  {isSearching ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
  {lang === 'ar' ? 'بحث' : 'Search'}
@@ -231,7 +231,7 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  value={name}
  onChange={e => setName(e.target.value)}
  placeholder="e.g. Panadol Extra"
- className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+ className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500"
  />
  </div>
  <div>
@@ -243,7 +243,7 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  value={genericName}
  onChange={e => setGenericName(e.target.value)}
  placeholder="e.g. Paracetamol"
- className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+ className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500"
  />
  </div>
  </div>
@@ -254,7 +254,7 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
  <div>
  <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2">
- <Archive className="w-4 h-4 text-emerald-500" />
+ <Archive className="w-4 h-4 text-brand-500" />
  {lang === 'ar' ? 'عدد الكراتين' : 'No. of Cartons'} *
  </label>
  <input
@@ -263,13 +263,13 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  min="1"
  value={cartons}
  onChange={e => setCartons(e.target.value)}
- className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-lg font-bold text-center focus:outline-none focus:ring-2 focus:ring-emerald-500"
+ className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-lg font-bold text-center focus:outline-none focus:ring-2 focus:ring-brand-500"
  placeholder="0"
  />
  </div>
  <div>
  <label className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2">
- <Layers className="w-4 h-4 text-emerald-500" />
+ <Layers className="w-4 h-4 text-brand-500" />
  {lang === 'ar' ? 'علب في الكرتون' : 'Boxes per Carton'} *
  </label>
  <input
@@ -278,7 +278,7 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  min="1"
  value={boxesPerCarton}
  onChange={e => setBoxesPerCarton(e.target.value)}
- className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-lg font-bold text-center focus:outline-none focus:ring-2 focus:ring-emerald-500"
+ className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-lg font-bold text-center focus:outline-none focus:ring-2 focus:ring-brand-500"
  placeholder="0"
  />
  </div>
@@ -294,7 +294,7 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  min="0"
  value={wholesalePrice}
  onChange={e => setWholesalePrice(e.target.value)}
- className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-lg font-bold text-center focus:outline-none focus:ring-2 focus:ring-emerald-500"
+ className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-lg font-bold text-center focus:outline-none focus:ring-2 focus:ring-brand-500"
  placeholder="0.00"
  />
  </div>
@@ -336,14 +336,14 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  <div className="pt-4 border-t border-slate-100 flex justify-between items-center">
  <div className="text-sm font-medium text-slate-500">
  {lang === 'ar' ? 'إجمالي الكمية المدخلة:' : 'Total Quantity to Add:'} 
- <span className="text-xl font-bold text-emerald-600 ml-2">
+ <span className="text-xl font-bold text-brand-600 ml-2">
  {(parseInt(cartons, 10) || 0) * (parseInt(boxesPerCarton, 10) || 0)}
  </span>
  </div>
  <button
  type="submit"
  disabled={isSubmitting}
- className="px-8 py-3 bg-emerald-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2"
+ className="px-8 py-3 bg-brand-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2"
  >
  {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle2 className="w-5 h-5" />}
  {lang === 'ar' ? 'إضافة للمخزون' : 'Add to Inventory'}
@@ -382,11 +382,11 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-100 text-sm">
  <div>
  <span className="text-slate-500 block text-xs">{lang === 'ar' ? 'الكمية' : 'Qty'}</span>
- <span className="font-bold text-emerald-600">+{item.totalQuantity}</span>
+ <span className="font-bold text-brand-600">+{item.totalQuantity}</span>
  </div>
  <div>
  <span className="text-slate-500 block text-xs">{lang === 'ar' ? 'السعر' : 'Price'}</span>
- <span className="font-bold text-emerald-600">${item.wholesalePrice.toFixed(2)}</span>
+ <span className="font-bold text-brand-600">${item.wholesalePrice.toFixed(2)}</span>
  </div>
  </div>
  </div>

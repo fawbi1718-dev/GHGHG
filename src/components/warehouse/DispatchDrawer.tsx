@@ -329,18 +329,18 @@ export default function DispatchDrawer({
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
               transition={{ type: 'spring', damping: 26, stiffness: 320 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-3xl bg-slate-50 rounded-2xl shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto border border-slate-200"
+              className="w-full max-w-3xl bg-slate-50 rounded-lg shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto border border-slate-200"
             >
               {/* Drawer Header */}
               <div className="p-5 bg-white border-b border-slate-200 shrink-0">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="p-3 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-200/60">
+                    <div className="p-3 bg-brand-50 text-brand-700 rounded-xl border border-brand-200/60">
                       <PackageCheck className="w-6 h-6 stroke-[2.5]" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full uppercase">
+                        <span className="text-xs font-mono font-bold bg-brand-50 text-brand-800 border border-brand-200 px-2.5 py-0.5 rounded-full uppercase">
                           {lang === 'ar' ? `طلب #${order.orderId}` : `Order #${order.orderId}`}
                         </span>
                         {order.timeWaiting && (
@@ -386,7 +386,7 @@ export default function DispatchDrawer({
                       </>
                     )}
                   </div>
-                  <div className="font-mono font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <div className="font-mono font-bold text-brand-800 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
                     {lang === 'ar' ? `${items.length} أصناف` : `${items.length} Line Items`}
                   </div>
                 </div>
@@ -403,19 +403,19 @@ export default function DispatchDrawer({
                       value={scanInput}
                       onChange={(e) => setScanInput(e.target.value)}
                       placeholder={lang === 'ar' ? 'امسح الباركود أو اكتب اسم المادة للتجهيز...' : 'Scan barcode or type item name to pack...'}
-                      className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500 transition-all text-slate-800"
+                      className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-brand-500 transition-all text-slate-800"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition-all shadow-xs shrink-0 cursor-pointer"
+                    className="px-4 py-2 bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs rounded-xl transition-all shadow-xs shrink-0 cursor-pointer"
                   >
                     {lang === 'ar' ? 'تحقق' : 'Verify'}
                   </button>
                   <button
                     type="button"
                     onClick={handleVerifyAll}
-                    className="px-3 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 font-bold text-xs rounded-xl transition-all flex items-center gap-1 shrink-0 cursor-pointer"
+                    className="px-3 py-2 bg-brand-50 text-brand-800 border border-brand-200 hover:bg-brand-100 font-bold text-xs rounded-xl transition-all flex items-center gap-1 shrink-0 cursor-pointer"
                   >
                     <ShieldCheck className="w-4 h-4" />
                     {lang === 'ar' ? 'تحقق من الكل' : 'Verify All'}
@@ -432,7 +432,7 @@ export default function DispatchDrawer({
                   </div>
                   <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200">
                     <div
-                      className="bg-emerald-600 h-full transition-all duration-300 rounded-full"
+                      className="bg-brand-600 h-full transition-all duration-300 rounded-full"
                       style={{ width: `${items.length > 0 ? (verifiedCount / items.length) * 100 : 0}%` }}
                     />
                   </div>
@@ -443,7 +443,7 @@ export default function DispatchDrawer({
               <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-black text-slate-500 uppercase tracking-wider flex items-center gap-1.5 font-mono">
-                    <Layers className="w-4 h-4 text-emerald-600" />
+                    <Layers className="w-4 h-4 text-brand-600" />
                     {lang === 'ar' ? 'قائمة المواد المسحوبة حسب أولوية الصلاحية (FEFO)' : 'Warehouse Picking List (FEFO Priority)'}
                   </h3>
                 </div>
@@ -456,7 +456,7 @@ export default function DispatchDrawer({
                         key={item.id || idx}
                         className={`border rounded-xl p-3.5 transition-all ${
                           item.isVerified
-                            ? 'bg-emerald-50/60 border-emerald-200'
+                            ? 'bg-brand-50/60 border-brand-200'
                             : 'bg-white border-slate-200 shadow-xs'
                         }`}
                       >
@@ -466,7 +466,7 @@ export default function DispatchDrawer({
                               onClick={() => toggleVerifyItem(idx)}
                               className={`mt-0.5 p-1 rounded-lg transition-colors cursor-pointer ${
                                 item.isVerified
-                                  ? 'text-emerald-700 bg-emerald-100'
+                                  ? 'text-brand-700 bg-brand-100'
                                   : 'text-slate-300 hover:text-slate-400 bg-slate-100'
                               }`}
                             >
@@ -481,9 +481,9 @@ export default function DispatchDrawer({
                               )}
                               <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
                                 <span className="font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded border border-slate-200 text-[11px]">
-                                  📍 {item.shelfLocation}
+                                  {item.shelfLocation}
                                 </span>
-                                <span className="font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded font-bold border border-emerald-200 text-[11px]">
+                                <span className="font-mono text-brand-800 bg-brand-50 px-2 py-0.5 rounded font-bold border border-brand-200 text-[11px]">
                                   {lang === 'ar' ? `طبخة: ${item.allocatedBatch}` : `Batch: ${item.allocatedBatch}`}
                                 </span>
                                 <span className="text-slate-400 font-mono text-[11px]">
@@ -507,13 +507,13 @@ export default function DispatchDrawer({
                         <div className="mt-2.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
                           <span className="text-slate-500 font-medium">
                             {lang === 'ar' ? 'إجمالي السطر:' : 'Line Total:'}{' '}
-                            <strong className="text-emerald-900 font-mono font-bold">
+                            <strong className="text-brand-900 font-mono font-bold">
                               {(item.costAtOrder * item.requestedQuantity).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}
                             </strong>
                           </span>
                           <button
                             onClick={() => setSelectedItemForBatchChange(item)}
-                            className="text-emerald-700 hover:underline font-bold flex items-center gap-1 cursor-pointer"
+                            className="text-brand-700 hover:underline font-bold flex items-center gap-1 cursor-pointer"
                           >
                             <RefreshCw className="w-3.5 h-3.5" />
                             {lang === 'ar' ? 'تغيير الطبخة (FEFO)' : 'Change Batch (FEFO)'}
@@ -531,7 +531,7 @@ export default function DispatchDrawer({
                   <span className="text-slate-500 font-bold uppercase">
                     {lang === 'ar' ? 'إجمالي قيمة الشحنة' : 'Total Order Value'}
                   </span>
-                  <span className="text-xl font-black text-emerald-900 font-mono">
+                  <span className="text-xl font-black text-brand-900 font-mono">
                     {items.reduce((sum, i) => sum + i.costAtOrder * i.requestedQuantity, 0).toLocaleString()} {lang === 'ar' ? 'ل.س' : 'SYP'}
                   </span>
                 </div>
@@ -540,7 +540,7 @@ export default function DispatchDrawer({
                   id="btn-confirm-dispatch-order"
                   onClick={handleConfirmDispatch}
                   disabled={isSubmitting}
-                  className="w-full py-3 text-white font-bold text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer bg-emerald-700 hover:bg-emerald-800 active:scale-98 disabled:opacity-50"
+                  className="w-full py-3 text-white font-bold text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer bg-brand-700 hover:bg-brand-800 active:scale-98 disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
@@ -558,7 +558,7 @@ export default function DispatchDrawer({
           {/* Batch Selector Modal Overlay */}
           {selectedItemForBatchChange && (
             <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-[70] flex items-center justify-center p-4" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
-              <div className="bg-white rounded-2xl max-w-md w-full p-5 shadow-xl border border-slate-200">
+              <div className="bg-white rounded-lg max-w-md w-full p-5 shadow-xl border border-slate-200">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="font-bold text-base text-slate-900">
@@ -588,7 +588,7 @@ export default function DispatchDrawer({
                       }}
                       className={`w-full p-3 rounded-xl border text-left flex justify-between items-center transition-colors cursor-pointer ${
                         selectedItemForBatchChange.allocatedBatch === b.batchNumber
-                          ? 'border-emerald-500 bg-emerald-50/60'
+                          ? 'border-brand-500 bg-brand-50/60'
                           : 'border-slate-200 hover:bg-slate-50'
                       }`}
                     >
@@ -596,7 +596,7 @@ export default function DispatchDrawer({
                         <div className="font-bold font-mono text-xs text-slate-800 flex items-center gap-2">
                           {b.batchNumber}
                           {bIdx === 0 && (
-                            <span className="text-[10px] bg-emerald-100 text-emerald-800 font-sans font-bold px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] bg-brand-100 text-brand-800 font-sans font-bold px-1.5 py-0.5 rounded">
                               {lang === 'ar' ? 'الأقرب انتهاءً (FEFO)' : 'FEFO Top Pick'}
                             </span>
                           )}

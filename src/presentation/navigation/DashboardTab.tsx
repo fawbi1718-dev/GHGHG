@@ -52,7 +52,7 @@ export default function DashboardTab({ medicines, salesLogs, lang, onNavigate }:
  <div className="flex gap-2">
  <button 
  onClick={() => onNavigate('checkout')}
- className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm"
+ className="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm"
  >
  <ShoppingCart className="w-4 h-4" />
  <span>{lang === 'ar' ? 'بيع جديد' : 'New Sale'}</span>
@@ -74,7 +74,7 @@ export default function DashboardTab({ medicines, salesLogs, lang, onNavigate }:
  <div className="md:col-span-2 bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
  <div>
  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
- <Activity className="w-5 h-5 text-emerald-600 " />
+ <Activity className="w-5 h-5 text-brand-600 " />
  </div>
  <h3 className="text-slate-500 text-sm font-medium mb-1">
  {lang === 'ar' ? 'إجمالي قيمة المخزون' : 'Total Inventory Value'}
@@ -153,7 +153,7 @@ export default function DashboardTab({ medicines, salesLogs, lang, onNavigate }:
  </div>
  <button 
  onClick={() => onNavigate('analytics')}
- className="text-sm font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
+ className="text-sm font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1"
  >
  <span>{lang === 'ar' ? 'كل التقارير' : 'All Reports'}</span>
  <ArrowRight className="w-4 h-4" />

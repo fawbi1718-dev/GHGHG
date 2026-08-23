@@ -421,13 +421,13 @@ export default function StockIntakeModal({
         }}
       >
         <div
-          className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[88vh] my-auto border border-emerald-100 animate-in zoom-in-95 duration-150"
+          className="relative w-full max-w-xl bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[88vh] my-auto border border-brand-100 animate-in zoom-in-95 duration-150"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Modal Header */}
-          <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-emerald-50/80 via-white to-slate-50 shrink-0">
+          <div className="p-4 sm:p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-md shadow-brand-600/20 shrink-0">
                 <PackagePlus className="w-5 h-5 stroke-[2.5]" />
               </div>
               <div>
@@ -439,7 +439,7 @@ export default function StockIntakeModal({
                     </span>
                   )}
                   {selectedItem && (
-                    <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full border border-emerald-200">
+                    <span className="text-[10px] bg-brand-100 text-brand-800 font-bold px-2 py-0.5 rounded-full border border-brand-200">
                       {lang === 'ar' ? 'معتمد من الكتالوج' : 'Verified Catalog'}
                     </span>
                   )}
@@ -462,14 +462,14 @@ export default function StockIntakeModal({
           {/* Success State Overlay */}
           {successData ? (
             <div className="p-8 flex flex-col items-center justify-center text-center space-y-4 my-auto">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner animate-bounce">
+              <div className="w-16 h-16 rounded-full bg-brand-100 text-brand-600 flex items-center justify-center shadow-inner animate-bounce">
                 <Check className="w-8 h-8 stroke-[3]" />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-900">
                   {lang === 'ar' ? 'تمت إضافة الدواء إلى السجل بنجاح' : 'Medicine Added to Ledger'}
                 </h3>
-                <p className="text-sm font-semibold text-emerald-700 mt-1">
+                <p className="text-sm font-semibold text-brand-700 mt-1">
                   {successData.name}
                 </p>
                 <div className="flex items-center justify-center gap-4 mt-3 text-xs text-slate-600 bg-slate-50 border border-slate-200 py-2 px-4 rounded-xl">
@@ -488,7 +488,7 @@ export default function StockIntakeModal({
                     type="button"
                     id="btn-trigger-intake-scanner"
                     onClick={() => setIsScannerOpen(true)}
-                    className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-brand-600/20 transition-all cursor-pointer"
                   >
                     <Camera className="w-4 h-4 stroke-[2.5]" />
                     <span>{lang === 'ar' ? 'مسح باركود بالكاميرا' : 'Scan Barcode Camera'}</span>
@@ -538,11 +538,11 @@ export default function StockIntakeModal({
                           setSearchQuery(e.target.value);
                           if (selectedItem) setSelectedItem(null);
                         }}
-                        className="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all placeholder:text-slate-400"
+                        className="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all placeholder:text-slate-400"
                         placeholder={lang === 'ar' ? 'ابحث بالاسم التجاري، العلمي، أو الباركود...' : 'Search catalog by trade name, generic, or barcode...'}
                       />
                       {isSearching && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-emerald-500/30 border-t-emerald-600 rounded-full animate-spin" />
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-brand-500/30 border-t-brand-600 rounded-full animate-spin" />
                       )}
                     </div>
 
@@ -553,7 +553,7 @@ export default function StockIntakeModal({
                           <div
                             key={idx}
                             onClick={() => handlePopulateFromCatalog(item)}
-                            className="p-3 hover:bg-emerald-50 cursor-pointer transition-colors flex items-center justify-between gap-3"
+                            className="p-3 hover:bg-brand-50 cursor-pointer transition-colors flex items-center justify-between gap-3"
                           >
                             <div className="min-w-0">
                               <div className="font-bold text-slate-900 text-xs sm:text-sm truncate">
@@ -564,7 +564,7 @@ export default function StockIntakeModal({
                               </div>
                             </div>
                             <div className="text-right shrink-0">
-                              <div className="text-xs font-bold text-emerald-700">
+                              <div className="text-xs font-bold text-brand-700">
                                 {Number(item.price || 0).toLocaleString()} SYP
                               </div>
                               {item.barcode && (
@@ -598,11 +598,11 @@ export default function StockIntakeModal({
 
               {/* AUTO-FILLED CATALOG PREVIEW (If Catalog Item Selected) */}
               {!isManualMode && selectedItem && (
-                <div className="p-4 rounded-xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
+                <div className="p-4 rounded-xl bg-brand-50/70 border border-brand-200 space-y-2.5">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 uppercase tracking-wider bg-emerald-100 px-2 py-0.5 rounded-md mb-1">
-                        <Sparkles className="w-3 h-3 text-emerald-600" />
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-brand-800 uppercase tracking-wider bg-brand-100 px-2 py-0.5 rounded-md mb-1">
+                        <Sparkles className="w-3 h-3 text-brand-600" />
                         {lang === 'ar' ? 'صنف معتمد' : 'Verified Catalog Item'}
                       </span>
                       <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
@@ -619,15 +619,15 @@ export default function StockIntakeModal({
                       <span className="text-[10px] text-slate-500 block font-medium">
                         {lang === 'ar' ? 'السعر القياسي' : 'Catalog Price'}
                       </span>
-                      <span className="text-sm font-bold text-emerald-800 font-mono">
+                      <span className="text-sm font-bold text-brand-800 font-mono">
                         {Number(selectedItem.price || 0).toLocaleString()} SYP
                       </span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2 border-t border-emerald-200/60 text-xs">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2 border-t border-brand-200/60 text-xs">
                     {dosageForm && (
-                      <div className="bg-white/80 p-2 rounded-lg border border-emerald-100">
+                      <div className="bg-white/80 p-2 rounded-lg border border-brand-100">
                         <span className="text-[10px] text-slate-400 block font-medium">
                           {lang === 'ar' ? 'الشكل' : 'Form'}
                         </span>
@@ -635,7 +635,7 @@ export default function StockIntakeModal({
                       </div>
                     )}
                     {strength && (
-                      <div className="bg-white/80 p-2 rounded-lg border border-emerald-100">
+                      <div className="bg-white/80 p-2 rounded-lg border border-brand-100">
                         <span className="text-[10px] text-slate-400 block font-medium">
                           {lang === 'ar' ? 'العيار' : 'Strength'}
                         </span>
@@ -643,7 +643,7 @@ export default function StockIntakeModal({
                       </div>
                     )}
                     {manufacturer && (
-                      <div className="bg-white/80 p-2 rounded-lg border border-emerald-100">
+                      <div className="bg-white/80 p-2 rounded-lg border border-brand-100">
                         <span className="text-[10px] text-slate-400 block font-medium">
                           {lang === 'ar' ? 'الشركة' : 'Company'}
                         </span>
@@ -683,7 +683,7 @@ export default function StockIntakeModal({
                       value={medName}
                       onChange={(e) => setMedName(e.target.value)}
                       placeholder={lang === 'ar' ? 'مثال: سيتامول 500 ملغ' : 'e.g., Panadol Extra 500mg'}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl font-bold text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                     />
                   </div>
 
@@ -698,7 +698,7 @@ export default function StockIntakeModal({
                       value={genericName}
                       onChange={(e) => setGenericName(e.target.value)}
                       placeholder={lang === 'ar' ? 'مثال: Paracetamol' : 'e.g., Paracetamol'}
-                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                     />
                   </div>
 
@@ -711,7 +711,7 @@ export default function StockIntakeModal({
                       <select
                         value={dosageForm}
                         onChange={(e) => setDosageForm(e.target.value)}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                       >
                         {COMMON_DOSAGE_FORMS.map(f => (
                           <option key={f.id} value={f.id}>
@@ -730,7 +730,7 @@ export default function StockIntakeModal({
                         value={strength}
                         onChange={(e) => setStrength(e.target.value)}
                         placeholder="500mg, 10ml, 1g..."
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                       />
                     </div>
                   </div>
@@ -746,7 +746,7 @@ export default function StockIntakeModal({
                         value={manufacturer}
                         onChange={(e) => setManufacturer(e.target.value)}
                         placeholder={lang === 'ar' ? 'اسم المعمل أو المستودع' : 'Manufacturer or supplier'}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                       />
                     </div>
 
@@ -761,7 +761,7 @@ export default function StockIntakeModal({
                           value={scannedBarcode}
                           onChange={(e) => setScannedBarcode(e.target.value)}
                           placeholder="621..."
-                          className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                          className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-slate-900 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                         />
                       </div>
                     </div>
@@ -792,7 +792,7 @@ export default function StockIntakeModal({
                         className={`w-full pl-9 pr-3 py-2 bg-white border rounded-xl font-bold text-slate-900 text-sm focus:outline-none focus:ring-2 transition-all ${
                           !quantityValid 
                             ? 'border-rose-300 ring-rose-400 focus:ring-rose-400' 
-                            : 'border-slate-200 focus:ring-emerald-500'
+                            : 'border-slate-200 focus:ring-brand-500'
                         }`}
                       />
                     </div>
@@ -817,7 +817,7 @@ export default function StockIntakeModal({
                         className={`w-full pl-9 pr-3 py-2 bg-white border rounded-xl font-semibold text-slate-900 text-sm focus:outline-none focus:ring-2 transition-all ${
                           !expiryValid 
                             ? 'border-rose-300 ring-rose-400 focus:ring-rose-400' 
-                            : 'border-slate-200 focus:ring-emerald-500'
+                            : 'border-slate-200 focus:ring-brand-500'
                         }`}
                       />
                     </div>
@@ -844,7 +844,7 @@ export default function StockIntakeModal({
                         className={`w-full pl-9 pr-3 py-2 bg-white border rounded-xl font-mono font-bold text-slate-900 text-sm focus:outline-none focus:ring-2 transition-all ${
                           !priceValid 
                             ? 'border-rose-300 ring-rose-400 focus:ring-rose-400' 
-                            : 'border-slate-200 focus:ring-emerald-500'
+                            : 'border-slate-200 focus:ring-brand-500'
                         }`}
                       />
                     </div>
@@ -864,7 +864,7 @@ export default function StockIntakeModal({
                         value={batchNumber}
                         onChange={(e) => setBatchNumber(e.target.value)}
                         placeholder="e.g. BATCH-2026-001"
-                        className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl font-mono text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                       />
                     </div>
                   </div>
@@ -906,7 +906,7 @@ export default function StockIntakeModal({
                 className={`px-5 sm:px-6 py-2.5 rounded-xl text-white font-bold text-xs sm:text-sm transition-all shadow-sm flex items-center gap-2 cursor-pointer ${
                   !isFormValid || isSubmitting 
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed shadow-none' 
-                    : 'bg-emerald-600 hover:bg-emerald-700 active:scale-98 shadow-md shadow-emerald-600/20'
+                    : 'bg-brand-600 hover:bg-brand-700 active:scale-98 shadow-md shadow-brand-600/20'
                 }`}
               >
                 {isSubmitting ? (

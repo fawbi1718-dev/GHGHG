@@ -63,10 +63,10 @@ export default function SettingsTab({
   return (
     <div className="space-y-6 bg-[#F4F7F5] min-h-[calc(100vh-4rem)] pb-12 font-sans -m-6 p-6" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-xl border border-emerald-100 shadow-sm">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-xl border border-brand-100 shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold text-emerald-950 flex items-center gap-2">
-            <User className="w-6 h-6 text-emerald-700" />
+          <h1 className="text-2xl font-bold text-brand-950 flex items-center gap-2">
+            <User className="w-6 h-6 text-brand-700" />
             {lang === 'ar' ? 'إعدادات النظام' : 'System Settings'}
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -90,14 +90,14 @@ export default function SettingsTab({
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-emerald-100 shadow-sm rounded-xl p-5"
+          className="bg-white border border-brand-100 shadow-sm rounded-xl p-5"
         >
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-emerald-50">
-            <div className="p-2.5 bg-emerald-50 rounded-lg text-emerald-700">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-brand-50">
+            <div className="p-2.5 bg-brand-50 rounded-lg text-brand-700">
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-emerald-950">
+              <h2 className="text-lg font-bold text-brand-950">
                 {lang === 'ar' ? 'الحساب الحالي' : 'Current Profile'}
               </h2>
             </div>
@@ -108,7 +108,7 @@ export default function SettingsTab({
               <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 {lang === 'ar' ? 'اسم المستخدم / الجهة' : 'User / Entity Name'}
               </label>
-              <div className="text-slate-900 font-medium bg-[#F4F7F5] border border-emerald-100 p-3 rounded-lg">
+              <div className="text-slate-900 font-medium bg-[#F4F7F5] border border-brand-100 p-3 rounded-lg">
                 {currentSession?.name || (lang === 'ar' ? 'مدير النظام' : 'System Admin')}
               </div>
             </div>
@@ -116,7 +116,7 @@ export default function SettingsTab({
               <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">
                 {lang === 'ar' ? 'معرف الكيان (Tenant ID)' : 'Tenant ID'}
               </label>
-              <div className="text-slate-900 font-mono text-sm bg-[#F4F7F5] border border-emerald-100 p-3 rounded-lg">
+              <div className="text-slate-900 font-mono text-sm bg-[#F4F7F5] border border-brand-100 p-3 rounded-lg">
                 {currentSession?.pharmacyId || 'UNKNOWN'}
               </div>
             </div>
@@ -128,14 +128,14 @@ export default function SettingsTab({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white border border-emerald-100 shadow-sm rounded-xl p-5"
+          className="bg-white border border-brand-100 shadow-sm rounded-xl p-5"
         >
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-emerald-50">
-            <div className="p-2.5 bg-emerald-50 rounded-lg text-emerald-700">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b border-brand-50">
+            <div className="p-2.5 bg-brand-50 rounded-lg text-brand-700">
               <Globe className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-emerald-950">
+              <h2 className="text-lg font-bold text-brand-950">
                 {lang === 'ar' ? 'تفضيلات النظام' : 'System Preferences'}
               </h2>
             </div>
@@ -147,12 +147,12 @@ export default function SettingsTab({
               <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
                 {lang === 'ar' ? 'لغة الواجهة' : 'Interface Language'}
               </label>
-              <div className="flex bg-[#F4F7F5] border border-emerald-100 p-1 rounded-xl">
+              <div className="flex bg-[#F4F7F5] border border-brand-100 p-1 rounded-xl">
                 <button
                   onClick={() => setLang('ar')}
                   className={`flex-1 py-2 px-4 rounded-lg font-bold text-sm transition-colors cursor-pointer ${
                     lang === 'ar'
-                      ? 'bg-white shadow text-emerald-700'
+                      ? 'bg-white shadow text-brand-700'
                       : 'text-slate-500 hover:text-slate-700'
                   }`}
                 >
@@ -162,7 +162,7 @@ export default function SettingsTab({
                   onClick={() => setLang('en')}
                   className={`flex-1 py-2 px-4 rounded-lg font-bold text-sm transition-colors cursor-pointer ${
                     lang === 'en'
-                      ? 'bg-white shadow text-emerald-700'
+                      ? 'bg-white shadow text-brand-700'
                       : 'text-slate-500 hover:text-slate-700'
                   }`}
                 >
@@ -174,7 +174,7 @@ export default function SettingsTab({
             {/* Scanner Sound Toggle */}
             <div className="flex items-center justify-between py-2">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-emerald-50 rounded-lg text-emerald-700">
+                <div className="p-2 bg-brand-50 rounded-lg text-brand-700">
                   <Bell className="w-4 h-4" />
                 </div>
                 <div>
@@ -193,14 +193,14 @@ export default function SettingsTab({
                   checked={scannerSoundEnabled}
                   onChange={(e) => setScannerSoundEnabled(e.target.checked)}
                 />
-                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-700"></div>
+                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-700"></div>
               </label>
             </div>
 
             {/* Sync Database Button */}
-            <div className="flex items-center justify-between py-2 border-t border-emerald-50 mt-2 pt-4">
+            <div className="flex items-center justify-between py-2 border-t border-brand-50 mt-2 pt-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-emerald-50 rounded-lg text-emerald-700">
+                <div className="p-2 bg-brand-50 rounded-lg text-brand-700">
                   <Database className="w-4 h-4" />
                 </div>
                 <div>
@@ -222,14 +222,14 @@ export default function SettingsTab({
                     triggerToast('Sync completed', 'info');
                   }
                 }}
-                className="px-4 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-sm font-bold rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+                className="px-4 py-2 bg-brand-100 hover:bg-brand-200 text-brand-800 text-sm font-bold rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
               >
-                🔄 {lang === 'ar' ? 'مزامنة الآن' : 'Sync Now'}
+                {lang === 'ar' ? 'مزامنة الآن' : 'Sync Now'}
               </button>
             </div>
 
             {/* Clear Test Data */}
-            <div className="flex items-center justify-between p-4 bg-[#F4F7F5] border border-emerald-100 rounded-xl">
+            <div className="flex items-center justify-between p-4 bg-[#F4F7F5] border border-brand-100 rounded-xl">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white rounded-lg text-rose-600 shadow-sm border border-rose-100">
                   <Database className="w-4 h-4" />
@@ -247,7 +247,7 @@ export default function SettingsTab({
                 onClick={handleClearTestData}
                 className="px-4 py-2 bg-rose-100 hover:bg-rose-200 text-rose-800 text-sm font-bold rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
               >
-                🗑️ {lang === 'ar' ? 'مسح البيانات' : 'Clear Data'}
+                {lang === 'ar' ? 'مسح البيانات' : 'Clear Data'}
               </button>
             </div>
           </div>

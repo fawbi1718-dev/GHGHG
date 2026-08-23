@@ -20,20 +20,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
  disabled,
  ...props
 }, ref) => {
- const baseStyles = 'inline-flex items-center justify-center font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none rounded-lg';
+ const baseStyles = 'inline-flex items-center justify-center font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-brand-600/40 focus:ring-offset-1 disabled:opacity-50 disabled:pointer-events-none rounded-md';
  
  const variants = {
- primary: 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm',
- secondary: 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200',
- outline: 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 shadow-sm',
+ primary: 'bg-slate-900 text-white hover:bg-slate-800',
+ secondary: 'bg-brand-50 text-brand-800 border border-brand-200 hover:bg-brand-100',
+ outline: 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900',
  ghost: 'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900',
- danger: 'bg-rose-600 text-white hover:bg-rose-700 shadow-sm'
+ danger: 'bg-rose-700 text-white hover:bg-rose-800'
  };
 
  const sizes = {
- sm: 'text-xs px-3 py-1.5',
- md: 'text-sm px-4 py-2',
- lg: 'text-base px-6 py-3'
+ sm: 'text-xs px-2.5 h-8',
+ md: 'text-sm px-3.5 h-9',
+ lg: 'text-sm px-5 h-10'
  };
 
  return (

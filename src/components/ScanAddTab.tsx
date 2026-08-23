@@ -414,7 +414,7 @@ export default function ScanAddTab({
  <div className="space-y-1.5 relative">
  <label className="text-xs font-semibold text-slate-600 font-mono flex items-center gap-1">
  {t.medicineName} <span className="text-rose-500">*</span>
- {isSearchingCatalog && <RefreshCw className="w-3 h-3 animate-spin text-emerald-500 ml-2" />}
+ {isSearchingCatalog && <RefreshCw className="w-3 h-3 animate-spin text-brand-500 ml-2" />}
  </label>
  <input
  id="form-med-name"
@@ -428,7 +428,7 @@ export default function ScanAddTab({
  setName(e.target.value);
  setShowSuggestions(true);
  }}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
  />
  
  {/* Autocomplete Dropdown */}
@@ -463,7 +463,7 @@ export default function ScanAddTab({
  <div className="font-bold text-slate-800 text-xs">{suggestion.name}</div>
  <div className="text-[10px] text-slate-500 mt-0.5 flex items-center justify-between">
  <span>{suggestion.scientificName || suggestion.genericName} • {suggestion.dosageForm}</span>
- <span className="font-mono text-emerald-600 ">{suggestion.registeredCode || suggestion.barcode || suggestion.batchNumber}</span>
+ <span className="font-mono text-brand-600 ">{suggestion.registeredCode || suggestion.barcode || suggestion.batchNumber}</span>
  </div>
  </div>
  ))}
@@ -484,7 +484,7 @@ export default function ScanAddTab({
  placeholder="e.g., Paracetamol, Amoxicillin"
  value={genericName}
  onChange={(e) => setGenericName(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
  />
  </div>
 
@@ -495,7 +495,7 @@ export default function ScanAddTab({
  id="form-category"
  value={category}
  onChange={(e) => setCategory(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all appearance-none cursor-pointer"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all appearance-none cursor-pointer"
  >
  {CATEGORIES.filter(cat => cat !== 'All').map(cat => (
  <option key={cat} value={cat}>
@@ -512,7 +512,7 @@ export default function ScanAddTab({
  id="form-dosage"
  value={dosageForm}
  onChange={(e) => setDosageForm(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all appearance-none cursor-pointer"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all appearance-none cursor-pointer"
  >
  {DOSAGE_FORMS.map(form => (
  <option key={form} value={form}>
@@ -534,7 +534,7 @@ export default function ScanAddTab({
  placeholder="e.g., 500mg, 1g, 10mg/ml"
  value={strength}
  onChange={(e) => setStrength(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
  />
  </div>
 
@@ -547,7 +547,7 @@ export default function ScanAddTab({
  placeholder="e.g., Shelf B-3, Fridge-1"
  value={shelfLocation}
  onChange={(e) => setShelfLocation(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
  />
  </div>
 
@@ -564,9 +564,9 @@ export default function ScanAddTab({
  placeholder="e.g., 15000"
  value={price}
  onChange={(e) => setPrice(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 pl-3 pr-14 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 pl-3 pr-14 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
  />
- <span className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-600 text-xs font-mono font-bold">
+ <span className="absolute right-3 top-1/2 -translate-y-1/2 text-brand-600 text-xs font-mono font-bold">
  ل.س
  </span>
  </div>
@@ -583,7 +583,7 @@ export default function ScanAddTab({
  required
  value={expiryDate}
  onChange={(e) => setExpiryDate(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all text-slate-600 "
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all text-slate-600 "
  />
  </div>
 
@@ -596,7 +596,7 @@ export default function ScanAddTab({
  min="0"
  value={stock}
  onChange={(e) => setStock(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
  />
  </div>
 
@@ -609,7 +609,7 @@ export default function ScanAddTab({
  min="0"
  value={minThreshold}
  onChange={(e) => setMinThreshold(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
  />
  </div>
 
@@ -620,7 +620,7 @@ export default function ScanAddTab({
  <button
  type="button"
  onClick={() => generateNewBatchNumber()}
- className="text-[10px] text-emerald-600 hover:underline font-bold flex items-center gap-0.5 cursor-pointer font-mono"
+ className="text-[10px] text-brand-600 hover:underline font-bold flex items-center gap-0.5 cursor-pointer font-mono"
  >
  <RefreshCw className="w-2.5 h-2.5" /> {t.regenerate}
  </button>
@@ -632,7 +632,7 @@ export default function ScanAddTab({
  placeholder="e.g., AMX-2026-99"
  value={batchNumber}
  onChange={(e) => setBatchNumber(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none transition-all font-mono"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-bold focus:outline-none transition-all font-mono"
  />
  </div>
 
@@ -645,7 +645,7 @@ export default function ScanAddTab({
  placeholder="e.g., Global Pharma Corp"
  value={supplier}
  onChange={(e) => setSupplier(e.target.value)}
- className="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
+ className="w-full bg-slate-50 border border-slate-200 focus:border-brand-500/50 rounded-xl py-2 px-3 text-xs text-slate-700 font-semibold focus:outline-none transition-all"
  />
  </div>
  </div>
@@ -653,7 +653,7 @@ export default function ScanAddTab({
  {/* Locked Multi-tenant Parameters */}
  <div className="bg-slate-50 p-4 rounded-xl flex items-center justify-between border border-slate-200 ">
  <div className="flex items-center gap-3">
- <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-emerald-600 shrink-0">
+ <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-brand-600 shrink-0">
  <User className="w-4 h-4" />
  </div>
  <div>
@@ -680,7 +680,7 @@ export default function ScanAddTab({
  <button
  id="btn-submit-intake"
  type="submit"
- className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer"
+ className="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer"
  >
  <PlusCircle className="w-4 h-4" />
  {t.ingestToRegistry}
@@ -727,7 +727,7 @@ export default function ScanAddTab({
  if (inputEl) inputEl.focus();
  }, 100);
  }}
- className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl flex justify-center items-center gap-2 transition-colors cursor-pointer"
+ className="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl flex justify-center items-center gap-2 transition-colors cursor-pointer"
  >
  <PlusCircle className="w-5 h-5" />
  {lang === 'ar' ? 'تسجيل دواء جديد' : 'Register New Medicine'}

@@ -33,7 +33,7 @@ export default function ScannerModePickerModal({
  animate={{ scale: 1, y: 0, opacity: 1 }}
  exit={{ scale: 0.95, y: 12, opacity: 0 }}
  transition={{ type: 'spring', damping: 25, stiffness: 350 }}
- className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl text-white overflow-hidden my-auto"
+ className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-lg p-6 shadow-2xl text-white overflow-hidden my-auto"
  onClick={(e) => e.stopPropagation()}
  >
  {/* Header Accent Glow */}
@@ -50,7 +50,7 @@ export default function ScannerModePickerModal({
 
  {/* Title Header */}
  <div className="text-center space-y-2 mb-6">
- <div className="inline-flex items-center justify-center p-3 bg-gradient-to-tr from-teal-500/20 to-purple-500/20 text-teal-400 rounded-xl border border-teal-500/30 mb-1">
+ <div className="inline-flex items-center justify-center p-3 bg-brand-50 text-brand-700 rounded-md border border-brand-200 mb-1">
  <Camera className="w-7 h-7" />
  </div>
  <h3 className="text-xl font-extrabold text-white flex items-center justify-center gap-2">
@@ -77,7 +77,7 @@ export default function ScannerModePickerModal({
  <div className="flex-1 min-w-0">
  <div className="flex items-center justify-between">
  <h4 className="text-base font-bold text-white group-hover:text-teal-300 transition-colors">
- {lang === 'ar' ? '🛒 بيع مباشر (POS)' : '🛒 Sell in POS'}
+ {lang === 'ar' ? 'بيع مباشر (POS)' : 'Sell in POS'}
  </h4>
  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">
  {lang === 'ar' ? 'مسح سريع مستمر' : 'Continuous Scan'}
@@ -103,7 +103,7 @@ export default function ScannerModePickerModal({
  <div className="flex-1 min-w-0">
  <div className="flex items-center justify-between">
  <h4 className="text-base font-bold text-white group-hover:text-purple-300 transition-colors">
- {lang === 'ar' ? '📥 إدخال وجبة / مخزون' : '📥 Add Stock & Intake'}
+ {lang === 'ar' ? 'إدخال وجبة / مخزون' : 'Add Stock & Intake'}
  </h4>
  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
  {lang === 'ar' ? 'تعبئة تلقائية' : 'Auto-fill'}

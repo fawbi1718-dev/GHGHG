@@ -43,10 +43,10 @@ export default function SyncStatusWidget({ inline = false }: { inline?: boolean 
           disabled={isSyncing || isLoadingCatalog}
           className={`flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all border w-full cursor-pointer ${
             (isSyncing || isLoadingCatalog)
-              ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' 
+              ? 'bg-brand-600 text-white border-brand-700 shadow-sm' 
               : error 
               ? 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100'
-              : 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
+              : 'bg-brand-50 text-brand-800 border-brand-200 hover:bg-brand-100'
           }`}
         >
           {(isSyncing || isLoadingCatalog) ? (
@@ -54,7 +54,7 @@ export default function SyncStatusWidget({ inline = false }: { inline?: boolean 
           ) : error ? (
             <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
           ) : (
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-brand-700 shrink-0" />
           )}
           <span className="truncate">
             {isLoadingCatalog ? 'Loading Catalog...' : isSyncing ? 'Syncing...' : 'Sync Error'}

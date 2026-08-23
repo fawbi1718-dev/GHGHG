@@ -71,9 +71,9 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
         className="min-h-screen bg-slate-100/80 flex flex-col items-center justify-center p-4 relative font-sans"
         dir={isArabic ? 'rtl' : 'ltr'}
       >
-        <div className="w-full max-w-md bg-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-200/90">
+        <div className="w-full max-w-md bg-white rounded-lg p-6 sm:p-8 shadow-xl border border-slate-200/90">
           <div className="text-center mb-6">
-            <div className="inline-flex w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 items-center justify-center mb-3">
+            <div className="inline-flex w-12 h-12 rounded-xl bg-brand-100 text-brand-700 items-center justify-center mb-3">
               <Store className="w-6 h-6" />
             </div>
             <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
@@ -104,7 +104,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
             onClick={() => setLang(isArabic ? 'en' : 'ar')} 
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold font-mono bg-white border border-slate-200 text-slate-700 shadow-sm hover:bg-slate-50 transition-colors cursor-pointer"
           >
-            <Globe className="w-3.5 h-3.5 text-emerald-600" />
+            <Globe className="w-3.5 h-3.5 text-brand-600" />
             <span>{isArabic ? 'English' : 'العربية'}</span>
           </button>
         )}
@@ -113,7 +113,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
       <div className="w-full max-w-md my-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-6 space-y-1">
-          <div className="inline-flex w-14 h-14 rounded-2xl bg-emerald-600 items-center justify-center shadow-lg shadow-emerald-600/20 ring-4 ring-emerald-100 mb-2">
+          <div className="inline-flex w-14 h-14 rounded-lg bg-brand-600 items-center justify-center shadow-lg shadow-brand-600/20 ring-4 ring-brand-100 mb-2">
             {tenantType === 'WHOLESALE_WAREHOUSE' ? (
               <Building2 className="w-7 h-7 text-white" />
             ) : (
@@ -129,12 +129,12 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xl p-6 sm:p-8 space-y-6">
+        <div className="bg-white rounded-lg border border-slate-200/90 shadow-xl p-6 sm:p-8 space-y-6">
           {/* User Account Info */}
           {currentSession?.email && (
             <div className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs">
               <div className="flex items-center gap-2 truncate text-slate-600">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                <span className="w-2 h-2 rounded-full bg-brand-500 shrink-0"></span>
                 <span className="truncate font-medium">{currentSession.email}</span>
               </div>
               <button
@@ -173,14 +173,14 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                 <button
                   type="button"
                   onClick={() => setTenantType('RETAIL_PHARMACY')}
-                  className={`w-full p-4 rounded-2xl border-2 text-left rtl:text-right transition-all flex items-start gap-3.5 cursor-pointer ${
+                  className={`w-full p-4 rounded-lg border-2 text-left rtl:text-right transition-all flex items-start gap-3.5 cursor-pointer ${
                     tenantType === 'RETAIL_PHARMACY'
-                      ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-500'
+                      ? 'border-brand-600 bg-brand-50/70 shadow-sm ring-1 ring-brand-500'
                       : 'border-slate-200 bg-slate-50/50 hover:bg-slate-50 hover:border-slate-300'
                   }`}
                 >
                   <div className={`p-2.5 rounded-xl shrink-0 ${
-                    tenantType === 'RETAIL_PHARMACY' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600'
+                    tenantType === 'RETAIL_PHARMACY' ? 'bg-brand-600 text-white' : 'bg-slate-200 text-slate-600'
                   }`}>
                     <Store className="w-5 h-5" />
                   </div>
@@ -190,7 +190,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                         {isArabic ? 'صيدلية (نقطة بيع وتجزئة)' : 'PHARMACY'}
                       </h4>
                       {tenantType === 'RETAIL_PHARMACY' && (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-brand-600 shrink-0" />
                       )}
                     </div>
                     <p className="text-xs text-slate-600 mt-1 leading-relaxed">
@@ -205,14 +205,14 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                 <button
                   type="button"
                   onClick={() => setTenantType('WHOLESALE_WAREHOUSE')}
-                  className={`w-full p-4 rounded-2xl border-2 text-left rtl:text-right transition-all flex items-start gap-3.5 cursor-pointer ${
+                  className={`w-full p-4 rounded-lg border-2 text-left rtl:text-right transition-all flex items-start gap-3.5 cursor-pointer ${
                     tenantType === 'WHOLESALE_WAREHOUSE'
-                      ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-500'
+                      ? 'border-brand-600 bg-brand-50/70 shadow-sm ring-1 ring-brand-500'
                       : 'border-slate-200 bg-slate-50/50 hover:bg-slate-50 hover:border-slate-300'
                   }`}
                 >
                   <div className={`p-2.5 rounded-xl shrink-0 ${
-                    tenantType === 'WHOLESALE_WAREHOUSE' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600'
+                    tenantType === 'WHOLESALE_WAREHOUSE' ? 'bg-brand-600 text-white' : 'bg-slate-200 text-slate-600'
                   }`}>
                     <Building2 className="w-5 h-5" />
                   </div>
@@ -222,7 +222,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                         {isArabic ? 'مستودع أدوية (بيع جملة)' : 'WAREHOUSE'}
                       </h4>
                       {tenantType === 'WHOLESALE_WAREHOUSE' && (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-brand-600 shrink-0" />
                       )}
                     </div>
                     <p className="text-xs text-slate-600 mt-1 leading-relaxed">
@@ -237,7 +237,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
               <button
                 type="button"
                 onClick={handleStep1Next}
-                className="w-full mt-2 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="w-full mt-2 py-3.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold text-sm shadow-md shadow-brand-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <span>{isArabic ? 'التالي: تفاصيل المنشأة' : 'Next: Organization Info'}</span>
                 <ArrowRight className="w-4 h-4 rtl:rotate-180" />
@@ -248,8 +248,8 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
           {/* Step 2: Organization Info */}
           {step === 2 && (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="p-3 bg-emerald-50 border border-emerald-200/80 rounded-xl flex items-center gap-2.5 text-xs text-emerald-800 font-medium">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <div className="p-3 bg-brand-50 border border-brand-200/80 rounded-xl flex items-center gap-2.5 text-xs text-brand-800 font-medium">
+                <ShieldCheck className="w-4 h-4 text-brand-600 shrink-0" />
                 <span>
                   {tenantType === 'RETAIL_PHARMACY'
                     ? (isArabic ? 'تهيئة صيدلية معتمدة' : 'Setting up Retail Pharmacy')
@@ -272,7 +272,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
                     placeholder={tenantType === 'RETAIL_PHARMACY' ? 'e.g. Al-Amal Pharmacy' : 'e.g. Damascus Med Supply'}
                   />
                 </div>
@@ -290,7 +290,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                     type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
                     placeholder="Damascus, Syria"
                   />
                 </div>
@@ -308,7 +308,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                    className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all"
                     placeholder="+963 11 222 3344"
                   />
                 </div>
@@ -321,7 +321,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                     id="legal-consent"
                     checked={legalConsent}
                     onChange={(e) => setLegalConsent(e.target.checked)}
-                    className="mt-1 flex-shrink-0 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500"
+                    className="mt-1 flex-shrink-0 w-4 h-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500"
                   />
                   <div className="flex-1">
                     <label htmlFor="legal-consent" className="text-xs text-slate-700 font-medium cursor-pointer">
@@ -333,7 +333,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                           setLegalModalType('terms');
                           setLegalModalOpen(true);
                         }}
-                        className="text-emerald-700 hover:underline inline"
+                        className="text-brand-700 hover:underline inline"
                       >
                         {isArabic ? 'شروط الخدمة' : 'Terms of Service'}
                       </button>
@@ -345,7 +345,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                           setLegalModalType('privacy');
                           setLegalModalOpen(true);
                         }}
-                        className="text-emerald-700 hover:underline inline"
+                        className="text-brand-700 hover:underline inline"
                       >
                         {isArabic ? 'سياسة الخصوصية' : 'Privacy Policy'}
                       </button>
@@ -376,7 +376,7 @@ export default function PharmacyOnboarding({ lang = 'en', setLang }: OnboardingP
                 <button
                   type="submit"
                   disabled={!legalConsent || isLoading}
-                  className="w-2/3 py-3.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  className="w-2/3 py-3.5 bg-brand-600 hover:bg-brand-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-brand-600/20 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                 >
                   {isLoading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

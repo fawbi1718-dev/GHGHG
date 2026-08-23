@@ -142,7 +142,7 @@ export default function CatalogDiagnosticView({
  {/* Header */}
  <div className="flex items-center justify-between p-6 border-b border-slate-100 ">
  <div className="flex items-center gap-3">
- <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-emerald-600 ">
+ <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-brand-600 ">
  <Database className="w-5 h-5" />
  </div>
  <div>
@@ -172,7 +172,7 @@ export default function CatalogDiagnosticView({
  <button 
  onClick={calculateStats} 
  disabled={isCalculating}
- className="p-1.5 hover:bg-slate-200 rounded-md text-emerald-600 disabled:opacity-50"
+ className="p-1.5 hover:bg-slate-200 rounded-md text-brand-600 disabled:opacity-50"
  title="Refresh Counts"
  >
  <RefreshCw className={`w-4 h-4 ${isCalculating ? 'animate-spin' : ''}`} />
@@ -187,7 +187,7 @@ export default function CatalogDiagnosticView({
  </div>
  <div className="flex justify-between items-center pb-2 border-b border-slate-200 ">
  <span className="text-slate-600 ">Local DB Total Records</span>
- <span className={`font-mono font-medium ${stats.totalRecords === expectedCount ? 'text-emerald-600' : 'text-amber-600'}`}>
+ <span className={`font-mono font-medium ${stats.totalRecords === expectedCount ? 'text-brand-600' : 'text-amber-600'}`}>
  {stats.totalRecords.toLocaleString()}
  </span>
  </div>
@@ -234,12 +234,12 @@ export default function CatalogDiagnosticView({
  value={searchQuery}
  onChange={(e) => setSearchQuery(e.target.value)}
  placeholder="sako, name, barcode..."
- className="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+ className="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
  />
  <button 
  type="submit"
  disabled={isSearching || !searchQuery.trim()}
- className="bg-emerald-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center justify-center disabled:opacity-50"
+ className="bg-brand-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center justify-center disabled:opacity-50"
  >
  {isSearching ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
  </button>
@@ -308,7 +308,7 @@ export default function CatalogDiagnosticView({
  <AlertCircle className="w-3 h-3" /> Empty
  </span>
  ) : (
- <span className="inline-flex items-center gap-1 text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded text-xs">
+ <span className="inline-flex items-center gap-1 text-brand-600 bg-brand-50 px-1.5 py-0.5 rounded text-xs">
  <CheckCircle className="w-3 h-3" /> Present
  </span>
  )}

@@ -93,9 +93,9 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.95 }}
               transition={{ type: "spring", damping: 26, stiffness: 360 }}
-              className={`pointer-events-auto max-w-md w-full p-4 rounded-2xl bg-slate-900/95 backdrop-blur-md text-slate-100 border shadow-2xl flex items-center gap-3.5 ${
+              className={`pointer-events-auto max-w-md w-full p-4 rounded-lg bg-slate-900/95 backdrop-blur-md text-slate-100 border shadow-2xl flex items-center gap-3.5 ${
                 toast.type === "success"
-                  ? "border-emerald-500/50 shadow-emerald-950/50 ring-1 ring-emerald-500/20"
+                  ? "border-brand-500/50 shadow-brand-950/50 ring-1 ring-brand-500/20"
                   : toast.type === "error"
                   ? "border-rose-500/50 shadow-rose-950/50 ring-1 ring-rose-500/20"
                   : "border-slate-700 shadow-slate-950/60 ring-1 ring-slate-700/30"
@@ -104,10 +104,10 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }
               <div
                 className={`p-2 rounded-xl shrink-0 ${
                   toast.type === "success"
-                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                    ? "bg-brand-500/20 text-brand-400 border border-brand-500/30"
                     : toast.type === "error"
                     ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                    : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                    : "bg-brand-500/20 text-brand-400 border border-brand-500/30"
                 }`}
               >
                 {toast.type === "success" ? (

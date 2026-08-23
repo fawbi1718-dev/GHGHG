@@ -112,7 +112,7 @@ export default function BarcodeLinkerModal({
  >
  <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-blue-50/50">
  <div className="flex items-center gap-3">
- <div className="w-10 h-10 rounded-xl bg-blue-100 text-emerald-600 flex items-center justify-center">
+ <div className="w-10 h-10 rounded-xl bg-blue-100 text-brand-600 flex items-center justify-center">
  <LinkIcon className="w-5 h-5" />
  </div>
  <div>
@@ -130,7 +130,7 @@ export default function BarcodeLinkerModal({
  </div>
 
  <div className="p-6 overflow-y-auto flex-1">
- <div className="mb-4 p-3 rounded-lg bg-blue-50 border border-blue-100 flex items-start gap-2 text-emerald-700 text-sm">
+ <div className="mb-4 p-3 rounded-lg bg-blue-50 border border-blue-100 flex items-start gap-2 text-brand-700 text-sm">
  <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
  <p>
  {lang === 'ar' 
@@ -153,7 +153,7 @@ export default function BarcodeLinkerModal({
  setSearchQuery(e.target.value);
  if (selectedItem) setSelectedItem(null);
  }}
- className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
+ className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all"
  placeholder={lang === 'ar' ? 'بحث بالاسم العلمي أو التجاري...' : 'Search by scientific or trade name...'}
  />
  </div>
@@ -180,12 +180,12 @@ export default function BarcodeLinkerModal({
  </div>
  
  {selectedItem && (
- <div className="p-4 border border-emerald-200 bg-emerald-50 rounded-xl flex items-center justify-between">
+ <div className="p-4 border border-brand-200 bg-brand-50 rounded-xl flex items-center justify-between">
  <div>
- <h4 className="font-bold text-emerald-900">{selectedItem.name || selectedItem.name_en}</h4>
- <p className="text-xs text-emerald-700 mt-1">{selectedItem.composition}</p>
+ <h4 className="font-bold text-brand-900">{selectedItem.name || selectedItem.name_en}</h4>
+ <p className="text-xs text-brand-700 mt-1">{selectedItem.composition}</p>
  </div>
- <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+ <CheckCircle2 className="w-6 h-6 text-brand-500" />
  </div>
  )}
  </div>
@@ -202,7 +202,7 @@ export default function BarcodeLinkerModal({
  <button
  onClick={handleLinkBarcode}
  disabled={!selectedItem || isLinking}
- className={`px-6 py-2 rounded-xl text-white font-bold text-sm transition-all shadow-sm flex items-center gap-2 ${!selectedItem || isLinking ? 'bg-blue-400/50 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700 hover:shadow-md'}`}
+ className={`px-6 py-2 rounded-xl text-white font-bold text-sm transition-all shadow-sm flex items-center gap-2 ${!selectedItem || isLinking ? 'bg-blue-400/50 cursor-not-allowed' : 'bg-brand-600 hover:bg-brand-700 hover:shadow-md'}`}
  >
  {isLinking ? (
  <RefreshCw className="w-4 h-4 animate-spin" />

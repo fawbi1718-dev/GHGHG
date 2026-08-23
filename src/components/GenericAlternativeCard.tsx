@@ -34,7 +34,7 @@ export default function GenericAlternativeCard({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white border-2 border-amber-200 rounded-2xl overflow-hidden shadow-sm max-w-4xl mx-auto my-3"
+      className="bg-white border-2 border-amber-200 rounded-lg overflow-hidden shadow-sm max-w-4xl mx-auto my-3"
       dir={isArabic ? 'rtl' : 'ltr'}
     >
       {/* Banner */}
@@ -68,7 +68,7 @@ export default function GenericAlternativeCard({
             className="w-full sm:w-[280px] md:w-[300px] bg-white rounded-xl border border-slate-200 shadow-xs hover:shadow-md transition-shadow p-4 flex flex-col justify-between relative group"
           >
             {idx === 0 && (
-              <div className="absolute -top-2.5 -right-2.5 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs z-10 border-2 border-white">
+              <div className="absolute -top-2.5 -right-2.5 bg-brand-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs z-10 border-2 border-white">
                 {isArabic ? 'الأفضل سعراً' : 'Best Value'}
               </div>
             )}
@@ -88,7 +88,7 @@ export default function GenericAlternativeCard({
             <div className="grid grid-cols-2 gap-2 mb-4 p-3 bg-slate-50 rounded-xl text-xs border border-slate-100">
               <div>
                 <div className="text-[10px] uppercase text-slate-400 font-semibold mb-0.5">{isArabic ? 'السعر' : 'Unit Price'}</div>
-                <div className="font-bold text-emerald-700 font-mono">{Number(item.unitPrice || 0).toLocaleString()} {isArabic ? 'ل.س' : 'SYP'}</div>
+                <div className="font-bold text-brand-700 font-mono">{Number(item.unitPrice || 0).toLocaleString()} {isArabic ? 'ل.س' : 'SYP'}</div>
               </div>
               <div>
                 <div className="text-[10px] uppercase text-slate-400 font-semibold mb-0.5">{isArabic ? 'المخزون' : 'Stock'}</div>
@@ -104,7 +104,7 @@ export default function GenericAlternativeCard({
 
             <button
               onClick={() => onAddToCart(item)}
-              className="w-full py-2.5 bg-emerald-50 text-emerald-800 hover:bg-emerald-600 hover:text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors duration-200 border border-emerald-200 hover:border-transparent text-xs cursor-pointer"
+              className="w-full py-2.5 bg-brand-50 text-brand-800 hover:bg-brand-600 hover:text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors duration-200 border border-brand-200 hover:border-transparent text-xs cursor-pointer"
             >
               <ShoppingCart className="w-4 h-4" />
               {isArabic ? 'إضافة بديل للطلب' : 'Add Alternative'}

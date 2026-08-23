@@ -112,7 +112,7 @@ export default function AnalyticsTab({ medicines, onSelectMedicine, triggerToast
  {/* Page Header */}
  <div>
  <h1 className="text-3xl font-bold tracking-tight text-slate-800 font-display flex items-center gap-3">
- <TrendingUp className="text-emerald-500 w-8 h-8 stroke-[2.2]" />
+ <TrendingUp className="text-brand-500 w-8 h-8 stroke-[2.2]" />
  {lang === 'ar' ? 'تحليلات مخزون العيادة' : 'Clinical Inventory Analytics'}
  </h1>
  <p className="text-slate-500 text-sm mt-1 leading-relaxed">
@@ -126,9 +126,9 @@ export default function AnalyticsTab({ medicines, onSelectMedicine, triggerToast
  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
  {/* KPI 1: Total Stock */}
  <div className="p-6 rounded-xl glass-panel bg-white border shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
- <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
+ <div className="absolute top-0 right-0 w-24 h-24 bg-brand-500/5 rounded-full blur-2xl pointer-events-none" />
  <div className="flex items-center gap-4">
- <div className="p-3 bg-blue-50 rounded-xl text-emerald-600">
+ <div className="p-3 bg-blue-50 rounded-xl text-brand-600">
  <Package className="w-6 h-6 stroke-[2]" />
  </div>
  <div>
@@ -230,7 +230,7 @@ export default function AnalyticsTab({ medicines, onSelectMedicine, triggerToast
  className="p-3.5 bg-slate-50/50 hover:bg-slate-100 border border-slate-100 rounded-xl transition-all flex justify-between items-center cursor-pointer group"
  >
  <div className="space-y-1">
- <div className="font-semibold text-slate-800 text-xs group-hover:text-emerald-600:text-blue-400 transition-colors">
+ <div className="font-semibold text-slate-800 text-xs group-hover:text-brand-600:text-blue-400 transition-colors">
  {item.name} <span className="text-slate-400 text-[10px] font-mono">({item.strength})</span>
  </div>
  <div className="text-[10px] text-slate-400 flex items-center gap-2 font-mono">
@@ -277,7 +277,7 @@ export default function AnalyticsTab({ medicines, onSelectMedicine, triggerToast
  id="btn-share-missing"
  onClick={handleShareMissing}
  title={lang === 'ar' ? 'نسخ ومشاركة قائمة المواد الناقصة' : 'Copy and share missing/low-stock items list'}
- className="bg-emerald-600 hover:bg-emerald-700 text-white:bg-emerald-700 text-xs font-bold font-sans px-3 py-1 rounded-xl transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
+ className="bg-brand-600 hover:bg-brand-700 text-white:bg-brand-700 text-xs font-bold font-sans px-3 py-1 rounded-xl transition-all flex items-center gap-1.5 shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
  >
  <Share2 className="w-3.5 h-3.5 text-white" />
  <span>{lang === 'ar' ? 'مشاركة النواقص' : 'Share Missing'}</span>
@@ -302,7 +302,7 @@ export default function AnalyticsTab({ medicines, onSelectMedicine, triggerToast
  >
  <div className="flex justify-between items-start">
  <div className="space-y-1">
- <div className="font-semibold text-slate-800 text-xs group-hover:text-emerald-600:text-blue-400 transition-colors">
+ <div className="font-semibold text-slate-800 text-xs group-hover:text-brand-600:text-blue-400 transition-colors">
  {item.name} <span className="text-slate-400 text-[10px] font-mono">({item.strength})</span>
  </div>
  <div className="text-[10px] text-slate-400 flex items-center gap-2 font-mono">

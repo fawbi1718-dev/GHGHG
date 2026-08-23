@@ -169,8 +169,8 @@ export default function FullScreenScannerTab({ onScan, lang = 'en' }: FullScreen
  }, [scannerRegionId]);
 
  const modes = [
- { id: 'sell', label: lang === 'ar' ? 'بيع' : 'Sell', icon: Banknote, color: 'bg-emerald-500', activeClass: 'bg-emerald-500/20 text-blue-400 border-emerald-500/50' },
- { id: 'restock', label: lang === 'ar' ? 'إعادة تخزين' : 'Restock', icon: Box, color: 'bg-emerald-500', activeClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50' },
+ { id: 'sell', label: lang === 'ar' ? 'بيع' : 'Sell', icon: Banknote, color: 'bg-brand-500', activeClass: 'bg-brand-500/20 text-blue-400 border-brand-500/50' },
+ { id: 'restock', label: lang === 'ar' ? 'إعادة تخزين' : 'Restock', icon: Box, color: 'bg-brand-500', activeClass: 'bg-brand-500/20 text-brand-400 border-brand-500/50' },
  { id: 'add', label: lang === 'ar' ? 'إضافة للبيانات' : 'Add to DB', icon: PlusCircle, color: 'bg-purple-500', activeClass: 'bg-purple-500/20 text-purple-400 border-purple-500/50' }
  ] as const;
 
@@ -221,19 +221,19 @@ export default function FullScreenScannerTab({ onScan, lang = 'en' }: FullScreen
  
  {/* Animated Neon Laser Bar */}
  <div 
- className="absolute left-6 right-6 h-[2px] bg-emerald-400 shadow-[0_0_12px_2px_rgba(52,211,153,0.8)]"
+ className="absolute left-6 right-6 h-[2px] bg-brand-400 shadow-[0_0_12px_2px_rgba(52,211,153,0.8)]"
  style={{ animation: 'scanLaser 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1)' }}
  />
  
  {/* Glowing Neon Corners */}
- <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-emerald-400 rounded-tl-3xl" style={{ filter: 'drop-shadow(0 0 8px rgba(52,211,153,0.8))' }}></div>
- <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-emerald-400 rounded-tr-3xl" style={{ filter: 'drop-shadow(0 0 8px rgba(52,211,153,0.8))' }}></div>
- <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-emerald-400 rounded-bl-3xl" style={{ filter: 'drop-shadow(0 0 8px rgba(52,211,153,0.8))' }}></div>
- <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-emerald-400 rounded-br-3xl" style={{ filter: 'drop-shadow(0 0 8px rgba(52,211,153,0.8))' }}></div>
+ <div className="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-brand-400 rounded-tl-3xl" style={{ filter: 'drop-shadow(0 0 8px rgba(52,211,153,0.8))' }}></div>
+ <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-brand-400 rounded-tr-3xl" style={{ filter: 'drop-shadow(0 0 8px rgba(52,211,153,0.8))' }}></div>
+ <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-brand-400 rounded-bl-3xl" style={{ filter: 'drop-shadow(0 0 8px rgba(52,211,153,0.8))' }}></div>
+ <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-brand-400 rounded-br-3xl" style={{ filter: 'drop-shadow(0 0 8px rgba(52,211,153,0.8))' }}></div>
  
  {/* Center Alignment Dot */}
  <div className="absolute inset-0 flex items-center justify-center">
- <div className="w-1 h-1 bg-emerald-400/80 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.8)]"></div>
+ <div className="w-1 h-1 bg-brand-400/80 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.8)]"></div>
  </div>
  </div>
  </div>

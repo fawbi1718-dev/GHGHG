@@ -23,13 +23,13 @@ export default function RoleSwitcher({ lang = 'en', triggerToast }: { lang?: 'en
  };
 
  return (
- <div className="flex items-center bg-[#F4F7F5] border border-emerald-200 rounded-xl p-1 shadow-inner relative z-50">
+ <div className="flex items-center bg-[#F4F7F5] border border-brand-200 rounded-xl p-1 shadow-inner relative z-50">
  <button
  onClick={() => !isWarehouse ? null : handleToggle()}
  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
  !isWarehouse 
- ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100' 
- : 'text-slate-500 hover:text-emerald-700'
+ ? 'bg-white text-brand-700 shadow-sm border border-brand-100' 
+ : 'text-slate-500 hover:text-brand-700'
  }`}
  >
  <Store className="w-3.5 h-3.5" />
@@ -39,8 +39,8 @@ export default function RoleSwitcher({ lang = 'en', triggerToast }: { lang?: 'en
  onClick={() => isWarehouse ? null : handleToggle()}
  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
  isWarehouse 
- ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100' 
- : 'text-slate-500 hover:text-emerald-700'
+ ? 'bg-white text-brand-700 shadow-sm border border-brand-100' 
+ : 'text-slate-500 hover:text-brand-700'
  }`}
  >
  <Building2 className="w-3.5 h-3.5" />

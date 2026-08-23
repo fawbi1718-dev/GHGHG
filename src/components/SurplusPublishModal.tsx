@@ -160,7 +160,7 @@ export default function SurplusPublishModal({
     >
       {medicine && (
         <div className="space-y-4" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
-          <div className="p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl">
+          <div className="p-3 bg-brand-50/60 border border-brand-100 rounded-xl">
             <p className="text-sm font-black text-slate-900">{medicine.name}</p>
             <p className="text-[11px] text-slate-500 mt-0.5">
               {lang === 'ar' ? 'مخزونك الخاص:' : 'Your private stock:'}{' '}
@@ -184,7 +184,7 @@ export default function SurplusPublishModal({
               type="number" min="1"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
             />
           </label>
 
@@ -194,7 +194,7 @@ export default function SurplusPublishModal({
               type="number" min="1"
               value={priceSyp}
               onChange={(e) => setPriceSyp(e.target.value)}
-              className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              className="mt-1 w-full px-3 py-2 text-sm font-mono border border-slate-200 rounded-xl focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
             />
           </label>
         </div>

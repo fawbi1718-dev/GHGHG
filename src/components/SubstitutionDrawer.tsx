@@ -112,7 +112,7 @@ export default function SubstitutionDrawer({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 15 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="relative z-10 w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-slate-200/90 flex flex-col max-h-[88vh] overflow-hidden my-auto"
+            className="relative z-10 w-full max-w-2xl bg-white rounded-lg shadow-2xl border border-slate-200/90 flex flex-col max-h-[88vh] overflow-hidden my-auto"
           >
             {/* Header / Requested Medicine Summary Card */}
             <div className="p-5 sm:p-6 bg-slate-50/90 border-b border-slate-200 shrink-0">
@@ -146,8 +146,8 @@ export default function SubstitutionDrawer({
                   {targetMedicine.name}
                 </div>
                 <div className="flex flex-wrap items-center gap-2 mt-2">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-200 rounded-lg text-xs font-bold text-emerald-800 shadow-2xs">
-                    <Activity className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-brand-50 border border-brand-200 rounded-lg text-xs font-bold text-brand-800 shadow-2xs">
+                    <Activity className="w-3.5 h-3.5 text-brand-600" />
                     {targetMedicine.genericName}
                   </span>
                   {targetMedicine.strength && (
@@ -165,7 +165,7 @@ export default function SubstitutionDrawer({
               {/* Local In-Stock Alternatives */}
               <div>
                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-500" />
+                  <CheckCircle className="w-4 h-4 text-brand-500" />
                   {isArabic ? 'بدائل متوفرة محلياً' : 'In-Stock Alternatives'}
                 </h3>
                 
@@ -183,7 +183,7 @@ export default function SubstitutionDrawer({
                               <div className="flex items-center gap-2 mt-1">
                                 <span className="text-xs text-slate-500 font-medium">{alt.supplier}</span>
                                 <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                                <span className="text-xs text-emerald-600 font-bold flex items-center gap-1">
+                                <span className="text-xs text-brand-600 font-bold flex items-center gap-1">
                                   <Package className="w-3 h-3" />
                                   {alt.stock} {isArabic ? 'متوفر' : 'in stock'}
                                 </span>
@@ -195,7 +195,7 @@ export default function SubstitutionDrawer({
                           </div>
                           
                           <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
-                            <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-brand-600 bg-brand-50 px-2 py-1 rounded">
                               <TrendingUp className="w-3.5 h-3.5" />
                               {marginPercent}% {isArabic ? 'هامش ربح' : 'Margin'}
                             </div>
@@ -205,7 +205,7 @@ export default function SubstitutionDrawer({
                                 onSubstitute(alt);
                                 onClose();
                               }}
-                              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-xs cursor-pointer"
+                              className="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-xs cursor-pointer"
                             >
                               <ArrowRightLeft className="w-4 h-4" />
                               {isArabic ? 'استبدال' : 'Swap & Add'}
@@ -227,7 +227,7 @@ export default function SubstitutionDrawer({
               {/* B2B Wholesale Alternatives */}
               <div>
                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-emerald-500" />
+                  <Building2 className="w-4 h-4 text-brand-500" />
                   {isArabic ? 'طلب من المستودع (B2B)' : 'Wholesale Direct (B2B)'}
                 </h3>
                 
@@ -235,7 +235,7 @@ export default function SubstitutionDrawer({
                   {b2bAlts.map((alt, idx) => (
                     <div key={alt.id} className="bg-slate-50 border border-slate-200 rounded-xl p-4 relative">
                       {idx === 0 && (
-                        <div className="absolute -top-2.5 -right-2.5 bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs z-10 border-2 border-white">
+                        <div className="absolute -top-2.5 -right-2.5 bg-brand-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs z-10 border-2 border-white">
                           {isArabic ? 'الأفضل سعراً' : 'Lowest Price'}
                         </div>
                       )}
@@ -252,7 +252,7 @@ export default function SubstitutionDrawer({
                       </div>
                       
                       <div className="flex items-center justify-between mt-3">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-blue-50 px-2 py-1 rounded">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-brand-600 bg-blue-50 px-2 py-1 rounded">
                           <Truck className="w-3.5 h-3.5" />
                           {alt.deliveryTime}
                         </div>
