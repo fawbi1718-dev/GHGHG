@@ -83,6 +83,8 @@ RegisterApplicationService + AntiFraudEngine + domain/ledger pipeline (dormant; 
 - B2B cart: localStorage with 7-day expiry (survives restarts).
 - README.md rewritten (setup/scripts/architecture/ops).
 - Audit: password reset fully wired in AuthScreen ✓.
+- Search-contract tests: company-key normalization stability + precomputed derived fields === live normalization (8 cases).
+- Ledger skeletons until first tenant snapshot (isLoadingInventory flag through App→RootNavigator→tabs) — no more fake empty-state flash.
 
 ## 13. LATEST TYPECHECK/LINT/BUILD STATUS
 `tsc --noEmit` CLEAN · lint script (= tsc) CLEAN · `vite build` ✓ · `npm test` 16/16 passed (Phase 6.19 commit `ce38547`). Device passes needed for: surplus publish→buy loop, dock on 320px, notifications delivery post-rules-deploy.
