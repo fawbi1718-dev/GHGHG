@@ -78,5 +78,11 @@ RegisterApplicationService + AntiFraudEngine + domain/ledger pipeline (dormant; 
 3. Grow vitest: surplus publish payload, trust-score math, counter-offer reason composition, cart pruning logic.
 4. Surplus v2 ideas: auto-suggest from FEFO expiry scan, buyer "surplus only" filter, distance sorting once geo captured.
 
+## 12.5 AUTONOMOUS SESSION LOG (6.20)
+- Sync widget: parked-payload count + one-tap retry (ops visibility).
+- B2B cart: localStorage with 7-day expiry (survives restarts).
+- README.md rewritten (setup/scripts/architecture/ops).
+- Audit: password reset fully wired in AuthScreen ✓.
+
 ## 13. LATEST TYPECHECK/LINT/BUILD STATUS
 `tsc --noEmit` CLEAN · lint script (= tsc) CLEAN · `vite build` ✓ · `npm test` 16/16 passed (Phase 6.19 commit `ce38547`). Device passes needed for: surplus publish→buy loop, dock on 320px, notifications delivery post-rules-deploy.
