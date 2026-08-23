@@ -25,7 +25,7 @@ let dbPromise: Promise<IDBPDatabase<PharmacyDB>> | null = null;
 // Legacy rows written before this field existed simply fall back to live
 // normalization (identical results, old cost) until the next re-sync.
 // ---------------------------------------------------------------------------
-function withDerivedSearchFields<T extends Record<string, any>>(item: T): T {
+export function withDerivedSearchFields<T extends Record<string, any>>(item: T): T {
   return {
     ...item,
     _sn: normalizeSearchText((item as any).name),
@@ -37,7 +37,7 @@ function withDerivedSearchFields<T extends Record<string, any>>(item: T): T {
 }
 
 /** Shared normalization used for company identity keys (filter values). */
-function normalizeCompanyKey(rawCompany: any): string {
+export function normalizeCompanyKey(rawCompany: any): string {
   const clean = String(rawCompany ?? 'Unknown Manufacturer').trim();
   let normalizedKey = clean.toLowerCase();
   normalizedKey = normalizedKey.replace(/[.,\/#!$%\^&\*;:{}=\-_~()]/g, " ");
