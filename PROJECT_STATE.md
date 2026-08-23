@@ -52,7 +52,7 @@ N+1 batch listeners removed (App has exactly 2 listeners: inventory+ledger) · c
 
 ### Phases 6.17–6.19 (Surplus Exchange + UX hardening)
 - **Surplus Exchange**: retail pharmacies publish near-expiry/overstock as marketplace offers (`SurplusPublishModal` → wholesale_offers with `offerKind:'surplus'`, `sellerType:'RETAIL_PHARMACY'`; deterministic id; inventory untouched). Marketplace shows ♻️ Surplus + ⏳ near-expiry(≤90d) badges, pharmacy-seller storefront chips, directory relabeled "Verified Sellers".
-- **Trust scores**: real fulfillment/rejection % computed lazily from seller's b2b_orders (limit 100) when a storefront opens; replaces fabricated reliability 4.9.
+- **Surplus lifecycle management**: Recycle button is contextual — Publish when unlisted, Manage when listed (edit qty/price, Pause/Resume visibility, Remove with reason → OFFER_DEACTIVATED event notifies affected pharmacies and their carts auto-prune). Listed badge on Ledger cards. **Trust scores**: real fulfillment/rejection % computed lazily from seller's b2b_orders (limit 100) when a storefront opens; replaces fabricated reliability 4.9.
 - **UI consistency**: unified `ui/StatusBadge` grammar across tracking/queue/history; loud gradient headers flattened.
 - **Counter-offer**: reject modal gains optional available-qty + note composed into whitelisted `rejectionReason`; ORDER_REJECTED notification carries it.
 - **Cart persistence**: B2B cart survives reload via sessionStorage (`eshmun_b2b_active_cart`); partial-success pruning compatible.
