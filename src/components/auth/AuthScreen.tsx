@@ -203,7 +203,7 @@ export default function AuthScreen({ lang = 'en', setLang }: AuthScreenProps) {
         {/* Brand Header */}
         <div className="text-center mb-5 space-y-2">
           <div className="inline-flex w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-brand-600 items-center justify-center shadow-lg shadow-brand-600/20 ring-4 ring-brand-100">
-            <HeartPulse className="w-6 h-6 sm:w-7 sm:h-7 text-white animate-pulse" />
+            <HeartPulse className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">

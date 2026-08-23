@@ -128,8 +128,8 @@ export async function syncCatalogFromSupabase(
  throw new Error(`No records found in remote database.`);
  }
 
- onLog(`Database Connection: SUCCESS`, 'success');
- onLog(`Total remote records found: ${count}`, 'info');
+  onLog(`Database Connection: SUCCESS`, 'success');
+  onLog(`Remote catalog connected.`, 'info');
 
  const db = await getDB();
  const localTotal = await db.count(STORE_NAME);
@@ -141,7 +141,7 @@ export async function syncCatalogFromSupabase(
  onProgressCallback(count, count);
  return;
  } else {
- onLog(`Local catalog incomplete despite COMPLETE state (${localTotal}/${count}). Resuming...`, 'info');
+ onLog(`Resuming catalog setup...`, 'info');
  state.status = 'PARTIAL';
  }
  }
@@ -212,8 +212,8 @@ invalidateCompaniesCache();
  state.status = 'PARTIAL';
  setCatalogSyncState(state);
 
- const currentLocalTotal = await db.count(STORE_NAME);
- onLog(`IndexedDB save complete. Current local total: ${currentLocalTotal}`, 'success');
+  const currentLocalTotal = await db.count(STORE_NAME);
+  onLog(`Batch saved for offline use.`, 'success');
 
  onProgressCallback(loadedCount, count);
 
@@ -228,9 +228,9 @@ invalidateCompaniesCache();
  if (finalLocalTotal >= count) {
  state.status = 'COMPLETE';
  setCatalogSyncState(state);
- onLog(`Sync verified complete. Total records: ${finalLocalTotal}`, 'success');
+ onLog(`Catalog ready for offline use.`, 'success');
  } else {
- onLog(`Sync finished but local total (${finalLocalTotal}) is less than expected (${count}). Keeping status as PARTIAL.`, 'error');
+ onLog(`Catalog setup incomplete — will resume automatically.`, 'error');
  }
 
  } catch (err: any) {
