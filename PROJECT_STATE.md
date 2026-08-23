@@ -1,7 +1,7 @@
 # PROJECT_STATE.md
 
 Compact, factual project memory. Update whenever a phase changes architecture.
-Last updated: Phase 6.19.
+Last updated: Phase X.3 (Redesign Lab).
 
 ---
 
@@ -49,6 +49,12 @@ N+1 batch listeners removed (App has exactly 2 listeners: inventory+ledger) · c
 - **Ledger listener stays complete** — SalesAnalytics/AnalyticsTab compute long-term revenue/profit from it; capping would silently corrupt historical analytics. Future path: server-side aggregation or paginated history UI before any windowing.
 - **Offers listener stays unbounded** — marketplace must not hide legitimate offers. Growth is seller-driven/slow; revisit with storefront pagination if active offers exceed ~300.
 - Deployment-ready full ruleset in `firestore.rules` + `FIRESTORE_RULES_DEPLOYMENT.md` checklist (deploy requires Console/CLI publish + app bundle rebuild together).
+
+### Phase X.3 - order delivery lifecycle + surplus management
+- Dispatch drawer gains expected-delivery datetime -> manifest.expectedDeliveryAt; pharmacy tracking shows ETA chip + late flag.
+- Buyer report (package never arrived) reverts DISPATCHED to PENDING_APPROVAL with deliveryFailedAt; seller notified via ORDER_NOT_RECEIVED; queue picks it up realtime. Stock not auto-restored: seller re-dispatches after physical return intake or rejects. REQUIRES RULES REDEPLOY.
+- My Surplus panel in Ledger header with live count; Manage editor per listing (qty/price, Pause/Resume, Remove+reason, notification). Recycle button contextual Publish vs Manage.
+- Privacy: sync overlay no longer shows catalog record counts; login logo pulse removed.
 
 ### Phases 6.17–6.19 (Surplus Exchange + UX hardening)
 - **Surplus Exchange**: retail pharmacies publish near-expiry/overstock as marketplace offers (`SurplusPublishModal` → wholesale_offers with `offerKind:'surplus'`, `sellerType:'RETAIL_PHARMACY'`; deterministic id; inventory untouched). Marketplace shows ♻️ Surplus + ⏳ near-expiry(≤90d) badges, pharmacy-seller storefront chips, directory relabeled "Verified Sellers".
