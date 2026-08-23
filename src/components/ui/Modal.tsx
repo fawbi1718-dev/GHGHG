@@ -62,10 +62,10 @@ export const Modal: React.FC<ModalProps> = ({
           />
           <div className="relative z-10 w-full flex justify-center items-center pointer-events-none my-auto">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              initial={{ opacity: 0, scale: 0.985, y: 6 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 12 }}
-              transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+              exit={{ opacity: 0, scale: 0.985, y: 6 }}
+              transition={{ duration: 0.16, ease: 'easeOut' }}
               className={`w-full bg-white shadow-xl pointer-events-auto flex flex-col overflow-hidden rounded-lg border border-slate-300 ${maxWidthClasses[maxWidth]} ${
                 fullScreenOnMobile ? 'h-full sm:h-auto sm:max-h-[90vh] sm:rounded-lg rounded-none' : 'max-h-[88vh]'
               }`}

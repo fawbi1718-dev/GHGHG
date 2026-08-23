@@ -73,7 +73,7 @@ export const Drawer: React.FC<DrawerProps> = ({
           />
           <motion.div
             {...slideVariants[position]}
-            transition={{ type: 'spring', damping: 25, stiffness: 250 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
             className={`absolute ${positionClasses[position]} w-full ${position !== 'bottom' ? maxWidthClasses[maxWidth] : 'h-[85vh] sm:h-auto sm:max-h-[90vh]'} bg-white shadow-xl flex flex-col z-10`}
           >
             {title && (

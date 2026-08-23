@@ -65,6 +65,27 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ==========================================================================
+   INTERACTION POLISH
+   ========================================================================== */
+
+/* Keyboard focus visibility (mouse clicks stay clean) */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #0f766e;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Prevent iOS Safari auto-zoom on input focus (fires below 16px font-size).
+   Visual-only: keeps compact desktop sizing, relaxes on small screens. */
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
 /* Scanner Camera Viewport Styles */
 .scanner-camera-box {
   position: absolute !important;

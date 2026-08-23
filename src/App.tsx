@@ -33,16 +33,20 @@ function AppContent() {
   const [syncError, setSyncError] = useState(false);
 
   // Trigger safe boot-up auto clean routine and check catalog sync
+  // AUTH LIFECYCLE: nothing below runs before a user signs in — no catalog
+  // sync, no tenant database opens, no background tasks on the login screen.
   useEffect(() => {
+    if (!currentSession) return;
+
     autoCleanLegacyData();
-    
+
     // Auto-sync on app load
     try {
       BackgroundSyncEngine.getInstance().triggerSyncLoop();
     } catch (e) {
       console.error(e);
     }
-  }, []);
+  }, [currentSession]);
 
   const startSync = useCallback(async () => {
     setIsSyncing(true);
@@ -67,6 +71,9 @@ function AppContent() {
   }, []);
 
   useEffect(() => {
+    // AUTH LIFECYCLE: catalog synchronization is tenant-agnostic data work,
+    // but it must never start on the public login screen.
+    if (!currentSession) return;
     const checkAndSyncCatalog = async () => {
       try {
         const state = getCatalogSyncState();
@@ -97,7 +104,7 @@ function AppContent() {
     };
 
     checkAndSyncCatalog();
-  }, [startSync]);
+  }, [startSync, currentSession]);
 
   useEffect(() => {
     if (activePharmacy && activePharmacy.tenantType) {

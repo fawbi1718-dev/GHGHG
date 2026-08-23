@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback, ReactNode, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { normalizeBarcode } from '../services/syncEngine';
+import { useAuth } from '../application/auth/AuthContext';
 
 export interface CatalogItem {
  id?: string;
@@ -85,6 +86,7 @@ export const mapMedicine = (item: any, index: number): MappedMedicine => {
 const CatalogContext = createContext<CatalogContextType | undefined>(undefined);
 
 export const CatalogProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+ const { currentSession } = useAuth();
  const [catalogRaw, setCatalogRaw] = useState<CatalogItem[]>([]);
  const [isLoading, setIsLoading] = useState<boolean>(true);
  const [catalogProgress, setCatalogProgress] = useState<number>(0);
@@ -147,8 +149,13 @@ export const CatalogProvider: React.FC<{ children: ReactNode }> = ({ children })
  };
 
  useEffect(() => {
+ // AUTH LIFECYCLE: no network catalog fetch on the public login screen.
+ if (!currentSession) {
+ setIsLoading(false);
+ return;
+ }
  fetchCatalog();
- }, []);
+ }, [currentSession]);
 
  const mappedCatalog = useMemo(() => {
  return catalogRaw.map((item, idx) => mapMedicine(item, idx));
