@@ -1,0 +1,904 @@
+import React, { useState } from 'react';
+import { useAuth } from '../../application/auth/AuthContext';
+import LegalModal from './LegalModal';
+import { 
+  HeartPulse, 
+  Mail, 
+  Lock, 
+  Eye, 
+  EyeOff, 
+  Building2, 
+  Store, 
+  ArrowRight, 
+  ArrowLeft, 
+  Loader2, 
+  CheckCircle2, 
+  AlertCircle,
+  ShieldCheck,
+  Globe,
+  KeyRound,
+  ChevronLeft,
+  ChevronRight,
+  Info
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+
+interface AuthScreenProps {
+  lang?: 'en' | 'ar';
+  setLang?: (lang: 'en' | 'ar') => void;
+}
+
+type AuthMode = 'signin' | 'signup' | 'forgot_password';
+type SignUpStep = 1 | 2 | 3;
+type OrgType = 'RETAIL_PHARMACY' | 'WHOLESALE_WAREHOUSE';
+
+export default function AuthScreen({ lang = 'en', setLang }: AuthScreenProps) {
+  const { 
+    loginWithEmail, 
+    signUpWithEmail, 
+    loginWithGoogle, 
+    signUpWithGoogle, 
+    resetPassword,
+    isLoading, 
+    error, 
+    setError, 
+    clearError 
+  } = useAuth();
+
+  const [mode, setMode] = useState<AuthMode>('signin');
+  const [signUpStep, setSignUpStep] = useState<SignUpStep>(1);
+
+  // Form Fields
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // Legal Consent
+  const [legalConsent, setLegalConsent] = useState(false);
+  const [legalModalOpen, setLegalModalOpen] = useState(false);
+  const [legalModalType, setLegalModalType] = useState<'terms' | 'privacy' | null>(null);
+
+  // Org Fields
+  const [orgType, setOrgType] = useState<OrgType>('RETAIL_PHARMACY');
+  const [orgName, setOrgName] = useState('');
+  const [location, setLocation] = useState('Damascus, Syria');
+  const [contactPhone, setContactPhone] = useState('');
+
+  // Local state & feedback
+  const [localError, setLocalError] = useState<string | null>(null);
+  const [resetSuccessMessage, setResetSuccessMessage] = useState<string | null>(null);
+
+  const isArabic = lang === 'ar';
+
+  const handleModeSwitch = (newMode: AuthMode) => {
+    setMode(newMode);
+    setSignUpStep(1);
+    setLocalError(null);
+    setResetSuccessMessage(null);
+    if (clearError) clearError();
+    else if (setError) setError(null);
+  };
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLocalError(null);
+    if (!email.trim() || !password) {
+      setLocalError(isArabic ? 'يرجى إدخال البريد الإلكتروني وكلمة المرور.' : 'Please enter both email and password.');
+      return;
+    }
+    if (loginWithEmail) {
+      await loginWithEmail(email.trim(), password);
+    }
+  };
+
+  const handleForgotPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLocalError(null);
+    setResetSuccessMessage(null);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email.trim())) {
+      setLocalError(isArabic ? 'يرجى إدخال بريد إلكتروني صحيح.' : 'Please enter a valid email address.');
+      return;
+    }
+
+    if (resetPassword) {
+      const ok = await resetPassword(email.trim());
+      if (ok) {
+        setResetSuccessMessage(
+          isArabic 
+            ? 'تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني بنجاح.' 
+            : 'Password reset link sent to your email successfully.'
+        );
+      }
+    }
+  };
+
+  const handleStep1Next = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLocalError(null);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setLocalError(isArabic ? 'يرجى إدخال عنوان بريد إلكتروني صالح.' : 'Please enter a valid email address.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setLocalError(isArabic ? 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.' : 'Password must be at least 6 characters.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setLocalError(isArabic ? 'كلمات المرور غير متطابقة.' : 'Passwords do not match.');
+      return;
+    }
+
+    setSignUpStep(2);
+  };
+
+  const handleStep2Next = () => {
+    setLocalError(null);
+    if (!orgName) {
+      setOrgName(orgType === 'RETAIL_PHARMACY' ? 'Damascus Central Pharmacy' : 'Syrian Med Supply Hub');
+    }
+    setSignUpStep(3);
+  };
+
+  const handleSignUpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLocalError(null);
+
+    if (!orgName.trim() || orgName.trim().length < 2) {
+      setLocalError(
+        orgType === 'RETAIL_PHARMACY'
+          ? (isArabic ? 'يرجى إدخال اسم الصيدلية.' : 'Please enter the pharmacy name.')
+          : (isArabic ? 'يرجى إدخال اسم المستودع.' : 'Please enter the warehouse name.')
+      );
+      return;
+    }
+
+    if (signUpWithEmail) {
+      const defaultName = orgType === 'RETAIL_PHARMACY' ? 'Pharmacist' : 'Warehouse Manager';
+      await signUpWithEmail(
+        email.trim(),
+        password,
+        defaultName,
+        orgType,
+        orgName.trim(),
+        location.trim(),
+        contactPhone.trim()
+      );
+    }
+  };
+
+  const activeError = localError || error;
+  const isDuplicateAccountError = 
+    activeError?.includes('already exists') || 
+    activeError?.includes('موجود مسبقاً') || 
+    activeError?.includes('email-already-in-use');
+
+  return (
+    <div 
+      className="min-h-screen bg-slate-100/90 flex flex-col items-center justify-center p-3.5 sm:p-6 relative font-sans transition-colors"
+      dir={isArabic ? 'rtl' : 'ltr'}
+    >
+      {/* Top Header Controls */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2 z-20">
+        {setLang && (
+          <button 
+            type="button"
+            onClick={() => setLang(isArabic ? 'en' : 'ar')} 
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold font-mono bg-white border border-slate-200 text-slate-700 shadow-sm hover:bg-slate-50 transition-colors cursor-pointer"
+          >
+            <Globe className="w-3.5 h-3.5 text-emerald-600" />
+            <span>{isArabic ? 'English' : 'العربية'}</span>
+          </button>
+        )}
+      </div>
+
+      <div className="w-full max-w-md my-auto relative z-10 py-4">
+        {/* Brand Header */}
+        <div className="text-center mb-5 space-y-2">
+          <div className="inline-flex w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-600 items-center justify-center shadow-lg shadow-emerald-600/20 ring-4 ring-emerald-100">
+            <HeartPulse className="w-6 h-6 sm:w-7 sm:h-7 text-white animate-pulse" />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              {isArabic ? 'منظومة إشمون الطبية' : 'Eshmun Medical Portal'}
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+              {isArabic ? 'بوابة إدارة الصيدليات والمستودعات الطبية' : 'Clinical Pharmacy & Wholesale Management'}
+            </p>
+          </div>
+        </div>
+
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xl overflow-hidden">
+          {/* Header Action Bar */}
+          <div className="p-3 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between min-h-[48px]">
+            {mode === 'signin' ? (
+              <div className="flex-1 text-center">
+                 <span className="text-xs font-bold text-slate-800">
+                  {isArabic ? 'تسجيل الدخول إلى حسابك' : 'Sign In to Your Account'}
+                </span>
+              </div>
+            ) : mode === 'forgot_password' ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => handleModeSwitch('signin')}
+                  className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-emerald-700 transition-colors cursor-pointer"
+                >
+                  {isArabic ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+                  <span>{isArabic ? 'رجوع لتسجيل الدخول' : 'Back to Login'}</span>
+                </button>
+                <span className="text-xs font-semibold text-slate-400">
+                  {isArabic ? 'استعادة الحساب' : 'Account Recovery'}
+                </span>
+              </>
+            ) : mode === 'signup' ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (signUpStep > 1) {
+                      setSignUpStep((prev) => (prev - 1) as SignUpStep);
+                    } else {
+                      handleModeSwitch('signin');
+                    }
+                  }}
+                  className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-emerald-700 transition-colors cursor-pointer"
+                >
+                  {isArabic ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+                  <span>{isArabic ? 'رجوع' : 'Back'}</span>
+                </button>
+                <span className="text-xs font-semibold text-slate-400">
+                  {isArabic ? 'إنشاء حساب جديد' : 'Create Account'}
+                </span>
+              </>
+            ) : null}
+          </div>
+
+          <div className="p-5 sm:p-7 space-y-5">
+            {/* Error Banner */}
+            {activeError && (
+              <div className="p-3.5 bg-red-50 text-red-700 border border-red-200/80 rounded-xl text-xs sm:text-sm flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="font-semibold leading-relaxed">{activeError}</p>
+                  {isDuplicateAccountError && (
+                    <button
+                      type="button"
+                      onClick={() => handleModeSwitch('signin')}
+                      className="mt-2 text-xs font-bold text-emerald-700 hover:text-emerald-800 underline flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>{isArabic ? 'تسجيل الدخول الآن' : 'Sign in instead'}</span>
+                      <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Success Banner */}
+            {resetSuccessMessage && (
+              <div className="p-3.5 bg-emerald-50 text-emerald-800 border border-emerald-200/80 rounded-xl text-xs sm:text-sm flex items-start gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <p className="font-medium leading-relaxed">{resetSuccessMessage}</p>
+              </div>
+            )}
+
+            {/* ================================================= */}
+            {/* 1. SIGN IN VIEW */}
+            {/* ================================================= */}
+            {mode === 'signin' && (
+              <form onSubmit={handleSignIn} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    {isArabic ? 'البريد الإلكتروني' : 'Email Address'}
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pl-0 rtl:pr-3 flex items-center pointer-events-none text-slate-400">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                      placeholder="doctor@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                      {isArabic ? 'كلمة المرور' : 'Password'}
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => handleModeSwitch('forgot_password')}
+                      className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
+                    >
+                      {isArabic ? 'نسيت كلمة المرور؟' : 'Forgot Password?'}
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pl-0 rtl:pr-3 flex items-center pointer-events-none text-slate-400">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full pl-10 rtl:pl-10 rtl:pr-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 rtl:right-auto rtl:left-0 pr-3 rtl:pr-0 rtl:pl-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl font-bold text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer mt-1"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      <span>{isArabic ? 'تسجيل الدخول' : 'Sign In'}</span>
+                      <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                    </>
+                  )}
+                </button>
+
+                {/* Google Sign In Alternative */}
+                <div className="pt-2">
+                  <div className="relative flex py-1.5 items-center">
+                    <div className="flex-grow border-t border-slate-200"></div>
+                    <span className="flex-shrink mx-3 text-xs text-slate-400 font-medium">
+                      {isArabic ? 'أو عبر' : 'Or continue with'}
+                    </span>
+                    <div className="flex-grow border-t border-slate-200"></div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={loginWithGoogle}
+                    disabled={isLoading}
+                    className="w-full mt-1 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                    </svg>
+                    <span>{isArabic ? 'المتابعة بحساب Google' : 'Google Account'}</span>
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* ================================================= */}
+            {/* 2. FORGOT PASSWORD VIEW */}
+            {/* ================================================= */}
+            {mode === 'forgot_password' && (
+              <form onSubmit={handleForgotPasswordSubmit} className="space-y-4">
+                <div className="text-center pb-1">
+                  <div className="inline-flex w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 items-center justify-center mb-2">
+                    <KeyRound className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-base font-bold text-slate-800">
+                    {isArabic ? 'استعادة كلمة المرور' : 'Reset Your Password'}
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    {isArabic 
+                      ? 'أدخل بريدك الإلكتروني المسجل وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.'
+                      : "Enter your registered email address and we'll send you a password reset link."}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    {isArabic ? 'البريد الإلكتروني المسجل' : 'Registered Email Address'}
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pl-0 rtl:pr-3 flex items-center pointer-events-none text-slate-400">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                      placeholder="doctor@example.com"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => handleModeSwitch('signin')}
+                    className="w-1/3 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <ArrowLeft className="w-4 h-4 rtl:rotate-180" />
+                    <span>{isArabic ? 'إلغاء' : 'Cancel'}</span>
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-2/3 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <span>{isArabic ? 'إرسال الرابط' : 'Send Reset Link'}</span>
+                        <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* ================================================= */}
+            {/* 3. CREATE ACCOUNT VIEW (PROGRESSIVE STEPS) */}
+            {/* ================================================= */}
+            {mode === 'signup' && (
+              <div className="space-y-5">
+                {/* Stepper Indicator */}
+                <div className="flex items-center justify-between px-1 pb-1">
+                  <button
+                    type="button"
+                    onClick={() => setSignUpStep(1)}
+                    className="flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span className={`w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center transition-all ${
+                      signUpStep === 1 ? 'bg-emerald-600 text-white ring-2 ring-emerald-200' : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      1
+                    </span>
+                    <span className={`text-xs font-bold ${signUpStep === 1 ? 'text-slate-900' : 'text-slate-400'}`}>
+                      {isArabic ? 'الحساب' : 'Account'}
+                    </span>
+                  </button>
+                  <div className="w-6 sm:w-8 h-0.5 bg-slate-200"></div>
+                  <button
+                    type="button"
+                    onClick={() => { if (email && password.length >= 6 && password === confirmPassword) setSignUpStep(2); }}
+                    className="flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span className={`w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center transition-all ${
+                      signUpStep === 2 ? 'bg-emerald-600 text-white ring-2 ring-emerald-200' : signUpStep > 2 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400'
+                    }`}>
+                      2
+                    </span>
+                    <span className={`text-xs font-bold ${signUpStep === 2 ? 'text-slate-900' : 'text-slate-400'}`}>
+                      {isArabic ? 'النوع' : 'Role'}
+                    </span>
+                  </button>
+                  <div className="w-6 sm:w-8 h-0.5 bg-slate-200"></div>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-6 h-6 rounded-full text-xs font-bold flex items-center justify-center transition-all ${
+                      signUpStep === 3 ? 'bg-emerald-600 text-white ring-2 ring-emerald-200' : 'bg-slate-100 text-slate-400'
+                    }`}>
+                      3
+                    </span>
+                    <span className={`text-xs font-bold ${signUpStep === 3 ? 'text-slate-900' : 'text-slate-400'}`}>
+                      {isArabic ? 'المنشأة' : 'Setup'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* STEP 1: CREDENTIALS */}
+                {signUpStep === 1 && (
+                  <form onSubmit={handleStep1Next} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        {isArabic ? 'البريد الإلكتروني' : 'Email Address'}
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pl-0 rtl:pr-3 flex items-center pointer-events-none text-slate-400">
+                          <Mail className="w-4 h-4" />
+                        </div>
+                        <input
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                          placeholder="doctor@example.com"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        {isArabic ? 'كلمة المرور' : 'Password'}
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pl-0 rtl:pr-3 flex items-center pointer-events-none text-slate-400">
+                          <Lock className="w-4 h-4" />
+                        </div>
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          required
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full pl-10 rtl:pl-10 rtl:pr-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                          placeholder="••••••••"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute inset-y-0 right-0 rtl:right-auto rtl:left-0 pr-3 rtl:pr-0 rtl:pl-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                      <p className="text-[11px] text-slate-400 mt-1">
+                        {isArabic ? '6 أحرف على الأقل' : 'At least 6 characters'}
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        {isArabic ? 'تأكيد كلمة المرور' : 'Confirm Password'}
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pl-0 rtl:pr-3 flex items-center pointer-events-none text-slate-400">
+                          <Lock className="w-4 h-4" />
+                        </div>
+                        <input
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          required
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          className="w-full pl-10 rtl:pl-10 rtl:pr-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                          placeholder="••••••••"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute inset-y-0 right-0 rtl:right-auto rtl:left-0 pr-3 rtl:pr-0 rtl:pl-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
+                        >
+                          {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                      <div className="flex items-start gap-2.5">
+                        <input
+                          type="checkbox"
+                          id="legal-consent"
+                          checked={legalConsent}
+                          onChange={(e) => setLegalConsent(e.target.checked)}
+                          className="mt-1 flex-shrink-0 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500"
+                        />
+                        <div className="flex-1">
+                          <label htmlFor="legal-consent" className="text-xs text-slate-700 font-medium cursor-pointer">
+                            {isArabic ? 'لقد قرأت وأوافق على ' : 'I have read and agree to the '}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setLegalModalType('terms');
+                                setLegalModalOpen(true);
+                              }}
+                              className="text-emerald-700 hover:underline inline"
+                            >
+                              {isArabic ? 'شروط الخدمة' : 'Terms of Service'}
+                            </button>
+                            {isArabic ? ' و ' : ' and '}
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setLegalModalType('privacy');
+                                setLegalModalOpen(true);
+                              }}
+                              className="text-emerald-700 hover:underline inline"
+                            >
+                              {isArabic ? 'سياسة الخصوصية' : 'Privacy Policy'}
+                            </button>
+                            .
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2 px-1 text-slate-500">
+                      <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-amber-500" />
+                      <p className="text-[10px] leading-relaxed">
+                        {isArabic 
+                          ? 'هذه الخدمة حالياً في المرحلة التجريبية (Beta). قد تتغير الميزات، وقد تحدث انقطاعات مؤقتة أثناء تحسين المنصة.' 
+                          : 'This service is currently in beta. Features may change, and temporary interruptions may occur while we improve the platform.'}
+                      </p>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={!legalConsent || isLoading}
+                      className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer mt-1"
+                    >
+                      <span>{isArabic ? 'التالي: اختيار نوع المنشأة' : 'Next: Choose Role'}</span>
+                      <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                    </button>
+
+                    {/* Google Sign Up Alternative */}
+                    <div className="pt-2">
+                      <div className="relative flex py-1.5 items-center">
+                        <div className="flex-grow border-t border-slate-200"></div>
+                        <span className="flex-shrink mx-3 text-xs text-slate-400 font-medium">
+                          {isArabic ? 'أو التسجيل المباشر عبر' : 'Or sign up with'}
+                        </span>
+                        <div className="flex-grow border-t border-slate-200"></div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={signUpWithGoogle || loginWithGoogle}
+                        disabled={!legalConsent || isLoading}
+                        className="w-full mt-1 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed rounded-xl font-bold text-xs sm:text-sm shadow-sm flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+                      >
+                        <svg className="w-4 h-4" viewBox="0 0 24 24">
+                          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                        </svg>
+                        <span>{isArabic ? 'إنشاء حساب عبر Google' : 'Sign Up with Google'}</span>
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* STEP 2: CHOOSE ORGANIZATION TYPE */}
+                {signUpStep === 2 && (
+                  <div className="space-y-4">
+                    <div className="text-center pb-1">
+                      <h3 className="text-sm font-bold text-slate-800">
+                        {isArabic ? 'حدد نوع منشأتك الطبية' : 'Select Your Organization Type'}
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {isArabic 
+                          ? 'يحدد هذا الخيار واجهة وتجربة الاستخدام الأساسية الخاصة بك'
+                          : 'This selection configures your primary application workspace'}
+                      </p>
+                    </div>
+
+                    <div className="space-y-3">
+                      {/* PHARMACY CARD */}
+                      <button
+                        type="button"
+                        onClick={() => setOrgType('RETAIL_PHARMACY')}
+                        className={`w-full p-4 rounded-2xl border-2 text-left rtl:text-right transition-all flex items-start gap-3.5 cursor-pointer ${
+                          orgType === 'RETAIL_PHARMACY'
+                            ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-500'
+                            : 'border-slate-200 bg-slate-50/50 hover:bg-slate-50 hover:border-slate-300'
+                        }`}
+                      >
+                        <div className={`p-2.5 rounded-xl shrink-0 ${
+                          orgType === 'RETAIL_PHARMACY' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600'
+                        }`}>
+                          <Store className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-sm font-bold text-slate-900">
+                              {isArabic ? 'صيدلية (نقطة بيع وتجزئة)' : 'PHARMACY'}
+                            </h4>
+                            {orgType === 'RETAIL_PHARMACY' && (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                            {isArabic
+                              ? 'إدارة الأدوية، المخزون، المبيعات السريعة، والطلبيات المباشرة من المستودعات.'
+                              : 'Manage medicines, inventory, sales and wholesale orders.'}
+                          </p>
+                        </div>
+                      </button>
+
+                      {/* WAREHOUSE CARD */}
+                      <button
+                        type="button"
+                        onClick={() => setOrgType('WHOLESALE_WAREHOUSE')}
+                        className={`w-full p-4 rounded-2xl border-2 text-left rtl:text-right transition-all flex items-start gap-3.5 cursor-pointer ${
+                          orgType === 'WHOLESALE_WAREHOUSE'
+                            ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-500'
+                            : 'border-slate-200 bg-slate-50/50 hover:bg-slate-50 hover:border-slate-300'
+                        }`}
+                      >
+                        <div className={`p-2.5 rounded-xl shrink-0 ${
+                          orgType === 'WHOLESALE_WAREHOUSE' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600'
+                        }`}>
+                          <Building2 className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-sm font-bold text-slate-900">
+                              {isArabic ? 'مستودع أدوية (بيع جملة)' : 'WAREHOUSE'}
+                            </h4>
+                            {orgType === 'WHOLESALE_WAREHOUSE' && (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                            {isArabic
+                              ? 'إدارة المستودع والمخزون، نشر عروض الجملة، وتجهيز طلبيات الصيدليات (FEFO).'
+                              : 'Manage inventory, wholesale offers and pharmacy orders.'}
+                          </p>
+                        </div>
+                      </button>
+                    </div>
+
+                    <div className="flex gap-2 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setSignUpStep(1)}
+                        className="w-1/3 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <ArrowLeft className="w-4 h-4 rtl:rotate-180" />
+                        <span>{isArabic ? 'رجوع' : 'Back'}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleStep2Next}
+                        className="w-2/3 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                      >
+                        <span>{isArabic ? 'التالي: تفاصيل المنشأة' : 'Next: Setup Info'}</span>
+                        <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* STEP 3: ORGANIZATION SETUP */}
+                {signUpStep === 3 && (
+                  <form onSubmit={handleSignUpSubmit} className="space-y-4">
+                    <div className="p-3 bg-emerald-50 border border-emerald-200/80 rounded-xl flex items-center gap-2.5 text-xs text-emerald-800 font-medium">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>
+                        {orgType === 'RETAIL_PHARMACY'
+                          ? (isArabic ? 'إنشاء حساب صيدلية معتمدة' : 'Setting up Retail Pharmacy Account')
+                          : (isArabic ? 'إنشاء حساب مستودع أدوية جملة' : 'Setting up Wholesale Warehouse Account')}
+                      </span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        {orgType === 'RETAIL_PHARMACY'
+                          ? (isArabic ? 'اسم الصيدلية *' : 'Pharmacy Name *')
+                          : (isArabic ? 'اسم المستودع *' : 'Warehouse Name *')}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={orgName}
+                        onChange={(e) => setOrgName(e.target.value)}
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                        placeholder={orgType === 'RETAIL_PHARMACY' ? 'e.g. Al-Amal Pharmacy' : 'e.g. Damascus Med Supply'}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        {isArabic ? 'المدينة / العنوان' : 'Location / City'}
+                      </label>
+                      <input
+                        type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                        placeholder="Damascus, Syria"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        {isArabic ? 'رقم الهاتف (اختياري)' : 'Contact Phone (Optional)'}
+                      </label>
+                      <input
+                        type="tel"
+                        value={contactPhone}
+                        onChange={(e) => setContactPhone(e.target.value)}
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                        placeholder="+963 11 222 3344"
+                      />
+                    </div>
+
+                    <div className="flex gap-2 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setSignUpStep(2)}
+                        disabled={isLoading}
+                        className="w-1/3 py-3.5 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 text-slate-700 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <ArrowLeft className="w-4 h-4 rtl:rotate-180" />
+                        <span>{isArabic ? 'رجوع' : 'Back'}</span>
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-2/3 py-3.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                      >
+                        {isLoading ? (
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                        ) : (
+                          <>
+                            <span>{isArabic ? 'إتمام الحساب والدخول' : 'Create & Enter'}</span>
+                            <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Footer Helper (Only shown when not in Forgot Password) */}
+          {mode !== 'forgot_password' && (
+            <div className="px-6 py-3.5 bg-slate-50 border-t border-slate-200/80 text-center">
+              <p className="text-xs text-slate-500">
+                {mode === 'signin' ? (
+                  <>
+                    <span>{isArabic ? 'ليس لديك حساب بعد؟ ' : "Don't have an account? "}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleModeSwitch('signup')}
+                      className="font-bold text-emerald-700 hover:text-emerald-800 underline ml-1 rtl:ml-0 rtl:mr-1 cursor-pointer"
+                    >
+                      {isArabic ? 'إنشاء حساب جديد' : 'Create an Account'}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span>{isArabic ? 'لديك حساب بالفعل؟ ' : 'Already have an account? '}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleModeSwitch('signin')}
+                      className="font-bold text-emerald-700 hover:text-emerald-800 underline ml-1 rtl:ml-0 rtl:mr-1 cursor-pointer"
+                    >
+                      {isArabic ? 'تسجيل الدخول' : 'Sign In'}
+                    </button>
+                  </>
+                )}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <LegalModal 
+        isOpen={legalModalOpen}
+        onClose={() => {
+          setLegalModalOpen(false);
+          setLegalModalType(null);
+        }}
+        type={legalModalType}
+        lang={lang}
+      />
+    </div>
+  );
+}

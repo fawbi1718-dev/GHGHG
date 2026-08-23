@@ -1,0 +1,234 @@
+import React, { useState } from 'react';
+import { 
+ TrendingUp, 
+ CreditCard, 
+ AlertCircle, 
+ Receipt, 
+ Search, 
+ Filter, 
+ ArrowUpRight, 
+ ArrowDownRight, 
+ CheckCircle2, 
+ Clock, 
+ RotateCcw 
+} from 'lucide-react';
+import { SaleRecord, Medicine } from '../types';
+
+interface LedgerTabProps {
+ salesLogs?: SaleRecord[];
+ medicines?: Medicine[];
+ lang?: 'en' | 'ar';
+ triggerToast?: (msg: string, type: 'success' | 'info' | 'error') => void;
+}
+
+export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en', triggerToast }: LedgerTabProps) {
+ const [filter, setFilter] = useState<'all' | 'Paid' | 'Pending' | 'Refunded'>('all');
+ const [searchQuery, setSearchQuery] = useState('');
+
+ // Sample or real transactions derived from salesLogs / mock transactions
+ 
+
+ // Combine real salesLogs if available
+ const realTransactions = (salesLogs || []).map((sale, idx) => ({
+ id: sale.saleId || `TX-${1000 + idx}`,
+ customer: (sale as any).buyerPharmacyId || (lang === 'ar' ? 'عميل مباشر' : 'Direct Customer'),
+ date: sale.timestamp ? new Date(sale.timestamp).toLocaleString() : '2026-07-30',
+ amount: sale.totalRevenue || 0,
+ status: 'Paid',
+ type: 'POS Sale',
+ itemsCount: sale.items?.length || 1
+ }));
+
+ const transactions = realTransactions;
+
+ const filteredTransactions = transactions.filter(tx => {
+ const matchesFilter = filter === 'all' || tx.status === filter;
+ const matchesSearch = tx.customer.toLowerCase().includes(searchQuery.toLowerCase()) || 
+ tx.id.toLowerCase().includes(searchQuery.toLowerCase());
+ return matchesFilter && matchesSearch;
+ });
+
+ // Financial Summary Totals
+ const totalDailySales = transactions
+ .filter(t => t.status === 'Paid')
+ .reduce((sum, t) => sum + t.amount, 0);
+
+ const totalOutstandingDebt = transactions
+ .filter(t => t.status === 'Pending')
+ .reduce((sum, t) => sum + t.amount, 0);
+
+ const totalRefunds = transactions
+ .filter(t => t.status === 'Refunded')
+ .reduce((sum, t) => sum + t.amount, 0);
+
+ return (
+ <div className="flex-1 bg-[#F4F7F5] min-h-screen p-4 lg:p-8 space-y-6 font-sans">
+ {/* Header */}
+ <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-emerald-100 shadow-sm rounded-xl p-6">
+ <div>
+ <h1 className="text-2xl font-black text-emerald-950 tracking-tight flex items-center gap-2">
+ <Receipt className="w-6 h-6 text-[#047857]" />
+ {lang === 'ar' ? 'السجل المالي والحركات' : 'Financial Ledger & Transactions'}
+ </h1>
+ <p className="text-xs text-slate-500 mt-1">
+ {lang === 'ar' ? 'تتبع المبيعات اليومية، الديون المستحقة، وحركات التدوين المالي' : 'Track daily sales, pending accounts, and transaction audit trails'}
+ </p>
+ </div>
+ </div>
+
+ {/* Summary Cards */}
+ <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+ {/* Daily Sales */}
+ <div className="bg-white border border-emerald-100 shadow-sm rounded-xl p-5 space-y-3">
+ <div className="flex items-center justify-between">
+ <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
+ {lang === 'ar' ? 'مبيعات اليوم' : 'Daily Sales'}
+ </span>
+ <div className="p-2 rounded-lg bg-emerald-50 text-[#047857]">
+ <TrendingUp className="w-5 h-5" />
+ </div>
+ </div>
+ <div className="text-2xl font-black text-slate-900 font-mono">
+ {totalDailySales.toLocaleString()} <span className="text-xs text-slate-500 font-normal">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
+ </div>
+ <div className="flex items-center gap-1.5 text-xs text-[#047857] font-semibold">
+ <ArrowUpRight className="w-4 h-4" />
+ <span>{lang === 'ar' ? 'مقبوضات مؤكدة' : 'Confirmed Receipts'}</span>
+ </div>
+ </div>
+
+ {/* Outstanding Debt */}
+ <div className="bg-white border border-emerald-100 shadow-sm rounded-xl p-5 space-y-3">
+ <div className="flex items-center justify-between">
+ <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
+ {lang === 'ar' ? 'الديون والذمم المستحقة' : 'Outstanding Debt'}
+ </span>
+ <div className="p-2 rounded-lg bg-amber-50 text-amber-700">
+ <CreditCard className="w-5 h-5" />
+ </div>
+ </div>
+ <div className="text-2xl font-black text-slate-900 font-mono">
+ {totalOutstandingDebt.toLocaleString()} <span className="text-xs text-slate-500 font-normal">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
+ </div>
+ <div className="flex items-center gap-1.5 text-xs text-amber-700 font-semibold">
+ <Clock className="w-4 h-4" />
+ <span>{lang === 'ar' ? 'بانتظار التحصيل' : 'Pending Settlement'}</span>
+ </div>
+ </div>
+
+ {/* Outstanding Payments / Refunds */}
+ <div className="bg-white border border-emerald-100 shadow-sm rounded-xl p-5 space-y-3">
+ <div className="flex items-center justify-between">
+ <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
+ {lang === 'ar' ? 'المرتجعات والتسويات' : 'Refunds & Adjustments'}
+ </span>
+ <div className="p-2 rounded-lg bg-rose-50 text-rose-700">
+ <AlertCircle className="w-5 h-5" />
+ </div>
+ </div>
+ <div className="text-2xl font-black text-slate-900 font-mono">
+ {totalRefunds.toLocaleString()} <span className="text-xs text-slate-500 font-normal">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
+ </div>
+ <div className="flex items-center gap-1.5 text-xs text-rose-700 font-semibold">
+ <RotateCcw className="w-4 h-4" />
+ <span>{lang === 'ar' ? 'تسويات ومسترجعات' : 'Processed Adjustments'}</span>
+ </div>
+ </div>
+ </div>
+
+ {/* Transaction Table Section */}
+ <div className="bg-white border border-emerald-100 shadow-sm rounded-xl p-6 space-y-4">
+ {/* Table Filters & Search */}
+ <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-2 border-b border-emerald-50">
+ <div className="relative w-full sm:w-72">
+ <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+ <input
+ type="text"
+ value={searchQuery}
+ onChange={(e) => setSearchQuery(e.target.value)}
+ placeholder={lang === 'ar' ? 'البحث بالعميل أو رقم الحركة...' : 'Search client or invoice #...'}
+ className="w-full pl-9 pr-4 py-2 bg-[#F4F7F5] border border-emerald-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#047857]"
+ dir={lang === 'ar' ? 'rtl' : 'ltr'}
+ />
+ </div>
+
+ <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+ <Filter className="w-4 h-4 text-slate-400 shrink-0" />
+ {(['all', 'Paid', 'Pending', 'Refunded'] as const).map((status) => (
+ <button
+ key={status}
+ onClick={() => setFilter(status)}
+ className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap cursor-pointer ${
+ filter === status
+ ? 'bg-emerald-700 text-white shadow-xs'
+ : 'bg-emerald-50 text-slate-700 hover:bg-emerald-100 border border-emerald-100'
+ }`}
+ >
+ {status === 'all' && (lang === 'ar' ? 'الكل' : 'All')}
+ {status === 'Paid' && (lang === 'ar' ? 'مدفوع' : 'Paid')}
+ {status === 'Pending' && (lang === 'ar' ? 'معلق' : 'Pending')}
+ {status === 'Refunded' && (lang === 'ar' ? 'مرتجع' : 'Refunded')}
+ </button>
+ ))}
+ </div>
+ </div>
+
+ {/* Transactions List */}
+ <div className="overflow-x-auto">
+ <table className="w-full text-left text-xs" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+ <thead>
+ <tr className="border-b border-emerald-100 text-slate-500 font-mono uppercase text-[10px]">
+ <th className="py-3 px-3">{lang === 'ar' ? 'رقم الحركة' : 'Invoice #'}</th>
+ <th className="py-3 px-3">{lang === 'ar' ? 'العميل / الجهة' : 'Client / Entity'}</th>
+ <th className="py-3 px-3">{lang === 'ar' ? 'التاريخ' : 'Date'}</th>
+ <th className="py-3 px-3">{lang === 'ar' ? 'نوع العملية' : 'Type'}</th>
+ <th className="py-3 px-3 text-right">{lang === 'ar' ? 'المبلغ' : 'Amount'}</th>
+ <th className="py-3 px-3 text-center">{lang === 'ar' ? 'الحالة' : 'Status'}</th>
+ </tr>
+ </thead>
+ <tbody className="divide-y divide-emerald-50 text-slate-800 font-medium">
+ {filteredTransactions.map((tx) => (
+ <tr key={tx.id} className="hover:bg-emerald-50/30 transition-colors">
+ <td className="py-3.5 px-3 font-mono font-bold text-[#047857]">{tx.id}</td>
+ <td className="py-3.5 px-3 font-semibold text-slate-900">{tx.customer}</td>
+ <td className="py-3.5 px-3 text-slate-500 font-mono text-[11px]">{tx.date}</td>
+ <td className="py-3.5 px-3 text-slate-600">{tx.type}</td>
+ <td className="py-3.5 px-3 text-right font-mono font-black text-slate-900">
+ {tx.amount.toLocaleString()} <span className="text-[10px] text-slate-400 font-normal">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
+ </td>
+ <td className="py-3.5 px-3 text-center">
+ {tx.status === 'Paid' && (
+ <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-50 text-[#047857] border border-emerald-200 rounded-full font-bold text-[10px]">
+ <CheckCircle2 className="w-3 h-3 text-[#047857]" />
+ {lang === 'ar' ? 'مدفوع' : 'Paid'}
+ </span>
+ )}
+ {tx.status === 'Pending' && (
+ <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-bold text-[10px]">
+ <Clock className="w-3 h-3 text-amber-600" />
+ {lang === 'ar' ? 'معلق' : 'Pending'}
+ </span>
+ )}
+ {tx.status === 'Refunded' && (
+ <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-full font-bold text-[10px]">
+ <RotateCcw className="w-3 h-3 text-rose-600" />
+ {lang === 'ar' ? 'مرتجع' : 'Refunded'}
+ </span>
+ )}
+ </td>
+ </tr>
+ ))}
+ {filteredTransactions.length === 0 && (
+ <tr>
+ <td colSpan={6} className="py-8 text-center text-slate-400 font-medium">
+ {lang === 'ar' ? 'لا توجد حركات تسوية مطابقة للبحث' : 'No transaction records found.'}
+ </td>
+ </tr>
+ )}
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ );
+}

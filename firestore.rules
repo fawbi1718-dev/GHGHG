@@ -1,0 +1,187 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ========================================================================
+    // HELPERS
+    // A user belongs to a tenant iff the tenant document lists their UID in
+    // authorizedUsers[] (AuthContext seeds this at signup/login/profile-save).
+    // ========================================================================
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function tenantMember(tenantId) {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/tenants/$(tenantId))
+        && request.auth.uid in get(/databases/$(database)/documents/tenants/$(tenantId)).data.authorizedUsers;
+    }
+
+    // ------------------------------------------------------------------------
+    // TENANTS
+    // - Profile document: readable by any signed-in user (supplier discovery,
+    //   buyer enrichment, pharmacy switcher). Writable only by its members.
+    // - ALL subcollections (storage_inventory, ledger, batches,
+    //   barcode_aliases, ...): strictly member-only. This is private tenant
+    //   data — no cross-tenant access, ever.
+    // ------------------------------------------------------------------------
+    match /tenants/{tenantId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if tenantMember(tenantId);
+
+      match /{document=**} {
+        allow read, write: if tenantMember(tenantId);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    // WHOLESALE OFFERS (public marketplace listings)
+    // - Readable by any signed-in user (marketplace discovery).
+    // - Created/updated/deleted ONLY by a member of the selling tenant.
+    // ------------------------------------------------------------------------
+    match /wholesale_offers/{offerId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && tenantMember(request.resource.data.sellerTenantId);
+      allow update, delete: if tenantMember(resource.data.sellerTenantId);
+    }
+
+    // ------------------------------------------------------------------------
+    // B2B ORDERS — strict multi-tenant state machine
+    //   SELLER: PENDING_APPROVAL -> DISPATCHED | DRAFT (reject)
+    //   BUYER:  DISPATCHED       -> RECEIVED
+    // Immutable: orderId, parties, items, prices. Workflow metadata only.
+    // ------------------------------------------------------------------------
+    match /b2b_orders/{orderId} {
+
+      allow read: if isSignedIn();
+
+      // Creation: the placing pharmacy starts every order at PENDING_APPROVAL.
+      // Covers direct placement and offline-queue replay (setDoc-if-not-exists).
+      allow create: if isSignedIn()
+        && request.resource.data.status == 'PENDING_APPROVAL';
+
+      allow update: if isSignedIn() && (
+        // SELLER DISPATCH — payload: { status, dispatchedAt, updatedAt,
+        //                             manifest{dispatchToken,totalQuantity,
+        //                             totalValue,dispatchDate} }
+        (
+          resource.data.status == 'PENDING_APPROVAL'
+          && request.resource.data.status == 'DISPATCHED'
+          && tenantMember(resource.data.sellerTenantId)
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['status', 'updatedAt', 'dispatchedAt', 'manifest'])
+        )
+        ||
+        // SELLER REJECT — payload: { status, rejectedAt, updatedAt,
+        //                            rejectionReason }
+        (
+          resource.data.status == 'PENDING_APPROVAL'
+          && request.resource.data.status == 'DRAFT'
+          && tenantMember(resource.data.sellerTenantId)
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['status', 'updatedAt', 'rejectedAt', 'rejectionReason'])
+        )
+        ||
+        // BUYER RECEIVE — payload: { status, updatedAt }
+        (
+          resource.data.status == 'DISPATCHED'
+          && request.resource.data.status == 'RECEIVED'
+          && tenantMember(resource.data.buyerTenantId)
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['status', 'updatedAt'])
+        )
+      );
+
+      allow delete: if false;
+    }
+
+    // ------------------------------------------------------------------------
+    // B2B NOTIFICATIONS (order lifecycle events, offer-deactivation alerts)
+    // - Immutable event documents: create-once, never updated/deleted.
+    // - Writer must be a member of one of the involved tenants OR the event
+    //   must carry its seller identity (offer deactivation broadcast).
+    // - Field whitelist prevents unrelated payloads piggybacking on events.
+    // - Readable by signed-in users; listeners filter client-side to their
+    //   own tenant within a 1-hour window (single-field index, no composite).
+    // ------------------------------------------------------------------------
+    match /b2b_notifications/{eventId} {
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn()
+        && request.resource.data.type in
+           ['OFFER_DEACTIVATED', 'ORDER_DISPATCHED', 'ORDER_REJECTED', 'ORDER_RECEIVED']
+        && (
+             (request.resource.data.keys().hasAll(['type', 'createdAt']))
+             &&
+             request.resource.data.diff({}).affectedKeys().hasOnly(
+               ['type', 'orderId', 'offerId', 'drugName', 'reason',
+                'catalogId', 'buyerTenantId', 'sellerTenantId', 'createdAt']
+             )
+             &&
+             (
+               (!('buyerTenantId' in request.resource.data) || tenantMember(request.resource.data.buyerTenantId))
+               ||
+               (!('sellerTenantId' in request.resource.data) || tenantMember(request.resource.data.sellerTenantId))
+             )
+             &&
+             (
+               ('buyerTenantId' in request.resource.data) || ('sellerTenantId' in request.resource.data)
+             )
+           );
+
+      allow update, delete: if false;
+    }
+
+    // ------------------------------------------------------------------------
+    // CENTRAL DRUG CATALOG (trusted master dataset)
+    // Client writes BLOCKED. The catalog is reference/trust data; poisoning
+    // it was the original P0 hole. Reads stay open (offline-first reference).
+    // NOTE: the separate additive registry below handles intake mirroring.
+    // ------------------------------------------------------------------------
+    match /catalog/{drugId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ------------------------------------------------------------------------
+    // MEDICINES CATALOG REGISTRY (additive intake mirror: registeredCode /
+    // commercialBarcodes lookups used by warehouse ingestion).
+    // Conscious documented exception: authenticated additive writes so
+    // cross-warehouse barcode resolution keeps working without a backend.
+    // Abuse impact = junk reference rows only (no security trust). Migrate
+    // to a server-side ingest path when a backend exists.
+    // ------------------------------------------------------------------------
+    match /medicines_catalog/{entryId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn()
+        && request.resource.data.diff({}).affectedKeys().hasOnly(
+             ['catalogId', 'name', 'genericName', 'category', 'dosageForm',
+              'strength', 'barcode', 'registeredCode', 'commercialBarcodes',
+              'lastUpdated']
+           );
+      allow delete: if false;
+    }
+
+    // ------------------------------------------------------------------------
+    // PHARMACY USERS (per-user profile documents)
+    // Strict ownership: a user reads/writes ONLY their own document.
+    // ------------------------------------------------------------------------
+    match /pharmacy_users/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // ------------------------------------------------------------------------
+    // LEGACY PHARMACIES COLLECTION (compatibility shims during migration:
+    // AuthContext mirror/fallback + PharmacySwitcher lookups).
+    // Document shape predates authorizedUsers[], so strict membership cannot
+    // be expressed safely here yet — retained as authenticated-access with a
+    // REQUIRED migration follow-up (see FIRESTORE_RULES_DEPLOYMENT.md §4).
+    // ------------------------------------------------------------------------
+    match /pharmacies/{pharmacyId} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+  }
+}

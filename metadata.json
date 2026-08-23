@@ -1,0 +1,6 @@
+{
+  "name": "Pharmacy Inventory Tracker",
+  "description": "A high-fidelity, mobile-responsive local pharmacy inventory tracker with stock alerts, order sheet generation, and sync status tracking.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
