@@ -8,22 +8,34 @@ export default function SyncStatusWidget({ inline = false }: { inline?: boolean 
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSync, setLastSync] = useState<Date | null>(null);
   const [error, setError] = useState<string | undefined>();
-  
+  // Ops visibility: permanently-failed queue items (kept on disk, never lost).
+  const [parkedCount, setParkedCount] = useState(0);
+
   const { isLoadingCatalog } = useCatalog();
 
   useEffect(() => {
     const engine = BackgroundSyncEngine.getInstance();
-    
+
+    const refreshParked = () => setParkedCount(engine.getParkedPayloadCount());
+
     const unsubscribe = engine.onSyncStateChange((status) => {
       setIsSyncing(status.isSyncing);
       setLastSync(status.lastSync);
       setError(status.error);
+      refreshParked();
     });
-    
+    refreshParked();
+
     return () => {
       unsubscribe();
     };
   }, []);
+
+  const handleRetryParked = () => {
+    const engine = BackgroundSyncEngine.getInstance();
+    engine.retryParkedPayloads();
+    engine.triggerSyncLoop().catch(console.error);
+  };
 
   const handleSyncClick = () => {
     const engine = BackgroundSyncEngine.getInstance();
@@ -58,6 +70,22 @@ export default function SyncStatusWidget({ inline = false }: { inline?: boolean 
           )}
           <span className="truncate">
             {isLoadingCatalog ? 'Loading Catalog...' : isSyncing ? 'Syncing...' : 'Sync Error'}
+          </span>
+        </motion.button>
+      )}
+
+      {parkedCount > 0 && !isSyncing && (
+        <motion.button
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          onClick={handleRetryParked}
+          title="Queued items failed permanently. Click to re-arm and retry them now."
+          className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all border w-full cursor-pointer bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100"
+        >
+          <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+          <span className="truncate">
+            {parkedCount} stuck item{parkedCount > 1 ? 's' : ''} — tap to retry
           </span>
         </motion.button>
       )}

@@ -97,17 +97,29 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
   const [offers, setOffers] = useState<WholesaleOffer[]>([]);
   const [isLoadingOffers, setIsLoadingOffers] = useState(true);
   
-  // Cart State (Key: offerId, Value: quantity) — persisted per session so an
-  // accidental reload doesn't lose a built order.
+  // Cart State (Key: offerId, Value: quantity) — persisted in localStorage
+  // with a 7-day rolling expiry so a built order survives reloads AND browser
+  // restarts, without keeping stale carts forever.
+  const CART_KEY = 'eshmun_b2b_active_cart';
+  const CART_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
   const [cart, setCart] = useState<Record<string, number>>(() => {
     try {
-      return JSON.parse(sessionStorage.getItem('eshmun_b2b_active_cart') || '{}');
+      const raw = JSON.parse(localStorage.getItem(CART_KEY) || 'null');
+      if (!raw || typeof raw !== 'object') return {};
+      const { items, savedAt } = raw as { items?: Record<string, number>; savedAt?: number };
+      if (!items || !savedAt || Date.now() - savedAt > CART_MAX_AGE_MS) return {};
+      return items;
     } catch {
       return {};
     }
   });
   useEffect(() => {
-    try { sessionStorage.setItem('eshmun_b2b_active_cart', JSON.stringify(cart)); } catch {}
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify({ items: cart, savedAt: Date.now() }));
+    } catch {}
+  }, [cart]);
+  useEffect(() => {
+    try { localStorage.setItem(CART_KEY, JSON.stringify({ items: cart, savedAt: Date.now() })); } catch {}
   }, [cart]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [paymentType, setPaymentType] = useState<'cash' | 'credit'>('cash');

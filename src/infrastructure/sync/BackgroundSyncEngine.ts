@@ -97,6 +97,12 @@ export class BackgroundSyncEngine {
  return parkedIds.length;
  }
 
+ /** Ops visibility: how many queued items are currently parked (failed permanently). */
+ public getParkedPayloadCount(): number {
+ const attempts = this.getPayloadAttempts();
+ return Object.values(attempts).filter(a => a >= MAX_PAYLOAD_ATTEMPTS).length;
+ }
+
  // ---- Payload attempt tracking (failed items stay queued & inspectable) ----
 
  private getAttemptsKey(): string {
