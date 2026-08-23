@@ -113,6 +113,7 @@ RegisterApplicationService + AntiFraudEngine + domain/ledger pipeline (dormant; 
 - B2B cart: localStorage with 7-day expiry (survives restarts).
 - README.md rewritten (setup/scripts/architecture/ops).
 - Audit: password reset fully wired in AuthScreen ✓.
+- FIXED phantom "sync failed / 1 item pending": intake no longer enqueues legacy REST payloads (direct Firestore writes + native offline persistence cover it); existing queued ADD_MEDICINE items now fulfill natively/idempotently (batch-number check) and dequeue.
 - Search-contract tests: company-key normalization stability + precomputed derived fields === live normalization (8 cases).
 - Ledger skeletons until first tenant snapshot (isLoadingInventory flag through App→RootNavigator→tabs) — no more fake empty-state flash.
 
