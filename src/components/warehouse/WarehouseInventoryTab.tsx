@@ -78,6 +78,8 @@ export default function InventoryTab({
   const [isStockIntakeOpen, setIsStockIntakeOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showLowStockOnly, setShowLowStockOnly] = useState(false);
+  // Two-tap arming for high-impact bulk buttons (mistake prevention).
+  const [armedQuick, setArmedQuick] = useState<string | null>(null);
 
   // ---- Ledger medicine editing ----
   const [editingMed, setEditingMed] = useState<Medicine | null>(null);
@@ -688,14 +690,13 @@ export default function InventoryTab({
  <button
  onClick={(e) => {
  e.stopPropagation();
- if (item.stock >= 100) {
- onUpdateStock(item.id, -100, lang === 'ar' ? "تخفيض سريع للمخزون" : "Bulk inventory reduction");
- } else {
- triggerToast(lang === 'ar' ? "لا يمكن خفض المخزون دون الصفر" : "Cannot dispense below zero count", "info");
- }
+ const key = `${item.id}:-100`;
+ if (armedQuick !== key) { setArmedQuick(key); return; }
+ setArmedQuick(null);
+ onUpdateStock(item.id, -100, lang === 'ar' ? 'تخفيض سريع للمخزون' : 'Bulk inventory reduction');
  }}
- className="p-1.5 hover:bg-white text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
- title={lang === 'ar' ? 'صرف ١٠٠ كرتونة' : 'Dispense 100 Cartons'}
+ className={`p-1.5 rounded-lg transition-colors cursor-pointer ${armedQuick === `${item.id}:-100` ? 'bg-rose-600 text-white hover:bg-rose-700' : 'hover:bg-white text-slate-400 hover:text-rose-600'}`}
+ title={lang === 'ar' ? (armedQuick === `${item.id}:-100` ? 'اضغط للتأكيد' : 'خصم ١٠٠ وحدة') : (armedQuick === `${item.id}:-100` ? 'Tap again to confirm' : 'Remove 100 units')}
  >
  <Minus className="w-3.5 h-3.5" />
  </button>
@@ -707,10 +708,13 @@ export default function InventoryTab({
  <button
  onClick={(e) => {
  e.stopPropagation();
- onUpdateStock(item.id, 100, lang === 'ar' ? "توريد سريع للمخزون" : "Bulk inventory injection");
+ const key = `${item.id}:+100`;
+ if (armedQuick !== key) { setArmedQuick(key); return; }
+ setArmedQuick(null);
+ onUpdateStock(item.id, 100, lang === 'ar' ? 'توريد سريع للمخزون' : 'Bulk inventory injection');
  }}
- className="p-1.5 hover:bg-white text-slate-400 hover:text-brand-600 rounded-lg transition-colors cursor-pointer"
- title={lang === 'ar' ? 'توريد ١٠٠ كرتونة' : 'Restock 100 Cartons'}
+ className={`p-1.5 rounded-lg transition-colors cursor-pointer ${armedQuick === `${item.id}:+100` ? 'bg-brand-600 text-white' : 'hover:bg-white text-slate-400 hover:text-brand-600'}`}
+ title={lang === 'ar' ? (armedQuick === `${item.id}:+100` ? 'اضغط للتأكيد' : 'توريد ١٠٠ وحدة') : (armedQuick === `${item.id}:+100` ? 'Tap again to confirm' : 'Add 100 units')}
  >
  <Plus className="w-3.5 h-3.5" />
  </button>

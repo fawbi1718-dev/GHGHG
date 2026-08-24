@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Activity, Receipt, TrendingUp, DollarSign } from 'lucide-react';
+import { Activity, Receipt, TrendingUp, DollarSign, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../application/auth/AuthContext';
 
 interface SalesAnalyticsTabProps {
@@ -22,6 +22,20 @@ export default function SalesAnalyticsTab({ lang, salesLogs = [] }: SalesAnalyti
 
  const totalRevenue = todaysSales.reduce((sum, s) => sum + s.totalRevenue, 0);
  const totalProfit = todaysSales.reduce((sum, s) => sum + s.totalProfit, 0);
+
+ // Cost transparency: sales whose batch cost was never recorded make profit
+ // an upper bound. Surface the count instead of hiding it.
+ const unknownCostCount = todaysSales.reduce(
+ (sum, s) => sum + ((s.items || []) as any[]).filter(it => it.costEstimated).length,
+ 0
+ );
+ const knownCostTotal = todaysSales.reduce(
+ (sum, s) => sum + ((s.items || []) as any[]).reduce(
+ (c: number, it: any) => c + (it.costEstimated ? 0 : (Number(it.quantitySold) || 0) * (Number(it.costAtSale) || 0)),
+ 0
+ ),
+ 0
+ );
 
  return (
  <div className="space-y-6 bg-[#F4F7F5] min-h-[calc(100vh-4rem)] pb-12 font-sans -m-6 p-6" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
@@ -70,6 +84,18 @@ export default function SalesAnalyticsTab({ lang, salesLogs = [] }: SalesAnalyti
  {(Number(totalProfit) || 0).toLocaleString()} <span className="text-sm text-brand-600">SYP</span>
  </span>
  </div>
+
+ {/* Cost transparency strip */}
+ {unknownCostCount > 0 && (
+ <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] font-semibold text-amber-800 flex items-start gap-2">
+ <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
+ <span>
+ {lang === 'ar'
+ ? `تنبيه: ${unknownCostCount} صنف بدون تكلفة مسجلة — الربح الظاهر حدّ أعلى تقديري.`
+ : `${unknownCostCount} sold item(s) have no recorded cost — displayed profit is an upper bound.`}
+ </span>
+ </div>
+ )}
  </div>
 
  <div className="bg-white border border-brand-100 rounded-xl shadow-sm overflow-hidden">

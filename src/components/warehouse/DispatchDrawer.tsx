@@ -255,10 +255,10 @@ export default function DispatchDrawer({
       const totalQuantity = items.reduce((sum, i) => sum + i.requestedQuantity, 0);
       const totalValue = items.reduce((sum, i) => sum + i.costAtOrder * i.requestedQuantity, 0);
 
-      const warehouseName = activePharmacy?.name || activePharmacy?.displayName || 'MedExpress Central Wholesale Warehouse';
-      const warehouseLicense = activePharmacy?.licenseNumber || 'WH-LIC-99281-SY';
-      const warehouseAddress = activePharmacy?.address || (typeof activePharmacy?.location === 'string' ? activePharmacy.location : activePharmacy?.location?.city) || 'Industrial Zone, Damascus';
-      const warehousePhone = activePharmacy?.contactPhone || '+963 11 882 9900';
+      const warehouseName = activePharmacy?.name || 'Warehouse';
+      const warehouseLicense = activePharmacy?.licenseNumber || '';
+      const warehouseAddress = activePharmacy?.address || (typeof activePharmacy?.location === 'string' ? activePharmacy.location : activePharmacy?.location?.city) || '';
+      const warehousePhone = activePharmacy?.contactPhone || '';
 
       const buyerName = (lang === 'ar' && order.buyerNameAr) ? order.buyerNameAr : (order.buyerName || 'Client Pharmacy');
       const buyerAddress = (lang === 'ar' && order.buyerLocationAr) ? order.buyerLocationAr : (order.buyerLocation || 'Central District');

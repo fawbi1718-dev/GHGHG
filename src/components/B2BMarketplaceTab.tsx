@@ -614,15 +614,30 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
 
       const warehouseGroups = Object.values(cartByWarehouse) as WarehouseCartGroup[];
 
-      // Build pharmacy snapshot information
+      // Build pharmacy snapshot information from the REAL organization profile.
+      // No fabricated fallbacks: if required contact data is missing, ordering
+      // is blocked with a clear "complete your profile" message instead of
+      // writing invented business data into Firestore.
       const buyerName = activePharmacy?.name || activePharmacy?.displayName || currentSession.fullName || currentSession.name || 'Pharmacy';
-      const buyerNameAr = activePharmacy?.nameAr || (buyerName === 'Fawbi Pharmacy' ? 'صيدلية الفوعي النموذجية' : (lang === 'ar' ? buyerName : undefined));
-      const buyerCity = (typeof activePharmacy?.location === 'string' ? activePharmacy.location : activePharmacy?.location?.city) || 'Damascus';
-      const buyerCityAr = activePharmacy?.locationAr || (buyerCity === 'Damascus' ? 'دمشق' : undefined);
-      const buyerAddress = activePharmacy?.address || activePharmacy?.verifiedLocation || buyerCity;
-      const buyerAddressAr = activePharmacy?.addressAr || (buyerAddress.includes('Mezzeh') ? 'أوتوستراد المزة، دمشق' : undefined);
-      const buyerPhone = activePharmacy?.contactPhone || '+963 944 112 233';
-      const buyerLicense = activePharmacy?.licenseNumber || 'PHAR-LIC-4421-SY';
+      const buyerNameAr = activePharmacy?.nameAr || undefined;
+      const buyerCity = (typeof activePharmacy?.location === 'string' ? activePharmacy.location : activePharmacy?.location?.city) || '';
+      const buyerCityAr = activePharmacy?.locationAr || undefined;
+      const buyerAddress = activePharmacy?.address || '';
+      const buyerAddressAr = activePharmacy?.addressAr || undefined;
+      const buyerPhone = activePharmacy?.contactPhone || '';
+      const buyerLicense = activePharmacy?.licenseNumber || '';
+
+      // Pilot gate: a warehouse cannot fulfill an order it cannot call about.
+      if (!buyerPhone.trim()) {
+        triggerToast(
+          lang === 'ar'
+            ? 'أكمل ملف المؤسسة (رقم الهاتف) من الإعدادات قبل إرسال الطلبات.'
+            : 'Complete your organization profile (phone number) in Settings before placing orders.',
+          'error'
+        );
+        setIsSubmitting(false);
+        return;
+      }
 
       // Per-group isolation: one warehouse failing must not lose the record
       // of orders that were already created, and must not be reported as a
@@ -1602,7 +1617,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 40 }}
-            className="fixed bottom-6 right-4 left-4 z-40 max-w-lg mx-auto"
+              className="fixed z-[60] left-4 right-4 bottom-[calc(env(safe-area-inset-bottom,0px)+76px)] md:left-auto md:w-96 mx-auto"
           >
             <button
               id="btn-open-cart-drawer"

@@ -3,6 +3,7 @@ import { BackgroundSyncEngine } from '../infrastructure/sync/BackgroundSyncEngin
 import { RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useCatalog } from '../context/CatalogContext';
+import { useUI } from '../context/UIContext';
 
 export default function SyncStatusWidget({ inline = false }: { inline?: boolean }) {
   const [isSyncing, setIsSyncing] = useState(false);
@@ -12,6 +13,8 @@ export default function SyncStatusWidget({ inline = false }: { inline?: boolean 
   const [parkedCount, setParkedCount] = useState(0);
 
   const { isLoadingCatalog } = useCatalog();
+  const { lang } = useUI();
+  const ar = lang === 'ar';
 
   useEffect(() => {
     const engine = BackgroundSyncEngine.getInstance();
@@ -69,7 +72,11 @@ export default function SyncStatusWidget({ inline = false }: { inline?: boolean 
             <CheckCircle2 className="w-3.5 h-3.5 text-brand-700 shrink-0" />
           )}
           <span className="truncate">
-            {isLoadingCatalog ? 'Loading Catalog...' : isSyncing ? 'Syncing...' : 'Sync Error'}
+            {isLoadingCatalog
+              ? (ar ? 'تحميل الكتالوج…' : 'Loading Catalog...')
+              : isSyncing
+                ? (ar ? 'جارٍ المزامنة…' : 'Syncing...')
+                : (ar ? 'خطأ في المزامنة' : 'Sync Error')}
           </span>
         </motion.button>
       )}
@@ -80,14 +87,24 @@ export default function SyncStatusWidget({ inline = false }: { inline?: boolean 
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
           onClick={handleRetryParked}
-          title="Queued items failed permanently. Click to re-arm and retry them now."
+          title={ar ? 'عناصر فشل إرسالها نهائياً. اضغط لإعادة المحاولة الآن.' : 'Queued items failed permanently. Click to re-arm and retry them now.'}
           className="flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold transition-all border w-full cursor-pointer bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100"
         >
           <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
           <span className="truncate">
-            {parkedCount} stuck item{parkedCount > 1 ? 's' : ''} — tap to retry
+            {ar
+              ? `${parkedCount} عنصر متوقف — اضغط لإعادة المحاولة`
+              : `${parkedCount} stuck item${parkedCount > 1 ? 's' : ''} — tap to retry`}
           </span>
         </motion.button>
+      )}
+
+      {/* Last successful sync — quiet, always visible when idle */}
+      {!isSyncing && lastSync && parkedCount === 0 && (
+        <p className="text-[10px] text-slate-400 text-center font-mono -mt-0.5">
+          {ar ? 'آخر مزامنة ناجحة: ' : 'Last sync: '}
+          {lastSync.toLocaleTimeString(ar ? 'ar-SY' : 'en-GB')}
+        </p>
       )}
     </AnimatePresence>
   );
