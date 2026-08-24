@@ -280,8 +280,7 @@ a:focus-visible,
 /* Inputs */
 .dark .bg-slate-50.border, .dark input.bg-white { background-color: #111827; }
 
-/* Dark: catch-all for arbitrary hex backgrounds (replaces broken escaped-bracket selectors) */
-.dark [class*='bg-[#F4F7F5]'] { background-color: #0f172a; }
+
 .dark [class*='bg-[#F8FAF9]'] { background-color: #1e293b; }
 
 /* Dark: comprehensive surface + text overrides for content areas */
@@ -347,3 +346,87 @@ a:focus-visible,
 .dark .text-indigo-900 { color: #c7d2fe; }
 .dark .text-indigo-950 { color: #c7d2fe; }
 .dark .border-indigo-100 { border-color: #3730a3; }
+
+/* ==========================================================================
+   CLINICAL DARK THEME — systematic CSS custom property override
+   Redefines Tailwind v4 color variables under .dark.
+   Every utility class (bg-white, text-slate-900, border-brand-200, etc.)
+   automatically picks up the dark values. Works without GPU.
+   ========================================================================== */
+.dark {
+  color-scheme: dark;
+
+  /* Neutral surfaces — charcoal, not black */
+  --color-white: #1e293b;
+  --color-slate-50: #0f172a;
+  --color-slate-100: #1e293b;
+  --color-slate-200: #334155;
+  --color-slate-300: #475569;
+
+  /* Text — light on dark */
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #94a3b8;
+  --color-slate-600: #cbd5e1;
+  --color-slate-700: #e2e8f0;
+  --color-slate-800: #f1f5f9;
+  --color-slate-900: #f1f5f9;
+  --color-slate-950: #f8fafc;
+
+  /* Brand accent — teal stays teal but dark-surface tints */
+  --color-brand-50: #042f2e;
+  --color-brand-100: #134e4a;
+  --color-brand-200: #115e59;
+  --color-brand-800: #5eead4;
+  --color-brand-900: #99f6e4;
+  --color-brand-950: #ccfbf1;
+
+  /* Status — dark-surface equivalents */
+  --color-emerald-50: #022c22;
+  --color-emerald-100: #064e3b;
+  --color-emerald-200: #065f46;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #6ee7b7;
+  --color-emerald-900: #a7f3d0;
+
+  --color-amber-50: #291708;
+  --color-amber-100: #451a03;
+  --color-amber-200: #78350f;
+  --color-amber-700: #fcd34d;
+  --color-amber-800: #fcd34d;
+  --color-amber-800: #fde68a;
+
+  --color-rose-50: #3f1220;
+  --color-rose-100: #4c0519;
+  --color-rose-200: #881337;
+  --color-rose-700: #fda4af;
+  --color-rose-800: #fda4af;
+
+  --color-blue-50: #0c2439;
+  --color-blue-100: #0c2439;
+  --color-blue-200: #075985;
+  --color-blue-800: #7dd3fc;
+
+  --color-indigo-50: #1e1b4b;
+  --color-indigo-100: #312e81;
+  --color-indigo-700: #a5b4fc;
+  --color-indigo-900: #c7d2fe;
+  --color-indigo-950: #e0e7ff;
+
+  --color-purple-50: #2a1244;
+  --color-purple-100: #3b0764;
+  --color-purple-200: #6b21a8;
+  --color-purple-800: #d8b4fe;
+}
+
+/* Body override for dark */
+.dark body,
+.dark {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+/* Dark: catch-all for arbitrary hex backgrounds */
+.dark [class*='bg-[#F4F7F5]'] { background-color: #0f172a; }
+.dark [class*='bg-[#F8FAF9]'] { background-color: #1e293b; }
+
+/* Scanner Camera Viewport Styles */
