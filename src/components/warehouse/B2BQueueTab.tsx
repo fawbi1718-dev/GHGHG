@@ -34,6 +34,7 @@ import { Badge } from '../ui/Badge';
 import { StatusBadge } from '../ui/StatusBadge';
 import { EmptyState } from '../ui/EmptyState';
 import { Skeleton } from '../ui/Skeleton';
+import OrderReceiptDocument from '../receipts/OrderReceiptDocument';
 
 interface B2BQueueTabProps {
   activeTenantId?: string;
@@ -100,6 +101,8 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
   const [showHistory, setShowHistory] = useState(false);
   const [historyFilter, setHistoryFilter] = useState<OrderHistoryFilter>('ALL');
   const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(null);
+  // Printable order receipt (warehouse copy)
+  const [receiptOrderId, setReceiptOrderId] = useState<string | null>(null);
 
   const statusBadge = (status: string) => <StatusBadge status={status as any} lang={lang} />;
 
@@ -689,6 +692,14 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                       <span className="font-mono text-xs font-bold text-brand-800 bg-white px-2.5 py-0.5 rounded-md border border-brand-200 shadow-2xs">
                         #{order.orderId}
                       </span>
+                      <button
+                        id={`btn-print-queue-${order.orderId}`}
+                        onClick={() => setReceiptOrderId(order.orderId)}
+                        title={lang === 'ar' ? 'طباعة إيصال الطلبية' : 'Print order receipt'}
+                        className="p-1.5 rounded-md bg-white border border-slate-200 text-slate-500 hover:text-brand-700 hover:border-brand-300 transition-colors cursor-pointer shrink-0"
+                      >
+                        <Printer className="w-3.5 h-3.5" />
+                      </button>
                     </div>
 
                     <div className="flex items-center gap-2">
@@ -984,6 +995,15 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
                                 <span>{lang === 'ar' ? 'آخر تحديث:' : 'Last update:'} {o.updatedAt ? new Date(o.updatedAt).toLocaleString(lang === 'ar' ? 'ar-SY' : 'en-GB') : '—'}</span>
                                 <span>{(o.items || []).length} {lang === 'ar' ? 'أصناف' : 'items'}</span>
                               </div>
+                              <div className="flex justify-end pt-1">
+                                <button
+                                  id={`btn-print-history-${o.orderId}`}
+                                  onClick={() => setReceiptOrderId(o.orderId)}
+                                  className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold cursor-pointer transition-colors"
+                                >
+                                  {lang === 'ar' ? 'طباعة الإيصال' : 'Print receipt'}
+                                </button>
+                            </div>
                             </div>
                           )}
                         </motion.div>
@@ -1122,6 +1142,15 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
           </div>
         )}
       </AnimatePresence>
+
+      {/* Printable Order Receipt (shared document, warehouse copy) */}
+      {receiptOrderId && (() => {
+        const o = orders.find(x => x.orderId === receiptOrderId) ||
+                  historyOrders.find(x => x.orderId === receiptOrderId);
+        return o ? (
+          <OrderReceiptDocument order={o} copyFor="seller" lang={lang} />
+        ) : null;
+      })()}
 
       {/* Printable Shipping Manifest Portal */}
       {activeManifest && (

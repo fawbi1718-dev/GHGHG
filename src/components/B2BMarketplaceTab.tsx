@@ -37,6 +37,7 @@ import { db } from '../infrastructure/firebase';
 import { collection, query, where, onSnapshot, setDoc, doc, updateDoc } from 'firebase/firestore';
 import { confirmWarehouseOrderReceipt } from '../infrastructure/b2b/confirmWarehouseOrderReceipt';
 import { StatusBadge } from './ui/StatusBadge';
+import OrderReceiptDocument from './receipts/OrderReceiptDocument';
 import { Badge } from './ui/Badge';
 import { WholesaleOffer, B2BOrder } from '../domain/b2b';
 import WarehouseProfileView from './warehouse/WarehouseProfileView';
