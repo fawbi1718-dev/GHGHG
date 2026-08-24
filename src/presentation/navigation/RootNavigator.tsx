@@ -567,6 +567,11 @@ export default function RootNavigator({
  icon: ShoppingBag,
  },
  {
+ id: 'b2b_queue',
+ label: lang === 'ar' ? 'طلبات الفائض' : 'Surplus Requests',
+ icon: Inbox,
+ },
+ {
  id: 'inventory',
  label: lang === 'ar' ? 'السجل' : 'Ledger',
  icon: FileText,

@@ -76,6 +76,7 @@ export interface EnrichedB2BOrder extends B2BOrder {
 
 export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' }: B2BQueueTabProps) {
   const { currentSession, activePharmacy } = useAuth();
+  const isPharmacySeller = activePharmacy?.tenantType === 'RETAIL_PHARMACY';
 
   // Cosmetic language value must not resubscribe the incoming-orders listener.
   const langRef = React.useRef(lang);
@@ -617,12 +618,18 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
           </div>
           <div>
             <h2 className="text-xl font-black text-slate-900 tracking-tight">
-              {lang === 'ar' ? 'قائمة تجهيز الشحنات الواردة' : 'Dispatch Queue'}
+              {isPharmacySeller
+                ? (lang === 'ar' ? 'طلبات الفائض الواردة' : 'Surplus Requests')
+                : (lang === 'ar' ? 'قائمة تجهيز الشحنات الواردة' : 'Dispatch Queue')}
             </h2>
             <p className="text-xs text-slate-500 font-medium mt-0.5">
-              {lang === 'ar' 
-                ? 'طلبات التوريد بالجملة المعلقة بانتظار الاعتماد وتجهيز الإرسال في المستودع' 
-                : 'Incoming wholesale requests pending your approval & fulfillment'}
+              {isPharmacySeller
+                ? (lang === 'ar'
+                    ? 'طلبات الشراء من فائض مخزونك — جهّز الكمية وأرسلها للصيدلية الطالبة'
+                    : 'Requests for your surplus listings — pick, pack and dispatch to the requesting pharmacy')
+                : (lang === 'ar'
+                    ? 'طلبات التوريد بالجملة المعلقة بانتظار الاعتماد وتجهيز الإرسال في المستودع'
+                    : 'Incoming wholesale requests pending your approval & fulfillment')}
             </p>
           </div>
         </div>
