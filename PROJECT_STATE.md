@@ -1,7 +1,7 @@
 # PROJECT_STATE.md
 
 Compact, factual project memory. Update whenever a phase changes architecture.
-Last updated: Phase X.6 (Redesign Lab).
+Last updated: Phase CX9 (Redesign Lab).
 
 ---
 
@@ -55,6 +55,12 @@ N+1 batch listeners removed (App has exactly 2 listeners: inventory+ledger) · c
 - Rejection communication: DRAFT orders show a rose panel with warehouse name, timestamp and full rejectionReason (or "No reason provided"); COUNTER-OFFER strings parse into a qty chip with Accept(adds counter qty to cart)/Dismiss actions.
 - Surplus panel rows show expiry date.
 - Emoji sweep completed across remaining files.
+
+### Phase CX9 - phone mandatory + profile-save fix
+- Removed profile-gate "Later" dismiss — phone is now truly mandatory before the app is usable.
+- updateOrganizationProfile: strips undefined values via stripUndefined() helper (Firestore rejects undefined fields, which was the silent save-failure root cause).
+- Profile edit modal surfaces real Firebase error codes instead of swallowing them.
+- Cleaned up unused profileGateDismissed state.
 
 ### Phase X.6 - Arabic-first localization
 - Default language flipped to Arabic (persisted `app-lang`); pre-paint html lang/dir bootstrap in index.html.
