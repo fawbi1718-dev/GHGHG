@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Modal } from '../ui/Modal';
 import { Skeleton } from '../ui/Skeleton';
 import { Button } from '../ui/Button';
@@ -78,6 +78,7 @@ export default function InventoryTab({
   const [isStockIntakeOpen, setIsStockIntakeOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showLowStockOnly, setShowLowStockOnly] = useState(false);
+  const clickGuardRef = useRef<Set<string>>(new Set());
   // Two-tap arming for high-impact bulk buttons (mistake prevention).
   const [armedQuick, setArmedQuick] = useState<string | null>(null);
 

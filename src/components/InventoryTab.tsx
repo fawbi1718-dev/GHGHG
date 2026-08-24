@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { Modal } from './ui/Modal';
 import { Button } from './ui/Button';
 import { motion, AnimatePresence } from 'motion/react';
@@ -87,6 +87,7 @@ export default function InventoryTab({
 
  // Surplus Exchange: publish private stock as a marketplace offer
  const [surplusMed, setSurplusMed] = useState<Medicine | null>(null);
+  const clickGuardRef = useRef<Set<string>>(new Set());
  const [manageMed, setManageMed] = useState<Medicine | null>(null);
  // Centralized "My Surplus Listings" mini-manager
  const [showSurplusPanel, setShowSurplusPanel] = useState(false);
@@ -663,7 +664,11 @@ export default function InventoryTab({
  onClick={(e) => {
  e.stopPropagation();
  if (item.stock > 0) {
- onUpdateStock(item.id, -1, lang === 'ar' ? "تخفيض سريع للمخزون" : "Quick inventory reduction");
+ const guardKey = item.id + ':-1';
+if (clickGuardRef.current.has(guardKey)) return;
+clickGuardRef.current.add(guardKey);
+onUpdateStock(item.id, -1, lang === 'ar' ? "تخفيض سريع للمخزون" : "Quick inventory reduction");
+setTimeout(() => clickGuardRef.current.delete(guardKey), 500);
  } else {
  triggerToast(lang === 'ar' ? "لا يمكن خفض المخزون دون الصفر" : "Cannot dispense below zero count", "info");
  }
@@ -679,7 +684,11 @@ export default function InventoryTab({
  <button
  onClick={(e) => {
  e.stopPropagation();
- onUpdateStock(item.id, 1, lang === 'ar' ? "توريد سريع للمخزون" : "Quick inventory injection");
+ const guardKey = item.id + ':+1';
+if (clickGuardRef.current.has(guardKey)) return;
+clickGuardRef.current.add(guardKey);
+onUpdateStock(item.id, 1, lang === 'ar' ? "توريد سريع للمخزون" : "Quick inventory injection");
+setTimeout(() => clickGuardRef.current.delete(guardKey), 500);
  }}
  className="p-1.5 hover:bg-white :bg-slate-800 text-slate-400 hover:text-brand-600 rounded-lg transition-colors cursor-pointer"
  title={lang === 'ar' ? 'توريد علبة واحدة' : 'Restock 1 unit'}
