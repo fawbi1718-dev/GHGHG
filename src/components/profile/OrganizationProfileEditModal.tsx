@@ -50,19 +50,29 @@ export default function OrganizationProfileEditModal({
     }
     setSaving(true);
     try {
-      await updateOrganizationProfile({
+      // Strip undefined values — Firestore rejects documents containing them
+      const payload: Record<string, unknown> = {};
+      for (const [k, v] of Object.entries({
         name: form.name.trim(),
         nameAr: form.nameAr?.trim() || undefined,
         contactPhone: form.phone.trim(),
-        address: form.address.trim(),
-        city: form.city.trim(),
+        address: form.address?.trim() || undefined,
         workingHours: form.workingHours?.trim() || undefined
-      } as any);
+      })) {
+        if (v !== undefined) payload[k] = v;
+      }
+      await updateOrganizationProfile(payload as any);
       triggerToast(lang === 'ar' ? 'تم حفظ بيانات المؤسسة ✓' : 'Organization profile saved ✓', 'success');
       onClose();
     } catch (err: any) {
-      console.warn('Profile save failed:', err);
-      triggerToast(lang === 'ar' ? 'فشل حفظ الملف' : 'Failed to save profile', 'error');
+      const msg = err?.code === 'permission-denied'
+        ? (lang === 'ar' ? 'ليست لديك صلاحية تعديل هذه البيانات.' : 'You do not have permission to edit this data.')
+        : err?.message || 'Unknown error';
+      console.error('Profile save error:', err?.code, err?.message);
+      triggerToast(
+        lang === 'ar' ? `فشل الحفظ: ${msg}` : `Save failed: ${msg}`,
+        'error'
+      );
     } finally {
       setSaving(false);
     }

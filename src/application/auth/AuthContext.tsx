@@ -587,7 +587,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const updateOrganizationProfile = async (profileData: {
+
+ /**
+ * Recursively removes all undefined values from an object.
+ * Firestore rejects documents containing undefined field values.
+ */
+ function stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
+ const result: Record<string, unknown> = {};
+ for (const [key, value] of Object.entries(obj)) {
+ if (value === undefined) continue;
+ if (value !== null && typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date)) {
+ result[key] = stripUndefined(value as Record<string, unknown>);
+ } else {
+ result[key] = value;
+ }
+ }
+ return result;
+ }
+
+ const updateOrganizationProfile = async (profileData: {
     name: string;
     nameAr?: string;
     address: string;
@@ -644,7 +662,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
 
       if (db) {
-        await setDoc(doc(db, "tenants", tenantId), updatedTenant, { merge: true });
+        await setDoc(doc(db, "tenants", tenantId), stripUndefined(updatedTenant), { merge: true });
       }
 
       setActivePharmacy(updatedTenant);

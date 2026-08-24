@@ -98,13 +98,6 @@ export default function RootNavigator({
  const [searchQuery, setSearchQuery] = useState('');
  const [categoryFilter, setCategoryFilter] = useState('All');
  const [reconcileMedicine, setReconcileMedicine] = useState<Medicine | null>(null);
- // Session-only dismissal of the organization-profile completion gate.
- const [profileGateDismissed, setProfileGateDismissed] = useState(
- () => typeof window !== 'undefined' && sessionStorage.getItem('profile_gate_dismissed') === '1'
- );
- useEffect(() => {
- if (profileGateDismissed) sessionStorage.setItem('profile_gate_dismissed', '1');
- }, [profileGateDismissed]);
 
  // Clinical dark/light theme — persisted, system preference as default
  // Clinical dark/light theme — single source of truth is UIContext
@@ -1073,16 +1066,11 @@ export default function RootNavigator({
  />
  )}
 
- {activePharmacy && !isTenantProfileComplete(activePharmacy) && !profileGateDismissed && (
+ {activePharmacy && !isTenantProfileComplete(activePharmacy) && (
    <RequiredOrganizationProfileModal
      lang={lang}
      setLang={setLang}
      triggerToast={triggerToast}
-     onDismiss={() => {
-       // Session-only dismissal: profile stays required next app load.
-       setProfileGateDismissed(true);
-       triggerToast(lang === 'ar' ? 'يمكنك إكمال الملف لاحقاً من الإعدادات.' : 'You can complete your profile later from Settings.', 'info');
-     }}
    />
  )}
  </>
