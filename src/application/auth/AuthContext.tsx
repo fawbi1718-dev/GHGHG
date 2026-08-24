@@ -662,7 +662,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
 
       if (db) {
-        await setDoc(doc(db, "tenants", tenantId), stripUndefined(updatedTenant), { merge: true });
+        await setDoc(doc(db, "tenants", tenantId), stripUndefined(updatedTenant as unknown as Record<string, unknown>), { merge: true });
       }
 
       setActivePharmacy(updatedTenant);
