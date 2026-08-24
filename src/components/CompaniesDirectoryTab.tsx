@@ -394,10 +394,7 @@ export default function CompaniesDirectoryTab({
             <div className="relative z-10 max-w-3xl space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 text-brand-800 border border-brand-200/70 text-xs font-bold uppercase tracking-wider">
                 <Stethoscope className="w-3.5 h-3.5 text-brand-700" />
-                <span>{lang === 'ar' ? 'الدليل الدوائي والكتالوج الطبي' : 'Clinical Medicine Directory'}</span>
-                {totalMedsCount > 0 && (
-                  <span className="bg-brand-200/60 text-brand-900 px-2 py-0.5 rounded-full text-[11px] font-mono font-black">
-                    {totalMedsCount.toLocaleString()} {lang === 'ar' ? 'صنف' : 'items'}
+                <span>                {lang === 'ar' ? 'الدليل الدوائي والكتالوج الطبي' : 'Clinical Medicine Directory'}</span>
                   </span>
                 )}
               </div>
