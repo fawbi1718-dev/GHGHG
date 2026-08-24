@@ -589,11 +589,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateOrganizationProfile = async (profileData: {
     name: string;
+    nameAr?: string;
     address: string;
     city: string;
     zone: string;
     contactPhone: string;
     licenseNumber?: string;
+    workingHours?: string;
     latitude?: number;
     longitude?: number;
   }): Promise<boolean> => {
@@ -624,6 +626,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           authorizedUsers: [currentSession.userId]
         }),
         name: profileData.name.trim(),
+        ...(profileData.nameAr?.trim() ? { nameAr: profileData.nameAr.trim() } : {}),
+        ...(profileData.workingHours?.trim() ? { workingHours: profileData.workingHours.trim() } : {}),
         displayName: profileData.name.trim(),
         address: address,
         verifiedLocation: verifiedLoc,

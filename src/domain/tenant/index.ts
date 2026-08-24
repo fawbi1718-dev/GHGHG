@@ -28,9 +28,11 @@ export interface Tenant {
   status?: TenantStatus;
   createdAt?: string;
   createdByUid?: string;
-  authorizedUsers: string[];
-  profileCompleted?: boolean;
-  updatedAt?: string;
+ authorizedUsers: string[];
+ profileCompleted?: boolean;
+ /** Business operating hours, free-form (e.g. "Sat–Thu 9:00–21:00"). */
+ workingHours?: string;
+ updatedAt?: string;
 }
 
 export interface RetailPharmacy extends Tenant {

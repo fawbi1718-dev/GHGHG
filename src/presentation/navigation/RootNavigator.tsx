@@ -14,6 +14,7 @@ import DiscrepancyReconciliationModal from '../../components/DiscrepancyReconcil
 import CompaniesDirectoryTab from '../../components/CompaniesDirectoryTab';
 import PharmacyOnboarding from '../../components/onboarding/PharmacyOnboarding';
 import RequiredOrganizationProfileModal from '../../components/auth/RequiredOrganizationProfileModal';
+import OrganizationProfileEditModal from '../../components/profile/OrganizationProfileEditModal';
 import AuthScreen from '../../components/auth/AuthScreen';
 import WarehouseInventoryTab from '../../components/warehouse/WarehouseInventoryTab';
 import { isTenantProfileComplete } from '../../domain/tenant';
@@ -77,6 +78,8 @@ export default function RootNavigator({
  const [inventoryView, setInventoryView] = useState<'inventory' | 'ledger'>('inventory');
  const [activeTab, setActiveTab] = useState<'checkout'|'catalog'|'b2b_marketplace'|'inventory'|'analytics'|'settings'|'scan'|'camera'|'warehouse_inventory'|'warehouse_ingestion'|'b2b_queue'|'warehouse_orders'|'warehouse_offers'>('checkout');
  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+ // Organization profile editor (identity system)
+ const [profileEditOpen, setProfileEditOpen] = useState(false);
  const [pendingPosScan, setPendingPosScan] = useState<{ code: string; timestamp: number } | null>(null);
  const [pendingIntakeScan, setPendingIntakeScan] = useState<{ code: string; timestamp: number } | null>(null);
  const [email, setEmail] = useState('');
@@ -905,6 +908,16 @@ export default function RootNavigator({
                 </div>
               </div>
             </div>
+            {activePharmacy && (
+              <button
+                type="button"
+                id="btn-edit-org-profile"
+                onClick={() => setProfileEditOpen(true)}
+                className="shrink-0 px-3 py-1.5 rounded-lg bg-white border border-slate-300 hover:border-brand-400 text-slate-700 hover:text-brand-800 text-[11px] font-bold transition-colors cursor-pointer"
+              >
+                {lang === "ar" ? "تعديل البيانات" : "Edit profile"}
+              </button>
+            )}
           </div>
 
           {/* Preferences: Interface Language */}
@@ -1002,6 +1015,13 @@ export default function RootNavigator({
           </div>
         </div>
       </Modal>
+
+      {/* Organization profile editor */}
+      <OrganizationProfileEditModal
+        isOpen={profileEditOpen}
+        onClose={() => setProfileEditOpen(false)}
+        lang={lang}
+      />
       
       {/* Unified Camera Scanner Workflow Modals */}
  <ScannerModePickerModal
