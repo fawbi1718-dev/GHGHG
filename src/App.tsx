@@ -180,61 +180,29 @@ function AppContent() {
         setLang={setLang}
       />
 
-      {/* Non-destructive Sync Progress (Rendered as overlay without unmounting the app tree) */}
+      {/* Non-blocking sync status — corner widget */}
       {(isSyncing || syncError) && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-brand-950/80 backdrop-blur-sm text-white p-6">
-          <div className="bg-slate-900 border border-slate-700/80 rounded-lg max-w-xl w-full p-6 shadow-2xl flex flex-col items-center">
-            <h2 className="text-xl font-bold mb-4">
-              {lang === 'ar' ? 'مزامنة كتالوج الأدوية للعمل دون اتصال...' : 'Setting up Pharmacy Catalog for Offline Use...'}
-            </h2>
-            
-            {!syncError ? (
-              <>
-                <div className="w-full bg-slate-800 rounded-full h-3 mb-3 overflow-hidden border border-slate-700">
-                  <div 
-                    className="bg-brand-500 h-3 rounded-full transition-all duration-300" 
-                    style={{ width: `${Math.min(100, Math.round((syncProgress.loaded / (syncProgress.total || 1)) * 100)) || 0}%` }}
-                  />
-                </div>
-                <p className="text-slate-300 text-sm font-medium">
-                  {Math.min(100, Math.round((syncProgress.loaded / (syncProgress.total || 1)) * 100)) || 0}% ({syncProgress.loaded} / {syncProgress.total || '?'} items)
-                </p>
-              </>
-            ) : (
-              <div className="mb-4 flex flex-col items-center gap-3 w-full">
-                <div className="p-3 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-xs font-medium text-center w-full">
-                  {lang === 'ar' ? 'فشل الاتصال بقاعدة البيانات السحابية، يمكنك المتابعة أو إعادة المحاولة.' : 'Connection to database failed or returned zero records. You can continue offline or retry.'}
-                </div>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={startSync}
-                    className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer"
-                  >
-                    {lang === 'ar' ? 'إعادة المحاولة' : 'Retry'}
-                  </button>
-                  <button 
-                    onClick={() => setSyncError(false)}
-                    className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl transition-colors cursor-pointer"
-                  >
-                    {lang === 'ar' ? 'متابعة دون مزامنة' : 'Continue Offline'}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            <div className="w-full bg-black/60 rounded-xl p-3 font-mono text-[11px] overflow-y-auto h-36 border border-slate-800 text-left shadow-inner flex flex-col gap-1 mt-3">
-              {syncLogs.map((log, i) => (
-                <div key={i} className={`
-                  ${log.type === 'error' ? 'text-red-400 font-bold' : ''}
-                  ${log.type === 'success' ? 'text-brand-400' : ''}
-                  ${log.type === 'info' ? 'text-slate-300' : ''}
-                `}>
-                  <span className="text-slate-600 opacity-70">[{new Date().toLocaleTimeString()}]</span> {log.msg}
-                </div>
-              ))}
-              {syncLogs.length === 0 && <span className="text-slate-500 animate-pulse">Initializing connection...</span>}
-            </div>
+        <div className="fixed bottom-4 right-4 z-[70] w-72 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg shadow-lg p-3 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-200">
+              {lang === 'ar' ? 'مزامنة قاعدة البيانات…' : 'Syncing medicine database…'}
+            </span>
+            <span className="text-[10px] font-mono text-brand-600 font-bold">
+              {Math.min(100, Math.round((syncProgress.loaded / (syncProgress.total || 1)) * 100)) || 0}%
+            </span>
           </div>
+          <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden">
+            <div className="bg-brand-600 h-full rounded-full transition-all duration-300" style={{ width: `${Math.min(100, Math.round((syncProgress.loaded / (syncProgress.total || 1)) * 100)) || 0}%` }} />
+          </div>
+          {syncError && (
+            <div className="space-y-1.5 pt-2 border-t border-slate-200 dark:border-slate-600">
+              <p className="text-[10px] text-rose-600 font-semibold">{lang === 'ar' ? 'فشل الاتصال — يمكنك المتابعة دون اتصال.' : 'Connection failed — continue offline.'}</p>
+              <div className="flex gap-1.5">
+                <button onClick={startSync} className="flex-1 py-1 bg-brand-600 text-white text-[10px] font-bold rounded-md cursor-pointer">{lang === 'ar' ? 'إعادة المحاولة' : 'Retry'}</button>
+                <button onClick={() => setSyncError(false)} className="flex-1 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-md cursor-pointer">{lang === 'ar' ? 'متابعة' : 'Dismiss'}</button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>

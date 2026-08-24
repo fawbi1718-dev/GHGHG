@@ -2,24 +2,8 @@ import React from 'react';
 import { StatusBadge } from '../ui/StatusBadge';
 
 export interface OrderReceiptProps {
-  order: {
-    orderId: string;
-    status: string;
-    createdAt?: string;
-    updatedAt?: string;
-    buyerName?: string;
-    buyerNameAr?: string;
-    buyerTenantId?: string;
-    buyerPhone?: string;
-    buyerAddress?: string;
-    sellerName?: string;
-    sellerNameAr?: string;
-    sellerTenantId?: string;
-    sellerPhone?: string;
-    items?: { name?: string; nameAr?: string; requestedQuantity?: number; costAtOrder?: number }[];
-    totalValue?: number;
-    manifest?: { dispatchToken?: string; expectedDeliveryAt?: string; deliveryWindowEnd?: string } | null;
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  order: any;
   /** 'buyer' = pharmacy copy, 'seller' = warehouse copy (affects footer labels only). */
   copyFor?: 'buyer' | 'seller';
   lang?: 'en' | 'ar';

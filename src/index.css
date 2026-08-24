@@ -279,3 +279,7 @@ a:focus-visible,
 
 /* Inputs */
 .dark .bg-slate-50.border, .dark input.bg-white { background-color: #111827; }
+
+/* Dark: hardcoded hex overrides */
+.dark .bg-\\[\\#F4F7F5\\] { background-color: #0f172a; }
+.dark .bg-\\[\\#F8FAF9\\] { background-color: #1e293b; }
