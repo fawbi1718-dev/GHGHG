@@ -24,8 +24,9 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 
 export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
  const [theme, setThemeState] = useState<'dark' | 'light'>(() => {
+ // Light is the product default; dark is opt-in via the theme toggle.
  const saved = localStorage.getItem('app-theme');
- return (saved === 'light' || saved === 'dark') ? saved : 'dark';
+ return (saved === 'dark') ? saved : 'light';
  });
 
  const [lang, setLangState] = useState<'ar' | 'en'>(() => {

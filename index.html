@@ -10,12 +10,11 @@
     <title>Eshmun | Pharmacy Engine</title>
     <script>
       // Theme + language bootstrap — runs before first paint to avoid a flash.
+      // Light is the product default; dark only when the user chose it.
       (function () {
         try {
           var theme = localStorage.getItem('app-theme') || localStorage.getItem('eshmun_theme');
-          var dark = theme ? theme === 'dark'
-            : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          if (dark) document.documentElement.classList.add('dark');
+          if (theme === 'dark') document.documentElement.classList.add('dark');
 
           var lang = localStorage.getItem('app-lang');
           document.documentElement.lang = lang === 'en' ? 'en' : 'ar';
