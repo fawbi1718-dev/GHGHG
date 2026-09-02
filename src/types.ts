@@ -17,6 +17,7 @@ export interface Medicine {
  quantity?: number; // Strict schema - optional on TS interface for compatibility but verified by validator
  minThreshold: number; // Strict schema
  price: number; // Strict schema
+ costPrice?: number; // Purchase cost (سعر الشراء). Defaults from catalog; profit = price - costPrice
  expiryDate: string; // Strict schema (ISO format)
  location?: string; // Strict schema - optional on TS interface for compatibility but verified by validator
 
@@ -60,6 +61,7 @@ export interface SaleRecord {
  items: SaleItem[];
  totalRevenue: number;
  totalProfit: number;
+ status?: 'Paid' | 'Pending'; // Pending = دين (deferred payment, feeds ذمم مستحقة)
 }
 
 export function normalizeMedicine(med: any): Medicine {
@@ -93,6 +95,7 @@ export function normalizeMedicine(med: any): Medicine {
  strength: med.strength || 'N/A',
  supplier: med.supplier || 'N/A',
  ownerId: med.ownerId || 'pharmacy-east-01',
+ costPrice: typeof med.costPrice === 'number' ? med.costPrice : undefined,
  lastUpdated: med.lastUpdated || new Date().toISOString(),
  history: med.history || []
  };

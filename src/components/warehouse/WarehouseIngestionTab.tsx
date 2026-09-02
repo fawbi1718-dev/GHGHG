@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../application/auth/AuthContext';
 import { db } from '../../infrastructure/firebase';
-import { collection, query, where, getDocs, doc, setDoc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, setDoc, increment } from 'firebase/firestore';
 import { Search, Loader2, PackagePlus, ScanLine, Tag, CheckCircle2, History, Layers, Calendar, DollarSign, Archive, Trash2 } from 'lucide-react';
 
 interface IngestionSessionItem {
@@ -63,7 +63,7 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  }
  } catch (err) {
  console.error(err);
- triggerToast("Error looking up barcode", "error");
+ triggerToast(lang === 'ar' ? 'خطأ في البحث عن الباركود' : "Error looking up barcode", "error");
  } finally {
  setIsSearching(false);
  }
@@ -98,37 +98,33 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  return;
  }
 
- // Root path fallback just in case, but usually /tenants/{tenantId}/inventory/{barcode}
- const inventoryRef = doc(db, 'tenants', currentSession.pharmacyId, 'inventory', barcode.trim().replace(/\//g, '_'));
- 
- const snap = await getDoc(inventoryRef);
- let existingStock = 0;
- if (snap.exists()) {
- existingStock = snap.data().stock || 0;
- }
+  // Root path fallback just in case, but usually /tenants/{tenantId}/inventory/{barcode}
+  const inventoryRef = doc(db, 'tenants', currentSession.pharmacyId, 'inventory', barcode.trim().replace(/\//g, '_'));
 
- const payload = {
- id: barcode,
- catalogId: barcode,
- barcode: barcode,
- name: name,
- genericName: genericName,
- tenantId: currentSession.pharmacyId,
- tenantType: 'WHOLESALE',
- isPublic: true,
- unitPrice: price,
- stock: existingStock + totalQty,
- cartons: c,
- boxesPerCarton: b,
- batchNumber: batchNumber,
- expiryDate: formattedExpiry,
- warehouseName: activePharmacy.name,
- location: activePharmacy.verifiedLocation || 'Main Hub',
- isAdvertiser: true,
- updatedAt: new Date().toISOString()
- };
- 
- await setDoc(inventoryRef, payload, { merge: true });
+  const payload = {
+  id: barcode,
+  catalogId: barcode,
+  barcode: barcode,
+  name: name,
+  genericName: genericName,
+  tenantId: currentSession.pharmacyId,
+  tenantType: 'WHOLESALE',
+  isPublic: true,
+  unitPrice: price,
+  // Atomic increment: safe under concurrent intakes (creates the doc at
+  // totalQty when absent). Never a stale read-modify-write.
+  stock: increment(totalQty),
+  cartons: c,
+  boxesPerCarton: b,
+  batchNumber: batchNumber,
+  expiryDate: formattedExpiry,
+  warehouseName: activePharmacy.name,
+  location: activePharmacy.verifiedLocation || 'Main Hub',
+  isAdvertiser: true,
+  updatedAt: new Date().toISOString()
+  };
+
+  await setDoc(inventoryRef, payload, { merge: true });
  
  const newItemId = Math.random().toString(36).substring(7);
  
@@ -159,7 +155,7 @@ export default function WarehouseIngestionTab({ triggerToast, lang = 'en' }: { t
  
  } catch (err) {
  console.error(err);
- triggerToast("Failed to add inventory", "error");
+ triggerToast(lang === 'ar' ? 'فشل إضافة المخزون' : "Failed to add inventory", "error");
  } finally {
  setIsSubmitting(false);
  }

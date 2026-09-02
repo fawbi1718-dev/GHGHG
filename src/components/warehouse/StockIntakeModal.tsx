@@ -70,6 +70,7 @@ export default function StockIntakeModal({
   const [quantity, setQuantity] = useState<number>(1);
   const [expiryDate, setExpiryDate] = useState<string>('');
   const [sellingPrice, setSellingPrice] = useState<string>('');
+  const [costPrice, setCostPrice] = useState<string>('');
   const [batchNumber, setBatchNumber] = useState<string>('');
   
   // Submission & Confirmation Feedback State
@@ -131,7 +132,12 @@ export default function StockIntakeModal({
         setGenericName(preselected.composition);
         setManufacturer(preselected.company);
         if (preselected.barcode) setScannedBarcode(preselected.barcode);
-        if (preselected.price > 0) setSellingPrice(String(preselected.price));
+        if (preselected.price > 0) {
+          // Catalog value defaults BOTH prices: cost = catalog reference,
+          // sell = same (pharmacist adjusts both to their reality).
+          setSellingPrice(String(preselected.price));
+          setCostPrice(String(preselected.price));
+        }
         setIsManualMode(false);
         setIsScannerOpen(false);
       } else {
@@ -200,6 +206,8 @@ export default function StockIntakeModal({
           : 0;
     const priceVal = String(Number(rawPrice) || 0);
     setSellingPrice(priceVal);
+    // Catalog reference price is the default purchase cost (editable by the pharmacist).
+    setCostPrice(priceVal);
 
     // Default expiry & batch
     setExpiryDate(prev => prev || getDefaultExpiryDate());
@@ -224,6 +232,7 @@ export default function StockIntakeModal({
     setQuantity(1);
     setExpiryDate(getDefaultExpiryDate());
     setSellingPrice('');
+    setCostPrice('');
     setBatchNumber(generateDefaultBatch());
   }, []);
 
@@ -346,7 +355,18 @@ export default function StockIntakeModal({
         canonicalCatalogId = String(selectedItem.id || selectedItem.catalogId || selectedItem.code || '').trim();
         finalId = canonicalCatalogId.replace(/\//g, '_') || `med_${Date.now()}`;
       } else {
-        finalId = `custom_${finalBarcode.replace(/\W/g, '_')}_${Date.now()}`;
+        // Stable identity for manually-entered drugs: the same barcode (or,
+        // failing that, the same name) reuses ONE ledger card instead of
+        // minting a fresh Date.now()-suffixed document per intake.
+        // Sanitize: Firestore doc ids forbid '/' and '__' prefixes.
+        const rawKey = scannedBarcode.trim()
+          ? `bc_${scannedBarcode.trim()}`
+          : `nm_${finalName.trim().toLowerCase()}`;
+        const manualKey = ('custom_' + rawKey)
+          .replace(/[/\\]/g, '_')
+          .replace(/^_+/, '')
+          .slice(0, 120);
+        finalId = manualKey.includes('..') ? `${manualKey.replace(/\.\./g, '_')}` : manualKey;
       }
 
       const newMedicine: Medicine = {
@@ -360,6 +380,7 @@ export default function StockIntakeModal({
         minThreshold: 5,
         expiryDate: new Date(expiryDate).toISOString(),
         price: priceNum,
+        costPrice: Number(costPrice) || undefined,
         dosageForm: dosageForm.trim() || 'Tablets',
         strength: strength.trim() || '',
         shelfLocation: 'A-1',
@@ -487,7 +508,23 @@ export default function StockIntakeModal({
                   <button
                     type="button"
                     id="btn-trigger-intake-scanner"
-                    onClick={() => setIsScannerOpen(true)}
+                    onClick={async () => {
+                      // Graceful no-camera path: probe before opening the scanner.
+                      try {
+                        const devs = (await navigator.mediaDevices?.enumerateDevices?.()) || [];
+                        if (!devs.some(d => d.kind === 'videoinput')) {
+                          triggerToast(
+                            lang === 'ar'
+                              ? 'لا توجد كاميرا على هذا الجهاز — تم التحويل للإدخال اليدوي'
+                              : 'No camera found on this device — switched to Manual Entry',
+                            'info'
+                          );
+                          handleSetupManualEntry(scannedBarcode || '');
+                          return;
+                        }
+                      } catch { /* probe failed — let the scanner surface its own error */ }
+                      setIsScannerOpen(true);
+                    }}
                     className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-brand-600/20 transition-all cursor-pointer"
                   >
                     <Camera className="w-4 h-4 stroke-[2.5]" />
@@ -537,6 +574,19 @@ export default function StockIntakeModal({
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
                           if (selectedItem) setSelectedItem(null);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key !== 'Enter') return;
+                          const q = searchQuery.trim();
+                          if (!q) return;
+                          if (suggestions.length === 1) {
+                            handlePopulateFromCatalog(suggestions[0]);
+                          } else if (suggestions.length === 0) {
+                            // Unknown code/name — drop into manual entry with it prefilled.
+                            handleSetupManualEntry(q);
+                          } else if (suggestions.length > 1) {
+                            handlePopulateFromCatalog(suggestions[0]);
+                          }
                         }}
                         className="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all placeholder:text-slate-400"
                         placeholder={lang === 'ar' ? 'ابحث بالاسم التجاري، العلمي، أو الباركود...' : 'Search catalog by trade name, generic, or barcode...'}
@@ -662,10 +712,14 @@ export default function StockIntakeModal({
                       <Edit3 className="w-3.5 h-3.5 text-amber-600" />
                       {lang === 'ar' ? 'بيانات الدواء (إدخال يدوي)' : 'Medicine Details (Manual Entry)'}
                     </span>
-                    {scannedBarcode && (
-                      <span className="text-[11px] font-mono bg-white px-2 py-0.5 rounded border border-slate-200 text-slate-600">
-                        {scannedBarcode}
-                      </span>
+                    {scannedBarcode !== '' && (
+                      <input
+                        type="text"
+                        value={scannedBarcode}
+                        onChange={(e) => setScannedBarcode(e.target.value)}
+                        placeholder={lang === 'ar' ? 'اكتب الباركود يدوياً' : 'Type barcode manually'}
+                        className="w-40 px-2 py-1 text-[11px] font-mono bg-white border border-slate-300 rounded-md text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      />
                     )}
                   </div>
 
@@ -824,7 +878,28 @@ export default function StockIntakeModal({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                  {/* Purchase Cost — defaults from catalog, editable */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-800 mb-1 flex items-center justify-between">
+                      <span>{lang === 'ar' ? 'سعر الشراء (ل.س)' : 'Purchase Cost (SYP)'}</span>
+                      <span className="text-slate-400 text-[10px]">{lang === 'ar' ? 'من الكتالوج' : 'From catalog'}</span>
+                    </label>
+                    <div className="relative">
+                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <input
+                        type="number"
+                        id="input-intake-cost-price"
+                        min="0"
+                        step="50"
+                        value={costPrice}
+                        onChange={(e) => setCostPrice(e.target.value)}
+                        placeholder="0"
+                        className="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl font-mono font-bold text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all"
+                      />
+                    </div>
+                  </div>
+
                   {/* Selling Price */}
                   <div>
                     <label className="block text-xs font-bold text-slate-800 mb-1 flex items-center justify-between">

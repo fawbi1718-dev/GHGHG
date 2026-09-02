@@ -606,6 +606,9 @@ export async function clearLocalDatabase(): Promise<void> {
   const db = await getDB();
   await db.clear(STORE_NAME);
   invalidateCompaniesCache();
+  // CRITICAL: the store is now empty — drop the COMPLETE flag or every future
+  // login on this origin will skip re-syncing and see a permanent empty catalog.
+  try { localStorage.removeItem('CATALOG_SYNC_STATE'); } catch {}
   } catch (err) {
  console.error('Error clearing local database:', err);
  throw err;

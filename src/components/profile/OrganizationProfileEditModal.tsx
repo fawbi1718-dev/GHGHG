@@ -56,6 +56,10 @@ export default function OrganizationProfileEditModal({
         name: form.name.trim(),
         nameAr: form.nameAr?.trim() || undefined,
         contactPhone: form.phone.trim(),
+        // Preserve geographic fields the modal doesn't edit — updateOrganizationProfile
+        // rebuilds location from city/zone, so omitting them would blank it.
+        city: form.city?.trim() || 'Damascus',
+        zone: (activePharmacy as any)?.location?.zone || '',
         address: form.address?.trim() || undefined,
         workingHours: form.workingHours?.trim() || undefined
       })) {

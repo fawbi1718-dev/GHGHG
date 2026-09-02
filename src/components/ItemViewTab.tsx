@@ -219,7 +219,7 @@ export default function ItemViewTab({
  if (!currentSession || !currentSession.pharmacyId) return;
  const qty = parseInt(b2bQty, 10);
  if (isNaN(qty) || qty <= 0) {
- triggerToast("Please enter a valid B2B restock quantity.", "info");
+ triggerToast(lang === 'ar' ? 'يرجى إدخال كمية إعادة تعبئة صحيحة.' : "Please enter a valid B2B restock quantity.", "info");
  return;
  }
 
@@ -257,11 +257,11 @@ export default function ItemViewTab({
 
  await setDoc(doc(db, "orders", orderId), orderData);
  
- triggerToast("B2B Restock Order generated in DRAFT state!", "success");
+ triggerToast(lang === 'ar' ? 'تم إنشاء طلب إعادة تعبئة B2B كمسودة!' : "B2B Restock Order generated in DRAFT state!", "success");
  setB2bQty('50');
  } catch (e) {
  console.error(e);
- triggerToast("Failed to generate B2B order.", "info");
+ triggerToast(lang === 'ar' ? 'فشل إنشاء طلب B2B.' : "Failed to generate B2B order.", "info");
  } finally {
  setIsSubmittingB2B(false);
  }

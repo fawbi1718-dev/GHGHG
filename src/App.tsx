@@ -82,23 +82,32 @@ function AppContent() {
         const state = getCatalogSyncState();
         if (state.status !== 'COMPLETE') {
           startSync();
-        } else if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('debug')) {
-          // Full-catalog diagnostics run ONLY when explicitly requested via ?debug
-          // (these perform full IndexedDB cursor scans and are not production startup work).
+        } else {
+          // Self-healing: a stale COMPLETE flag over an emptied store
+          // (e.g. after a wipe) must not permanently suppress re-sync.
+          try {
+            const { countLocalMeds } = await import('./services/syncEngine');
+            const localCount = await countLocalMeds();
+            if (!localCount) {
+              console.warn('[catalog] COMPLETE flag but 0 local meds — forcing re-sync');
+              startSync();
+            }
+          } catch (e) {
+            console.error('Catalog completeness check failed', e);
+          }
+        }
+
+        // Full-catalog diagnostics run ONLY when explicitly requested via ?debug
+        if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('debug')) {
           const verification = await verifyCatalogCompleteness(supabase);
           console.log("[VERIFICATION_REPORT]", JSON.stringify(verification, null, 2));
 
           const s1 = await searchLocalMeds('panadol');
-          const s2 = await searchLocalMeds('آسبرين');
-          const s3 = await searchLocalMeds('اسبرين');
           const s4 = await searchLocalMeds('بنادول');
 
           console.log("[TEST_SEARCH_REPORT]", JSON.stringify({
             'panadol': s1.length,
-            'آسبرين': s2.length,
-            'اسبرين': s3.length,
-            'بنادول': s4.length,
-            's1_names': s1.map(m=>m.nameEn).slice(0, 3)
+            'بنادول': s4.length
           }, null, 2));
         }
       } catch (err) {

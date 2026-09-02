@@ -165,10 +165,13 @@ export const CatalogProvider: React.FC<{ children: ReactNode }> = ({ children })
  if (!query.trim()) return mappedCatalog.slice(0, limit);
  
  try {
+ // Source data is dirty: barcodes often carry trailing commas ("123456,").
+ // eq can never match those — use ilike with a cleaned needle instead.
+ const cleanQuery = query.replace(/[\s,]+$/, '');
  const { data, error } = await supabase
  .from('MEDS')
  .select('*')
- .or(`trade_name.ilike.%${query}%,scientific_name.ilike.%${query}%,barcode.eq.${query},name.ilike.%${query}%,name_en.ilike.%${query}%`)
+ .or(`name.ilike.%${query}%,nameEn.ilike.%${query}%,composition_key.ilike.%${query}%,company_name.ilike.%${query}%,barcode.ilike.%${cleanQuery}%`)
  .limit(limit);
 
  if (error) {
@@ -184,19 +187,21 @@ export const CatalogProvider: React.FC<{ children: ReactNode }> = ({ children })
 
  const findByBarcodeRemote = async (barcode: string): Promise<MappedMedicine | null> => {
  if (!barcode.trim()) return null;
- 
+ // Comma-proof: source barcodes often end with a stray comma.
+ const clean = normalizeBarcode(barcode);
+ if (!clean) return null;
+
  try {
  const { data, error } = await supabase
  .from('MEDS')
  .select('*')
- .eq('barcode', barcode)
- .limit(1)
- .single();
+ .ilike('barcode', `%${clean}%`)
+ .limit(1);
 
- if (error || !data) {
+ if (error || !data || !(data as any[]).length) {
  return null;
  }
- return mapMedicine(data, 0);
+ return mapMedicine((data as any[])[0], 0);
  } catch (err) {
  console.error("Remote barcode find exception:", err);
  return null;

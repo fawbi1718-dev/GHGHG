@@ -33,6 +33,7 @@ import StockIntakeModal from './StockIntakeModal';
 interface InventoryTabProps {
   medicines: Medicine[];
   onUpdateStock: (id: string, delta: number, note?: string) => boolean | Promise<boolean> | void;
+  onQuickAdjust?: (id: string, delta: number, note?: string) => void;
   onUpdateMedicine?: (m: Medicine) => Promise<void> | void;
   onSelectMedicine: (id: string) => void;
   onAddMedicine?: (m: Medicine) => Promise<void>;
@@ -56,6 +57,7 @@ interface InventoryTabProps {
 export default function InventoryTab({
   medicines,
   onUpdateStock,
+  onQuickAdjust,
   onUpdateMedicine,
   onSelectMedicine,
   onAddMedicine,
@@ -122,10 +124,13 @@ export default function InventoryTab({
 
     setSaveState('saving');
     try {
-      // 1. Persist descriptive fields first (stock untouched in this write).
+      // 1. Persist descriptive fields first. NEVER include stock/history in
+      //    this write: they come from the modal-open snapshot, and writing
+      //    them back would overwrite concurrent dispatch/sale deductions
+      //    BEFORE step 2 applies the physical-count delta on top.
+      const { stock: _omitStock, history: _omitHistory, ...descriptiveFields } = { ...editingMed, ...editForm } as Record<string, unknown> & { stock?: number; history?: unknown };
       await Promise.resolve(onUpdateMedicine?.({
-        ...editingMed,
-        ...editForm,
+        ...(descriptiveFields as unknown as typeof editingMed),
         name: newName,
         price: newPrice,
         minThreshold: Number(editForm.minThreshold) || editingMed.minThreshold || 5,
@@ -683,43 +688,45 @@ export default function InventoryTab({
  <Eye className="w-4 h-4" />
  </button>
 
- {/* Micro Quick Modifiers */}
- <div 
- onClick={(e) => e.stopPropagation()}
- className="flex bg-slate-50 border border-slate-200/80 p-1 rounded-xl items-center shadow-inner"
- >
- <button
- onClick={(e) => {
- e.stopPropagation();
- const key = `${item.id}:-100`;
- if (armedQuick !== key) { setArmedQuick(key); return; }
- setArmedQuick(null);
- onUpdateStock(item.id, -100, lang === 'ar' ? 'تخفيض سريع للمخزون' : 'Bulk inventory reduction');
- }}
- className={`p-1.5 rounded-lg transition-colors cursor-pointer ${armedQuick === `${item.id}:-100` ? 'bg-rose-600 text-white hover:bg-rose-700' : 'hover:bg-white text-slate-400 hover:text-rose-600'}`}
- title={lang === 'ar' ? (armedQuick === `${item.id}:-100` ? 'اضغط للتأكيد' : 'خصم ١٠٠ وحدة') : (armedQuick === `${item.id}:-100` ? 'Tap again to confirm' : 'Remove 100 units')}
- >
- <Minus className="w-3.5 h-3.5" />
- </button>
- 
- <span className="px-1.5 font-mono text-[10px] font-bold text-slate-400 min-w-[16px] text-center">
- ±100
- </span>
+                  {/* Micro Quick Modifiers (Carton level) */}
+                  <div 
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex bg-slate-50 border border-slate-200/80 p-1 rounded-xl items-center shadow-inner"
+                  >
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.currentTarget.blur();
+                        if (item.stock > 0) {
+                          (onQuickAdjust || onUpdateStock)(item.id, -1, lang === 'ar' ? 'صرف كرتونة واحدة' : 'Quick deduction 1 carton');
+                        } else {
+                          triggerToast(lang === 'ar' ? 'لا يمكن خفض المخزون دون الصفر' : 'Cannot dispense below zero count', 'info');
+                        }
+                      }}
+                      className="p-1.5 hover:bg-white text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer active:scale-95"
+                      title={lang === 'ar' ? 'صرف كرتونة واحدة' : 'Dispense 1 carton'}
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    
+                    <span className="px-1.5 font-mono text-[10px] font-bold text-slate-400 min-w-[16px] text-center uppercase">
+                      QTY
+                    </span>
 
- <button
- onClick={(e) => {
- e.stopPropagation();
- const key = `${item.id}:+100`;
- if (armedQuick !== key) { setArmedQuick(key); return; }
- setArmedQuick(null);
- onUpdateStock(item.id, 100, lang === 'ar' ? 'توريد سريع للمخزون' : 'Bulk inventory injection');
- }}
- className={`p-1.5 rounded-lg transition-colors cursor-pointer ${armedQuick === `${item.id}:+100` ? 'bg-brand-600 text-white' : 'hover:bg-white text-slate-400 hover:text-brand-600'}`}
- title={lang === 'ar' ? (armedQuick === `${item.id}:+100` ? 'اضغط للتأكيد' : 'توريد ١٠٠ وحدة') : (armedQuick === `${item.id}:+100` ? 'Tap again to confirm' : 'Add 100 units')}
- >
- <Plus className="w-3.5 h-3.5" />
- </button>
- </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.currentTarget.blur();
+                        (onQuickAdjust || onUpdateStock)(item.id, 1, lang === 'ar' ? 'توريد كرتونة واحدة' : 'Quick restock 1 carton');
+                      }}
+                      className="p-1.5 hover:bg-white text-slate-400 hover:text-brand-600 rounded-lg transition-colors cursor-pointer active:scale-95"
+                      title={lang === 'ar' ? 'توريد كرتونة واحدة' : 'Restock 1 carton'}
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
  </div>
  </div>
  </motion.div>

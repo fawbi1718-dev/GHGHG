@@ -66,6 +66,7 @@ interface WarehouseSummary {
 interface WarehouseCartGroup {
   sellerTenantId: string;
   sellerName: string;
+  sellerType?: string;
   sellerCity?: string;
   items: { offer: WholesaleOffer; qty: number; validationError?: string }[];
   subtotalSyp: number;
@@ -143,6 +144,10 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
   const [declinedCounters, setDeclinedCounters] = useState<string[]>(() => {
     try { return JSON.parse(localStorage.getItem('eshmun_declined_counters') || '[]'); } catch { return []; }
   });
+  // Persist dismissals so Accept/Dismiss choices survive reloads and re-logins.
+  useEffect(() => {
+    try { localStorage.setItem('eshmun_declined_counters', JSON.stringify(declinedCounters)); } catch {}
+  }, [declinedCounters]);
   const filteredActiveOrders = orderStatusFilter === 'ALL'
     ? activeOrders
     : activeOrders.filter((o: any) => o.status === orderStatusFilter);
@@ -360,10 +365,12 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
       if (offer.bonus) wh.bonusOffersCount += 1;
       if (offer.isClearance) wh.clearanceOffersCount += 1;
       if ((offer as any).offerKind === 'surplus') wh.surplusOffersCount = (wh.surplusOffersCount || 0) + 1;
-      // Seller type: first non-null wins (all offers of a seller share it).
+      // Seller type: first non-null wins; legacy warehouse offers carry no
+      // sellerType — default them so storefronts always classify cleanly.
       if (!wh.sellerType && (offer as any).sellerType) {
         wh.sellerType = (offer as any).sellerType;
       }
+      if (!wh.sellerType) wh.sellerType = 'WHOLESALE_WAREHOUSE';
       wh.totalStockUnits += offer.availableQuantity;
 
       const medName = (lang === 'ar' && offer.tradeNameAr) ? offer.tradeNameAr : offer.tradeNameEn;
@@ -569,6 +576,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
         groups[warehouseKey] = {
           sellerTenantId: offer.sellerTenantId,
           sellerName: offer.sellerName || (lang === 'ar' ? 'مستودع أدوية' : 'Wholesale Partner'),
+          sellerType: (offer as any).sellerType || ((offer as any).offerKind === 'surplus' ? 'RETAIL_PHARMACY' : 'WHOLESALE_WAREHOUSE'),
           sellerCity: offer.sellerCity,
           items: [],
           subtotalSyp: 0,
@@ -667,6 +675,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
           buyerLicense: buyerLicense,
           sellerTenantId: sellerTenantId,
           sellerName: group.sellerName,
+          sellerType: (group as any).sellerType || 'WHOLESALE_WAREHOUSE',
           ...(group.sellerCity ? { sellerCity: group.sellerCity } : {}),
           status: 'PENDING_APPROVAL',
           totalValue: orderTotalValue,
@@ -1136,9 +1145,13 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                                     <h3 className="text-base font-bold text-slate-900 group-hover:text-brand-800 transition-colors truncate">
                                       {wh.name}
                                     </h3>
-                                    {wh.sellerType === 'RETAIL_PHARMACY' && (
-                                      <span className="shrink-0 text-[9px] font-black uppercase tracking-wide bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.5 rounded-md">
-                                        {lang === 'ar' ? 'صيدلية' : 'Pharmacy'}
+                                    {wh.sellerType === 'RETAIL_PHARMACY' ? (
+                                      <span className="shrink-0 text-[10px] font-black uppercase tracking-wide bg-teal-50 text-teal-800 border border-teal-300 px-2 py-0.5 rounded-md">
+                                        {lang === 'ar' ? 'صيدلية — فائض' : 'Pharmacy · Surplus'}
+                                      </span>
+                                    ) : (
+                                      <span className="shrink-0 text-[10px] font-black uppercase tracking-wide bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded-md">
+                                        {lang === 'ar' ? 'مستودع جملة' : 'Warehouse'}
                                       </span>
                                     )}
                                   </div>
@@ -1285,6 +1298,20 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
                           <span className="text-xs font-black text-brand-800 bg-brand-100 px-2.5 py-1 rounded-lg font-mono">
                             {order.orderId}
                           </span>
+                          {(() => {
+                            const st = order.sellerType
+                              || offers.find(o => o.sellerTenantId === order.sellerTenantId)?.sellerType
+                              || 'WHOLESALE_WAREHOUSE';
+                            return st === 'RETAIL_PHARMACY' ? (
+                              <span className="text-[10px] font-black uppercase tracking-wide bg-teal-50 text-teal-800 border border-teal-300 px-2 py-0.5 rounded-md">
+                                {lang === 'ar' ? 'صيدلية — فائض' : 'Pharmacy · Surplus'}
+                              </span>
+                            ) : (
+                              <span className="text-[10px] font-black uppercase tracking-wide bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded-md">
+                                {lang === 'ar' ? 'مستودع جملة' : 'Warehouse'}
+                              </span>
+                            );
+                          })()}
                           <span className="text-[11px] text-slate-400 font-medium">
                             {new Date(order.createdAt).toLocaleDateString()}
                           </span>
@@ -1665,7 +1692,7 @@ export default function B2BMarketplaceTab({ triggerToast, lang }: B2BMarketplace
               initial={{ opacity: 0, scale: 0.95, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
-              transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-2xl bg-[#F4F7F5] rounded-xl shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto border border-brand-100"
             >

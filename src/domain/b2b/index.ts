@@ -24,6 +24,8 @@ export interface B2BOrder {
   buyerLicense?: string;
   sellerTenantId: string;
   sellerName?: string;
+  /** 'RETAIL_PHARMACY' | 'WHOLESALE_WAREHOUSE' — snapshot for buyer-side badges. */
+  sellerType?: string;
   sellerNameAr?: string;
   sellerCity?: string;
   sellerCityAr?: string;

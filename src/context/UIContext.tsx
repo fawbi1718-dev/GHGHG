@@ -94,7 +94,7 @@ export const UIProvider: React.FC<{ children: React.ReactNode }> = ({ children }
               initial={{ opacity: 0, y: -24, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -16, scale: 0.95 }}
-              transition={{ type: "spring", damping: 26, stiffness: 360 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
               className={`pointer-events-auto max-w-md w-full p-4 rounded-lg bg-slate-900/95 backdrop-blur-md text-slate-100 border shadow-2xl flex items-center gap-3.5 ${
                 toast.type === "success"
                   ? "border-brand-500/50 shadow-brand-950/50 ring-1 ring-brand-500/20"

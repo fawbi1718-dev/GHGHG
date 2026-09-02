@@ -45,6 +45,8 @@ interface SurplusListing {
 interface InventoryTabProps {
  medicines: Medicine[];
  onUpdateStock: (id: string, delta: number, note?: string) => void;
+ /** Coalesced quick adjust: optimistic local bump, StockEngine flushes the burst. */
+ onQuickAdjust?: (id: string, delta: number, note?: string) => void;
  onSelectMedicine: (id: string) => void;
   onAddMedicine?: (m: Medicine) => Promise<void>;
   /** True until the first Firestore snapshot for this tenant arrives. */
@@ -64,6 +66,7 @@ interface InventoryTabProps {
 export default function InventoryTab({
  medicines,
  onUpdateStock,
+ onQuickAdjust,
  onSelectMedicine,
  onAddMedicine,
  isLoadingInventory = false,
@@ -87,7 +90,7 @@ export default function InventoryTab({
 
  // Surplus Exchange: publish private stock as a marketplace offer
  const [surplusMed, setSurplusMed] = useState<Medicine | null>(null);
-  const clickGuardRef = useRef<Set<string>>(new Set());
+
  const [manageMed, setManageMed] = useState<Medicine | null>(null);
  // Centralized "My Surplus Listings" mini-manager
  const [showSurplusPanel, setShowSurplusPanel] = useState(false);
@@ -661,19 +664,17 @@ export default function InventoryTab({
  className="flex bg-[#F4F7F5] border border-brand-100/80 p-1 rounded-xl items-center shadow-inner"
  >
  <button
+ type="button"
  onClick={(e) => {
  e.stopPropagation();
+ e.currentTarget.blur();
  if (item.stock > 0) {
- const guardKey = item.id + ':-1';
-if (clickGuardRef.current.has(guardKey)) return;
-clickGuardRef.current.add(guardKey);
-onUpdateStock(item.id, -1, lang === 'ar' ? "تخفيض سريع للمخزون" : "Quick inventory reduction");
-setTimeout(() => clickGuardRef.current.delete(guardKey), 500);
+ (onQuickAdjust || onUpdateStock)(item.id, -1, lang === 'ar' ? 'تخفيض سريع للمخزون' : 'Quick inventory reduction');
  } else {
- triggerToast(lang === 'ar' ? "لا يمكن خفض المخزون دون الصفر" : "Cannot dispense below zero count", "info");
+ triggerToast(lang === 'ar' ? 'لا يمكن خفض المخزون دون الصفر' : 'Cannot dispense below zero count', 'info');
  }
  }}
- className="p-1.5 hover:bg-white :bg-slate-800 text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
+ className="p-1.5 hover:bg-white text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
  title={lang === 'ar' ? 'صرف علبة واحدة' : 'Dispense 1 unit'}
  >
  <Minus className="w-3.5 h-3.5" />
@@ -682,15 +683,13 @@ setTimeout(() => clickGuardRef.current.delete(guardKey), 500);
  <span className="px-1.5 font-mono text-[10px] font-bold text-slate-400 min-w-[16px] text-center uppercase">QTY</span>
 
  <button
+ type="button"
  onClick={(e) => {
  e.stopPropagation();
- const guardKey = item.id + ':+1';
-if (clickGuardRef.current.has(guardKey)) return;
-clickGuardRef.current.add(guardKey);
-onUpdateStock(item.id, 1, lang === 'ar' ? "توريد سريع للمخزون" : "Quick inventory injection");
-setTimeout(() => clickGuardRef.current.delete(guardKey), 500);
+ e.currentTarget.blur();
+ (onQuickAdjust || onUpdateStock)(item.id, 1, lang === 'ar' ? 'توريد سريع للمخزون' : 'Quick inventory injection');
  }}
- className="p-1.5 hover:bg-white :bg-slate-800 text-slate-400 hover:text-brand-600 rounded-lg transition-colors cursor-pointer"
+ className="p-1.5 hover:bg-white text-slate-400 hover:text-brand-600 rounded-lg transition-colors cursor-pointer"
  title={lang === 'ar' ? 'توريد علبة واحدة' : 'Restock 1 unit'}
  >
  <Plus className="w-3.5 h-3.5" />

@@ -165,7 +165,7 @@ export default function RequiredOrganizationProfileModal({
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 16 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ type: 'spring', damping: 26, stiffness: 300 }}
+        transition={{ duration: 0.18, ease: 'easeOut' }}
         className="w-full max-w-lg bg-white rounded-xl shadow-2xl border border-brand-100/80 overflow-hidden my-auto flex flex-col max-h-[92vh]"
       >
         {/* Modal Top Header */}

@@ -48,7 +48,7 @@ export default function AuthScreen({ lang = 'en', setLang }: AuthScreenProps) {
     clearError 
   } = useAuth();
 
-  const { theme: uiTheme, setTheme: setUiTheme } = useUI();
+  const { theme: uiTheme, setTheme: setUiTheme, triggerToast } = useUI();
   const dark = uiTheme === 'dark';
 
   const [mode, setMode] = useState<AuthMode>('signin');
@@ -166,9 +166,21 @@ export default function AuthScreen({ lang = 'en', setLang }: AuthScreenProps) {
       return;
     }
 
+    // Phone is mandatory at signup: warehouses cannot fulfill orders they
+    // cannot call about, and the B2B pipeline blocks on buyerPhone anyway.
+    const cleanPhone = contactPhone.trim();
+    if (cleanPhone.replace(/\D/g, '').length < 7) {
+      setLocalError(
+        isArabic
+          ? 'يرجى إدخال رقم هاتف صحيح — هو مطلوب لطلبات الجملة والفائض.'
+          : 'Please enter a valid phone number — it is required for wholesale & surplus orders.'
+      );
+      return;
+    }
+
     if (signUpWithEmail) {
       const defaultName = orgType === 'RETAIL_PHARMACY' ? 'Pharmacist' : 'Warehouse Manager';
-      await signUpWithEmail(
+      const ok = await signUpWithEmail(
         email.trim(),
         password,
         defaultName,
@@ -177,6 +189,17 @@ export default function AuthScreen({ lang = 'en', setLang }: AuthScreenProps) {
         location.trim(),
         contactPhone.trim()
       );
+      // A verification link was mailed to this address — surface it so the
+      // address is confirmed (and can later be enforced) instead of silently
+      // accepting unowned inboxes.
+      if (ok !== false && triggerToast) {
+        triggerToast(
+          isArabic
+            ? 'أُرسل رابط تأكيد إلى بريدك الإلكتروني — افتحه لتأكيد ملكية الحساب.'
+            : 'A confirmation link was sent to your email — open it to verify ownership.',
+          'info'
+        );
+      }
     }
   };
 

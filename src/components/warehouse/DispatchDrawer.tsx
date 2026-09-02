@@ -338,7 +338,7 @@ export default function DispatchDrawer({
               initial={{ opacity: 0, scale: 0.95, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
-              transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-3xl bg-slate-50 rounded-lg shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto border border-slate-200"
             >

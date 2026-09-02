@@ -219,7 +219,7 @@ export default function SettingsTab({
                     await clearLocalDatabase();
                     triggerToast(lang === 'ar' ? 'تمت إعادة مزامنة قاعدة البيانات بنجاح' : 'Database synchronized successfully', 'success');
                   } catch (e) {
-                    triggerToast('Sync completed', 'info');
+                    triggerToast(lang === 'ar' ? 'اكتملت المزامنة' : 'Sync completed', 'info');
                   }
                 }}
                 className="px-4 py-2 bg-brand-100 hover:bg-brand-200 text-brand-800 text-sm font-bold rounded-lg transition-colors flex items-center gap-2 cursor-pointer"

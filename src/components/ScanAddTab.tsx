@@ -274,7 +274,7 @@ export default function ScanAddTab({
  }
  } catch (e) {
  console.error(e);
- triggerToast("Error verifying barcode", "info");
+ triggerToast(lang === 'ar' ? 'خطأ في التحقق من الباركود' : "Error verifying barcode", "info");
  }
  };
 

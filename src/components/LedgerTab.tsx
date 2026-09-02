@@ -48,18 +48,24 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  return matchesFilter && matchesSearch;
  });
 
- // Financial Summary Totals
- const totalDailySales = transactions
- .filter(t => t.status === 'Paid')
- .reduce((sum, t) => sum + t.amount, 0);
+ // Financial Summary Totals — aggregated from raw salesLogs (ISO timestamps).
+ // "Daily" means TODAY (local date) — real daily reports, not all-time relabeled.
+ const todayKey = new Date().toLocaleDateString('sv'); // YYYY-MM-DD local
+ const todaysSales = (salesLogs || []).filter(s => (s.timestamp || '').slice(0, 10) === todayKey);
 
- const totalOutstandingDebt = transactions
- .filter(t => t.status === 'Pending')
- .reduce((sum, t) => sum + t.amount, 0);
+ const totalDailySales = todaysSales
+ .filter(s => s.status !== 'Pending')
+ .reduce((sum, s) => sum + (Number(s.totalRevenue) || 0), 0);
 
- const totalRefunds = transactions
- .filter(t => t.status === 'Refunded')
- .reduce((sum, t) => sum + t.amount, 0);
+ // Net profit today: revenue − known batch acquisition cost (snapshotted at sale time).
+ const todayProfit = todaysSales
+ .reduce((sum, s) => sum + (Number(s.totalProfit) || 0), 0);
+
+ const totalOutstandingDebt = (salesLogs || [])
+ .filter(s => s.status === 'Pending')
+ .reduce((sum, s) => sum + (Number(s.totalRevenue) || 0), 0);
+
+ const totalRefunds = 0; // No refund flow records status 'Refunded' yet — honest zero.
 
  return (
  <div className="flex-1 bg-[#F4F7F5] min-h-screen p-4 lg:p-8 space-y-6 font-sans">
@@ -77,12 +83,12 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  </div>
 
  {/* Summary Cards */}
- <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
  {/* Daily Sales */}
  <div className="bg-white border border-brand-100 shadow-sm rounded-xl p-5 space-y-3">
  <div className="flex items-center justify-between">
  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
- {lang === 'ar' ? 'مبيعات اليوم' : 'Daily Sales'}
+ {lang === 'ar' ? 'مبيعات اليوم' : "Today's Sales"}
  </span>
  <div className="p-2 rounded-lg bg-brand-50 text-[#047857]">
  <TrendingUp className="w-5 h-5" />
@@ -93,7 +99,25 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  </div>
  <div className="flex items-center gap-1.5 text-xs text-[#047857] font-semibold">
  <ArrowUpRight className="w-4 h-4" />
- <span>{lang === 'ar' ? 'مقبوضات مؤكدة' : 'Confirmed Receipts'}</span>
+ <span>{lang === 'ar' ? 'مقبوضات اليوم' : "Today's Receipts"}</span>
+ </div>
+ </div>
+
+ {/* Net Profit Today */}
+ <div className="bg-white border border-brand-100 shadow-sm rounded-xl p-5 space-y-3">
+ <div className="flex items-center justify-between">
+ <span className="text-xs font-bold text-slate-500 uppercase tracking-wider font-mono">
+ {lang === 'ar' ? 'ربح اليوم الصافي' : "Today's Net Profit"}
+ </span>
+ <div className="p-2 rounded-lg bg-emerald-50 text-emerald-700">
+ <TrendingUp className="w-5 h-5" />
+ </div>
+ </div>
+ <div className="text-2xl font-black text-emerald-700 font-mono">
+ {todayProfit.toLocaleString()} <span className="text-xs text-slate-500 font-normal">{lang === 'ar' ? 'ل.س' : 'SYP'}</span>
+ </div>
+ <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
+ <span>{lang === 'ar' ? 'الإيراد ناقص كلفة الشراء' : 'Revenue minus acquisition cost'}</span>
  </div>
  </div>
 
@@ -154,7 +178,8 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
 
  <div className="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
  <Filter className="w-4 h-4 text-slate-400 shrink-0" />
- {(['all', 'Paid', 'Pending', 'Refunded'] as const).map((status) => (
+  {/* Pending/Refunded hidden: SaleRecord has no status field yet — only completed POS sales exist */}
+  {(['all', 'Paid'] as const).map((status) => (
  <button
  key={status}
  onClick={() => setFilter(status)}
@@ -166,8 +191,6 @@ export default function LedgerTab({ salesLogs = [], medicines = [], lang = 'en',
  >
  {status === 'all' && (lang === 'ar' ? 'الكل' : 'All')}
  {status === 'Paid' && (lang === 'ar' ? 'مدفوع' : 'Paid')}
- {status === 'Pending' && (lang === 'ar' ? 'معلق' : 'Pending')}
- {status === 'Refunded' && (lang === 'ar' ? 'مرتجع' : 'Refunded')}
  </button>
  ))}
  </div>

@@ -9,7 +9,8 @@ import {
   signOut, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  sendEmailVerification
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { IndexedDBStore } from "../../infrastructure/storage/IndexedDBStore";
@@ -57,6 +58,14 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+/**
+ * Email-ownership enforcement. false = verification mail is sent at signup
+ * but unverified accounts may still sign in (protects pre-existing team
+ * accounts that never clicked a link). Flip to true when ready — login then
+ * blocks unverified password accounts until they click the mail link.
+ */
+export const REQUIRE_VERIFIED_EMAIL = true;
 
 export function mapAuthErrorMessage(err: any): string {
   if (!err) return "An unexpected error occurred. Please try again.";
@@ -111,6 +120,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        // Email-ownership gate (password accounts only; Google identities are
+        // pre-verified). Active only when REQUIRE_VERIFIED_EMAIL is flipped on.
+        if (REQUIRE_VERIFIED_EMAIL && !user.emailVerified && user.providerData.some(p => p.providerId === 'password')) {
+          await signOut(auth);
+          setError("Please verify your email address (check your inbox), then sign in again.");
+          setIsLoading(false);
+          return;
+        }
         try {
           const safeDbCall = <T,>(promise: Promise<T>): Promise<T> => {
             return Promise.race([
@@ -491,6 +508,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const cred = await createUserWithEmailAndPassword(auth, email.trim(), pass);
       const userId = cred.user.uid;
 
+      // Verify email ownership. Fire-and-forget: onboarding must not block on
+      // the mail arriving. Enforcement is controlled by REQUIRE_VERIFIED_EMAIL
+      // (module scope) — also checked in onAuthStateChanged at login time.
+      try { await sendEmailVerification(cred.user); } catch (vErr) { console.warn("Verification email skipped:", vErr); }
+      if (REQUIRE_VERIFIED_EMAIL && !cred.user.emailVerified) {
+        await signOut(auth);
+        setError("Please verify your email address before signing in — check your inbox.");
+        setIsLoading(false);
+        return false;
+      }
+
       let tenantId = "";
       let createdTenant: PharmacyProfile | null = null;
 
@@ -628,9 +656,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     setError(null);
     try {
-      const city = profileData.city.trim();
-      const zone = profileData.zone.trim();
-      const address = profileData.address.trim();
+      // Null-safe trims: callers may omit optional location fields entirely.
+      const city = (profileData.city || '').trim();
+      const zone = (profileData.zone || '').trim();
+      const address = (profileData.address || '').trim();
       const verifiedLoc = `${city}${zone ? ' - ' + zone : ''}${address ? ', ' + address : ''}`;
 
       const updatedTenant: PharmacyProfile = {
@@ -643,13 +672,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           createdByUid: currentSession.userId,
           authorizedUsers: [currentSession.userId]
         }),
-        name: profileData.name.trim(),
+        name: (profileData.name || '').trim(),
         ...(profileData.nameAr?.trim() ? { nameAr: profileData.nameAr.trim() } : {}),
         ...(profileData.workingHours?.trim() ? { workingHours: profileData.workingHours.trim() } : {}),
-        displayName: profileData.name.trim(),
-        address: address,
+        displayName: (profileData.name || '').trim(),
+        address,
         verifiedLocation: verifiedLoc,
-        contactPhone: profileData.contactPhone.trim(),
+        contactPhone: (profileData.contactPhone || '').trim(),
         licenseNumber: profileData.licenseNumber?.trim() || activePharmacy?.licenseNumber || "PENDING",
         location: {
           city: city,

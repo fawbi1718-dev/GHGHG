@@ -32,7 +32,7 @@ export default function ScannerModePickerModal({
  initial={{ scale: 0.95, y: 12, opacity: 0 }}
  animate={{ scale: 1, y: 0, opacity: 1 }}
  exit={{ scale: 0.95, y: 12, opacity: 0 }}
- transition={{ type: 'spring', damping: 25, stiffness: 350 }}
+ transition={{ duration: 0.18, ease: 'easeOut' }}
  className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-lg p-6 shadow-2xl text-white overflow-hidden my-auto"
  onClick={(e) => e.stopPropagation()}
  >

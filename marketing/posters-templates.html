@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<!-- قوالب بوسترات إشمون — افتح بالمتصفح، عدّل النص، صوّر لقطة شاشة 1080x1350 -->
+<!-- طريقة التصدير: F12 → Ctrl+Shift+P → "Capture node screenshot" على العنصر .poster -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#111; display:flex; gap:24px; padding:24px; flex-wrap:wrap; font-family:'Cairo',sans-serif; }
+  .poster { width:1080px; height:1350px; background:#000; color:#fafafa;
+    display:flex; flex-direction:column; justify-content:space-between; padding:72px; position:relative; overflow:hidden; }
+  .poster::before { content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16,185,129,.13), transparent 60%); pointer-events:none; }
+  .brand { position:absolute; top:56px; right:72px; font-weight:900; font-size:40px; color:#10b981; letter-spacing:.5px; }
+  .brand span { color:#64748b; font-weight:400; }
+  h1 { font-size:96px; font-weight:900; line-height:1.25; }
+  h1 em { font-style:normal; color:#10b981; }
+  .sub { font-size:42px; color:#94a3b8; line-height:1.7; }
+  .cta { align-self:flex-start; background:#fafafa; color:#000; font-weight:900; font-size:44px;
+    padding:28px 64px; border-radius:18px; border:3px solid rgba(255,255,255,.14); }
+  .footer { display:flex; justify-content:space-between; align-items:center; border-top:1px solid #1e293b; padding-top:36px;
+    color:#475569; font-size:30px; }
+  .chip { background:#052e22; color:#34d399; border:2px solid #065f46; border-radius:999px; padding:10px 32px; font-size:32px; font-weight:700; }
+
+  /* قالب ٢: رقم/إحصائية */
+  .stat-num { font-size:280px; font-weight:900; color:#fafafa; line-height:1; }
+  .stat-num small { font-size:120px; color:#10b981; }
+  /* قالب ٣: اقتباس/سؤال */
+  .quote { font-size:76px; font-weight:700; line-height:1.55; }
+  .quote::before { content:'«'; color:#10b981; }
+  .quote::after { content:'»'; color:#10b981; }
+</style>
+</head>
+<body>
+
+<!-- القالب ١: إعلان / وعي -->
+<div class="poster">
+  <div class="brand">إشمون <span>| منصة الصيادلة</span></div>
+  <div style="margin-top:120px;">
+    <div class="chip" style="display:inline-block; margin-bottom:40px;">فائض الأدوية</div>
+    <h1>قدّاش فايدة راح تضيع<br>بصيدليتك هالسنة؟</h1>
+    <p class="sub" style="margin-top:36px;">حوّل فائض مخزونك لطلبات حقيقية<br>من صيادلة متل ما بتدور عليه</p>
+  </div>
+  <div class="cta">رابط الواتساب بالبايو</div>
+  <div class="footer"><span>@eshmun.platform</span><span>صيدليات × مستودعات</span></div>
+</div>
+
+<!-- القالب ٢: إحصائية -->
+<div class="poster">
+  <div class="brand">إشمون <span>| منصة الصيادلة</span></div>
+  <div style="margin:auto 0;">
+    <div class="stat-num">٢٤<small> ساعة</small></div>
+    <p class="sub" style="font-size:52px; margin-top:28px;">متوسط الوقت حتى أول صفقة فائض<br>على المنصة — بدون وسيط، بدون فوضى</p>
+  </div>
+  <div class="cta">جرّبها مجاناً</div>
+  <div class="footer"><span>@eshmun.platform</span><span>الرابط بالبايو</span></div>
+</div>
+
+<!-- القالب ٣: سؤال يفتح نقاش -->
+<div class="poster">
+  <div class="brand">إشمون <span>| منصة الصيادلة</span></div>
+  <div style="margin:auto 0;">
+    <p class="quote">شو بتعمّل بدوايا اللي بتنتهي بعد شهرين؟</p>
+    <p class="sub" style="margin-top:48px;">اكتبلنا بالتعليقات 👇 وأول ٥ صيدليات بتجرب المنصة عنا مجاناً</p>
+  </div>
+  <div class="cta">الرابط بالبايو</div>
+  <div class="footer"><span>@eshmun.platform</span><span>إشمون</span></div>
+</div>
+
+</body>
+</html>

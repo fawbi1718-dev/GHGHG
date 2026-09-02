@@ -141,7 +141,8 @@ service cloud.firestore {
              &&
              request.resource.data.diff({}).affectedKeys().hasOnly(
                ['type', 'orderId', 'offerId', 'drugName', 'reason',
-                'catalogId', 'buyerTenantId', 'sellerTenantId', 'createdAt']
+                'catalogId', 'buyerTenantId', 'sellerTenantId', 'createdAt',
+                'sellerName', 'expectedDeliveryAt', 'deliveryWindowEnd']
              )
              &&
              (

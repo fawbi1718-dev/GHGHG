@@ -910,7 +910,7 @@ export default function CompaniesDirectoryTab({
               initial={{ scale: 0.96, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.96, opacity: 0, y: 12 }}
-              transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-2xl bg-white border border-slate-200/90 rounded-xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden my-auto relative"
             >
@@ -1164,7 +1164,7 @@ export default function CompaniesDirectoryTab({
               initial={{ scale: 0.96, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.96, opacity: 0, y: 12 }}
-              transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-2xl bg-white border border-slate-200 rounded-xl shadow-2xl flex flex-col max-h-[88vh] overflow-hidden my-auto"
             >
@@ -1317,7 +1317,7 @@ export default function CompaniesDirectoryTab({
               initial={{ scale: 0.96, opacity: 0, y: 12 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.96, opacity: 0, y: 12 }}
-              transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-3xl bg-white border border-slate-200 rounded-xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden my-auto"
             >

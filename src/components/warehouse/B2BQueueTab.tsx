@@ -370,15 +370,16 @@ export default function B2BQueueTab({ activeTenantId, triggerToast, lang = 'ar' 
         return false;
       }
 
-      // Ensure clean manifest data with non-undefined fields
+      // Ensure clean manifest data with non-undefined fields. Firestore rejects
+      // undefined values outright — absent keys via conditional spread only.
       const sanitizedManifest = {
         dispatchToken: manifest.dispatchToken || `DISPATCH-${Date.now().toString().slice(-6)}`,
         totalQuantity: Number(manifest.totalQuantity) || 0,
         totalValue: Number(manifest.totalValue) || 0,
         dispatchDate: manifest.dispatchDate || new Date().toISOString(),
         // Delivery commitment window set by the warehouse at dispatch time.
-        expectedDeliveryAt: manifest.expectedDeliveryAt || undefined,
-        deliveryWindowEnd: manifest.deliveryWindowEnd || undefined
+        ...(manifest.expectedDeliveryAt ? { expectedDeliveryAt: manifest.expectedDeliveryAt } : {}),
+        ...(manifest.deliveryWindowEnd ? { deliveryWindowEnd: manifest.deliveryWindowEnd } : {})
       };
 
       const nowIso = new Date().toISOString();

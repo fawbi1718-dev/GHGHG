@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../application/auth/AuthContext';
 import { HeartPulse, LogOut, Loader2, Camera, LayoutDashboard, ShoppingCart, Package, ScanLine, BarChart3, Settings as SettingsIcon, Activity, Menu, Search, Building2, Sparkles, Globe, Inbox, Tag, Store, Pill, ShoppingBag, FileText, BookOpen, Sun, Moon } from "lucide-react";
 import DashboardTab from "./DashboardTab";
@@ -32,6 +32,7 @@ import { BackgroundSyncEngine } from '../../infrastructure/sync/BackgroundSyncEn
 import { DrugMaster, DrugBatch } from '../../domain/inventory';
 import { RegisterApplicationService } from '../../application/RegisterApplicationService';
 import { FEFOStockAllocator } from '../../domain/services';
+import { StockEngine, AdjustmentPlan } from '../../domain/services/StockEngine';
 import { persistMirror } from '../../utils/localMirror';
 import { resolveUnitCost } from '../../utils/cost';
 import { HardwareIntegrationService } from '../../infrastructure/hardware/HardwareIntegrationService';
@@ -121,6 +122,96 @@ export default function RootNavigator({
  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
  
  // Generic handlers
+
+ // ---------------------------------------------------------------------------
+ // StockEngine: debounced, coalescing quick-adjust pipeline. UI taps update
+ // local state instantly; the engine commits ONE atomic batch per medicine
+ // shortly after the last tap, FEFO-resolved against fresh server batches.
+ // Pending deltas persist per tenant and resume on next boot.
+ // ---------------------------------------------------------------------------
+ class FirestoreStockEngine extends StockEngine {
+  async readBatches(tenantId: string, medId: string) {
+  const { collection, getDocs } = await import('firebase/firestore');
+  if (!db) return [];
+  const snap = await getDocs(collection(db, 'tenants', tenantId, 'storage_inventory', medId, 'batches'));
+  return snap.docs.map(d => {
+  const v = d.data();
+  return new DrugBatch(
+  d.id,
+  medId,
+  v.batchNumber || 'N/A',
+  new Date(v.expiryDate || '2099-01-01'),
+  v.cost || v.ownerBaseCost || 0,
+  v.stock !== undefined ? v.stock : (v.currentRemainingQuantity || 0),
+  !!v.isSpoiled
+  );
+  });
+  }
+ }
+
+ const stockEngineRef = useRef<FirestoreStockEngine | null>(null);
+ if (!stockEngineRef.current) {
+  stockEngineRef.current = new FirestoreStockEngine(async ({ tenantId, medId, plan, note }: { tenantId: string; medId: string; plan: AdjustmentPlan; note: string }) => {
+  const { writeBatch, doc, increment, arrayUnion } = await import('firebase/firestore');
+  if (!db) throw new Error('Firestore unavailable');
+  const batch = writeBatch(db);
+  const nowIso = new Date().toISOString();
+  if (plan.correctiveBatch) {
+  const corrBatchId = `corr-${Date.now()}`;
+  batch.set(
+  doc(db, 'tenants', tenantId, 'storage_inventory', medId, 'batches', corrBatchId),
+  {
+  batchId: corrBatchId,
+  medId,
+  batchNumber: `CORR-${String(Date.now()).slice(-6)}`,
+  expiryDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+  cost: 0,
+  stock: plan.correctiveBatch.stock,
+  isSpoiled: false,
+  lastUpdated: nowIso
+  }
+  );
+  }
+  for (const op of plan.batchOps) {
+  batch.update(
+  doc(db, 'tenants', tenantId, 'storage_inventory', medId, 'batches', op.batchId),
+  { stock: increment(-op.deduct), lastUpdated: nowIso }
+  );
+  }
+  batch.update(doc(db, 'tenants', tenantId, 'storage_inventory', medId), {
+  stock: increment(plan.aggregateDelta),
+  lastUpdated: nowIso,
+  history: arrayUnion({
+  id: `hist-${Date.now()}`,
+  timestamp: nowIso,
+  type: plan.aggregateDelta > 0 ? 'stock_correction_up' : 'stock_correction_down',
+  note,
+  quantityChange: plan.aggregateDelta
+  })
+  });
+  await batch.commit();
+  });
+ }
+
+ // Resume any pending quick-adjusts persisted before an unload.
+ const resumedTenantRef = useRef<string | null>(null);
+ useEffect(() => {
+  const t = currentSession?.pharmacyId || null;
+  if (t && stockEngineRef.current && resumedTenantRef.current !== t) {
+  resumedTenantRef.current = t;
+  stockEngineRef.current.resume(t);
+  }
+ }, [currentSession?.pharmacyId]);
+
+ /** Optimistic-only quick adjust — persistence handled by StockEngine burst flush. */
+ const quickAdjustStock = (id: string, delta: number, note?: string) => {
+  const tenantId = currentSession?.pharmacyId;
+  if (!tenantId || !Number(delta)) return;
+  const safeMedId = String(id).replace(/\//g, '_');
+  setMedicines((prev: Medicine[]) => prev.map(m => m.id === id ? { ...m, stock: (m.stock || 0) + delta, lastUpdated: new Date().toISOString() } : m));
+  stockEngineRef.current?.enqueue(tenantId, safeMedId, delta, note || 'Quick adjust');
+ };
+
 
  // Physical stock correction (warehouse Ledger editing / quick modifiers).
  // Positive deltas follow the existing intake pattern: a corrective batch
@@ -237,7 +328,7 @@ export default function RootNavigator({
  const drugMaster = new DrugMaster(canonicalCatalogId, m.barcode || '', m.name, m.genericName || m.name, false, 25);
  await repo.saveDrugMaster(drugMaster);
  const batchId = `batch-${Date.now()}`;
- const drugBatch = new DrugBatch(batchId, canonicalCatalogId, m.batchNumber || m.barcode || 'N/A', new Date(m.expiryDate), m.price, m.stock, false);
+ const drugBatch = new DrugBatch(batchId, canonicalCatalogId, m.batchNumber || m.barcode || 'N/A', new Date(m.expiryDate), m.costPrice ?? m.price, m.stock, false);
  await repo.saveDrugBatch(drugBatch);
  // NOTE: no sync-queue payload is enqueued here. The medicine is written
  // directly to Firestore below (Firestore offline persistence covers the
@@ -496,10 +587,15 @@ export default function RootNavigator({
 
  if (isLoading) {
  return (
- <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 animate-pulse">
- <div className="flex flex-col items-center space-y-4">
- <Loader2 className="w-12 h-12 text-brand-600 animate-spin" />
- <h2 className="text-xl font-bold font-mono text-slate-800 ">Loading...</h2>
+ <div className="min-h-screen bg-slate-100 dark:bg-[#0f172a] flex flex-col items-center justify-center p-4">
+ <div className="bg-white dark:bg-[#1e293b] border border-slate-200 dark:border-slate-700 rounded-xl shadow-md px-8 py-6 flex flex-col items-center gap-3 max-w-xs w-full">
+ <div className="w-9 h-9 rounded-md bg-slate-900 dark:bg-white flex items-center justify-center shrink-0">
+ <span className="text-sm font-black text-white dark:text-slate-900 font-mono">E</span>
+ </div>
+ <Loader2 className="w-5 h-5 text-brand-600 animate-spin" />
+ <p className="text-xs font-bold text-slate-600 dark:text-slate-300 text-center">
+ {lang === 'ar' ? 'جارٍ استعادة الجلسة…' : 'Restoring your session…'}
+ </p>
  </div>
  </div>
  );
@@ -513,30 +609,7 @@ export default function RootNavigator({
     return <PharmacyOnboarding lang={lang} setLang={setLang} />;
   }
 
-  const mainNavTabs = [
- {
- id: 'checkout',
- label: lang === 'ar' ? 'نقطة البيع' : 'POS',
- icon: ShoppingCart,
- },
- {
- id: 'catalog',
- label: lang === 'ar' ? 'الأدوية' : 'Medicine',
- icon: Pill,
- },
- {
- id: 'b2b_marketplace',
- label: lang === 'ar' ? 'طلباتي' : 'My Orders',
- icon: ShoppingBag,
- },
- {
- id: 'inventory',
- label: lang === 'ar' ? 'السجل' : 'Ledger',
- icon: FileText,
- }
- ];
-
- const isWarehouse = activePharmacy?.tenantType === 'WHOLESALE_WAREHOUSE';
+  const isWarehouse = activePharmacy?.tenantType === 'WHOLESALE_WAREHOUSE';
  const mobileDockTabs = isWarehouse ? [
  { id: 'warehouse_orders', label: lang === 'ar' ? 'الطلبات' : 'Orders Inbox', icon: Inbox },
  { id: 'warehouse_offers', label: lang === 'ar' ? 'العروض' : 'Wholesale Offers', icon: Tag },
@@ -592,7 +665,7 @@ export default function RootNavigator({
  </div>
 
  <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
- {(isWarehouse ? mobileDockTabs : mainNavTabs).map((tab) => {
+ {mobileDockTabs.map((tab) => {
  const isActive = activeTab === tab.id || (tab.id === 'inventory' && activeTab === 'warehouse_inventory');
  return (
  <button
@@ -703,43 +776,45 @@ export default function RootNavigator({
 
  {(activeTab === 'inventory' || activeTab === 'warehouse_inventory') && (
  activePharmacy?.tenantType === "WHOLESALE_WAREHOUSE" ? (
- <WarehouseInventoryTab 
- triggerToast={triggerToast}
- medicines={medicines}
- isLoadingInventory={isLoadingInventory}
- onUpdateStock={onUpdateStock}
- onUpdateMedicine={firestoreUpdateMedicine}
- onSelectMedicine={onSelectMedicine}
- onAddMedicine={firestoreAddMedicine}
- intakeRequest={pendingIntakeItem}
- onIntakeConsumed={() => setPendingIntakeItem(null)}
- searchQuery={searchQuery}
- setSearchQuery={setSearchQuery}
- categoryFilter={categoryFilter}
- setCategoryFilter={setCategoryFilter}
- sortBy={sortBy}
- setSortBy={setSortBy}
- sortOrder={sortOrder}
- setSortOrder={setSortOrder}
- lang={lang}
- />
- ) : (
- <InventoryTab 
- triggerToast={triggerToast}
- medicines={medicines}
- isLoadingInventory={isLoadingInventory}
- onUpdateStock={onUpdateStock}
- onSelectMedicine={onSelectMedicine}
- onAddMedicine={firestoreAddMedicine}
- searchQuery={searchQuery}
- setSearchQuery={setSearchQuery}
- categoryFilter={categoryFilter}
- setCategoryFilter={setCategoryFilter}
- sortBy={sortBy}
- setSortBy={setSortBy}
- sortOrder={sortOrder}
- setSortOrder={setSortOrder}
- />
+          <WarehouseInventoryTab 
+            triggerToast={triggerToast}
+            medicines={medicines}
+            isLoadingInventory={isLoadingInventory}
+            onUpdateStock={onUpdateStock}
+            onQuickAdjust={quickAdjustStock}
+            onUpdateMedicine={firestoreUpdateMedicine}
+            onSelectMedicine={onSelectMedicine}
+            onAddMedicine={firestoreAddMedicine}
+            intakeRequest={pendingIntakeItem}
+            onIntakeConsumed={() => setPendingIntakeItem(null)}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            lang={lang}
+          />
+        ) : (
+          <InventoryTab 
+            triggerToast={triggerToast}
+            medicines={medicines}
+            isLoadingInventory={isLoadingInventory}
+            onUpdateStock={onUpdateStock}
+            onQuickAdjust={quickAdjustStock}
+            onSelectMedicine={onSelectMedicine}
+            onAddMedicine={firestoreAddMedicine}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+          />
  )
  )}
 
@@ -791,7 +866,7 @@ export default function RootNavigator({
  toggleSyncStatus={() => {}}
  theme={theme} setTheme={setTheme} lang={lang} setLang={setLang} isOnline={isOnline}
  medicines={medicines} setMedicines={setMedicines}
- triggerToast={triggerToast} developerMode={developerMode} onTriggerImport={() => triggerToast('Import triggered', 'success')}
+ triggerToast={triggerToast} developerMode={developerMode} onTriggerImport={() => triggerToast(lang === 'ar' ? 'تم تشغيل الاستيراد' : 'Import triggered', 'success')}
  salesLogs={[]}
  onOpenScanner={() => setIsScannerPickerOpen(true)}
  />
@@ -826,10 +901,10 @@ export default function RootNavigator({
  <nav 
           id="mobile-bottom-navigation"
           className="md:hidden flex-none z-50 bg-white border-t border-slate-200 shadow-[0_-2px_12px_rgba(0,0,0,0.08)] px-1 pt-1.5 pb-[max(0.6rem,env(safe-area-inset-bottom,0px))] grid w-full" 
-          style={{ gridTemplateColumns: `repeat(${(isWarehouse ? mobileDockTabs : mainNavTabs).length}, minmax(0, 1fr))` }}
+          style={{ gridTemplateColumns: `repeat(${mobileDockTabs.length}, minmax(0, 1fr))` }}
           dir={lang === "ar" ? "rtl" : "ltr"}
         >
-          {(isWarehouse ? mobileDockTabs : mainNavTabs).map((tab) => {
+          {mobileDockTabs.map((tab) => {
             const isActive = activeTab === tab.id || (tab.id === "inventory" && activeTab === "warehouse_inventory");
             return (
               <button
@@ -984,7 +1059,7 @@ export default function RootNavigator({
                     await clearLocalDatabase();
                     triggerToast(lang === "ar" ? "تمت إعادة مزامنة قاعدة البيانات بنجاح" : "Database synchronized successfully", "success");
                   } catch (e) {
-                    triggerToast("Sync completed", "info");
+                    triggerToast(lang === "ar" ? "اكتملت المزامنة" : "Sync completed", "info");
                   }
                 }}
                 className="px-3 py-1.5 bg-brand-100 hover:bg-brand-200 text-brand-800 text-xs font-bold rounded-lg transition-colors cursor-pointer"
